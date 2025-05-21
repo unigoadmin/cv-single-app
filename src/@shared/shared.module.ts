@@ -32,6 +32,7 @@ import {
     CommonService,
     FileStoreService
   } from './http';
+import { JCSecurityAuthGuard } from './guards/jc.auth.guard';
 
 
 const SHARED_GUARDS = [
@@ -40,7 +41,8 @@ const SHARED_GUARDS = [
   SecurityAuthGuard,
   ConsultantSecurityAuthGuard,
   AdminPanelSecurityAuthGuard,
-  SuperAdminPanelSecurityAuthGuard
+  SuperAdminPanelSecurityAuthGuard,
+  JCSecurityAuthGuard
 ]
 
 const SHARED_SERVICES = [
