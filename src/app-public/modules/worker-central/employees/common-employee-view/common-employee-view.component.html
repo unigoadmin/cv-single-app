@@ -1,0 +1,297 @@
+<mat-card style="padding-bottom:0 !important;">
+    <mat-card-title>
+        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+            Worker Information</div>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45"><span>Worker ID:</span></div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.ComapnyEmployeeID}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Employment Type:
+                </div>
+                <div class="child-3" fxFlex="55">
+                    <span class="pb-0 pt-0"
+                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                        {{Employee.EmploymentType}}
+                    </span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1"><span>Worker Type:</span></div>
+                <div class="child-2" fxFlex="55">
+                    <span class="pb-0 pt-0"
+                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                        {{Employee.EmployeeType}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45">First Name:</div>
+                <div class="child-2" fxFlex="55"><span>{{Employee.FirstName}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1"><span>Middle Name:</span></div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.MiddleName}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Last Name:</div>
+                <div class="child-3" fxFlex="55"><span>{{Employee.LastName}}</span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45">Email:</div>
+                <div class="child-2" fxFlex="55"><span matTooltip="{{Employee.Email}}">{{Employee.Email | shorten:20}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Phone Number:</div>
+                <div class="child-3" fxFlex="55">
+                    <span>{{Employee.PrimaryPhoneNumber}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"></div>
+                <div class="child-3" fxFlex="55">
+                   
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%" >
+                <div class="child-1 text-secondary" fxFlex="45">DOB:</div>
+                <div class="child-2" fxFlex="55"><span>{{Employee.DOB
+                        |date:'MM/dd/yyyy' }}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Gender:</div>
+                <div class="child-2" fxFlex="55"><span>{{Employee.Gender}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Martial Status:
+                </div>
+                <div class="child-3" fxFlex="55">
+                    <span>{{Employee.MaritalStatus}}</span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="100%">
+                <div class="child-1 mt-1 text-secondary" fxFlex="14"><span>Location:</span></div>
+                <div class="child-2" fxFlex="83" fxLayoutAlign="start">
+                    <span class="rounded-full text-secondary font-medium locationbtn">
+                        <ic-icon [icon]="iconService.iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true"
+                            size="14px">
+                        </ic-icon>
+                        <span>{{formattedAddress}}</span>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45">Work Permit:</div>
+                <div class="child-2" fxFlex="65">
+                    <span class="rounded-full text-secondary font-medium text-xs categorybtn">{{Employee.WorkStatus}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Work Permit Exp:
+                </div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.WorkStatusExpiry|date:'MM/dd/yyyy'}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Work Permit Eff:</div>
+                <div class="child-3" fxFlex="55">
+                    <span>{{Employee.WorkStatusEffective|date:'MM/dd/yyyy'}}</span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45">Emp Start Date:
+                </div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.EmpStartDate|date:'MM/dd/yyyy'}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Department:</div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.Department}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"><span>Designation:</span></div>
+                <div class="child-3" fxFlex="55">
+                    <span>{{Employee.Designation}}</span>
+                </div>
+            </div>
+        </div>
+        
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" ><span>I-94 Number:</span></div>
+                <div class="child-2" fxFlex="55">
+                    <span>{{Employee.I94Number}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">I-94 ExpiryDate:</div>
+                <div class="child-3" fxFlex="55">
+                    <span>{{Employee.I94ExpiryDate|date:'MM/dd/yyyy'}}</span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"></div>
+                <div class="child-3" fxFlex="55">
+                  
+                </div>
+            </div>
+        </div>  
+        <mat-divider></mat-divider> 
+        <div  class="flex-container" fxLayout="row">
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45">Health Insurance:</div>
+                <div class="child-2" fxFlex="55">
+                    <span *ngIf="Employee.HealthInsuranceEnrolled" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                       Active
+                    </span>
+                    <span *ngIf="!Employee.HealthInsuranceEnrolled"  class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                        Inactive
+                     </span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"><span>CV Website Access:</span>
+                </div>
+                <div class="child-3" fxFlex="55">
+                    <span *ngIf="Employee.CreateUserAccount" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                      Active
+                    </span>
+                    <span *ngIf="!Employee.CreateUserAccount" class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light" >
+                      Inactive
+                    </span>
+                </div>
+            </div>
+            <div fxFlex="33%">
+                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Assignment Status:
+                </div>
+                <div class="child-2" fxFlex="55">
+                    <span *ngIf="Employee.AssignmentStatus!=0" class="pb-0 pt-0"
+                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                        <span *ngIf="Employee.AssignmentStatus==1">On Project</span>
+                        <span *ngIf="Employee.AssignmentStatus==2">On Bench</span>
+                        <span *ngIf="Employee.AssignmentStatus==3">On Training</span>
+                        <span *ngIf="Employee.AssignmentStatus==4">NA</span>
+                    </span>
+                </div>
+            </div>
+        </div>  
+        <mat-divider></mat-divider>
+    </mat-card-content>
+</mat-card>
+<mat-card class="mt-4" style="padding-bottom:0 !important;">
+    <mat-card-title>
+        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+            Organization Hierarchy</div>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="25%">
+                <div class="child-1 text-secondary" fxFlex="20"><span>HR:</span></div>
+                <div class="child-1" fxFlex="80">
+                    <span *ngIf="Employee.HRManager" class="certtags">{{Employee.HRManager_Name}}</span>
+                </div>
+            </div>
+            <div fxFlex="25%">
+                <div class="child-2 text-secondary" fxFlex="20" id="middlebuttons1">Training:</div>
+                <div class="child-2" fxFlex="80">
+                    <span *ngIf="Employee.TrainingManager" class="certtags">{{Employee.TrainingManager_Name}}</span>
+                </div>
+            </div>
+            <div fxFlex="25%">
+                <div class="child-3 text-secondary" fxFlex="20" id="middlebuttons1"><span>Finance:</span></div>
+                <div class="child-3" fxFlex="80">
+                    <span *ngIf="Employee.FinanceManager" class="certtags">{{Employee.FinanceManager_Name}}</span>
+                </div>
+            </div>
+            <div fxFlex="25%">
+                <div class="child-2 text-secondary" fxFlex="20" id="middlebuttons1">Immigration:</div>
+                <div class="child-2" fxFlex="80">
+                    <span *ngIf="Employee.ImmigrationManager" class="certtags">{{Employee.ImmigrationManager_Name}}</span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+</mat-card>
+<mat-card class="mt-4 mb-4">
+    <mat-card-title>
+        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+            Attachments</div>
+    </mat-card-title>
+    <mat-card-content>
+        <div fxLayout="row">
+            <table mat-table [dataSource]="empdataSource" fxFlex="100" fxFlex.gt-xs="100">
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell class="uppercase" *matHeaderCellDef> # </th>
+                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element;let i=index">
+                        {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Name of the
+                        Document
+                    </th>
+                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                        {{element.DownloadableFileName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Document Type </th>
+                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                        <span *ngIf="element.DocumentType===1">Offer Letter</span>
+                        <span *ngIf="element.DocumentType===2">Work Authorization</span>
+                        <span *ngIf="element.DocumentType===3">eVerify</span>
+                        <span *ngIf="element.DocumentType===4">I-9</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Actions </th>
+                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element;let i=index">
+                        <span class="text-primary" style="margin-right: 15px;"
+                            (click)="ViewDocViewer(element,'Employee Documment')">
+                            <mat-icon [icIcon]="iconService.icvieweye"></mat-icon>
+                        </span>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>

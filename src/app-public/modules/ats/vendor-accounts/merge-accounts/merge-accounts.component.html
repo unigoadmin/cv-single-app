@@ -1,0 +1,50 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Merge Accounts</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-divider class="-mx-6 text-border"></mat-divider>
+
+<mat-dialog-content fxLayout="column" style="overflow: auto;padding-top: 20px;">
+    <form role="form" [formGroup]="MergeAccountForm">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Account Type</mat-label>
+                    <input readonly="true" formControlName="accountTypeName" [(ngModel)]="accountTypeName" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Merged Account Name</mat-label>
+                    <input required placeholder="Merged Account Name" formControlName="accountName" [(ngModel)]="MergedAccountName" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100" appearance="outline">
+                    <mat-label>Account Owner</mat-label>
+                    <mat-select required name="accountOwner" formControlName="accountOwner" [(ngModel)]="accountOwner"
+                    id="accountOwner">
+                    <mat-option *ngFor="let assign of assignees" [value]="assign.value">{{assign.name}}
+                    </mat-option>
+                </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+   
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-button type="submit" [disabled]="!(MergeAccountForm.valid)" (click)="MergeAccount()">MERGE</button>
+    </div>
+
+</mat-dialog-actions>
+

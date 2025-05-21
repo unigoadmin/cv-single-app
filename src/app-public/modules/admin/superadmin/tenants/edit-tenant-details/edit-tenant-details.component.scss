@@ -1,0 +1,26 @@
+.image_container {
+    text-align: center;
+    line-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20vw;
+    height: 20vw;
+}
+
+.image_container img {
+    vertical-align: middle;
+    max-width:100%;
+    max-height:100%;
+}
+
+.custom-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .custom-slide-toggle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }

@@ -1,0 +1,60 @@
+<div class="flex" *ngxPermissionsOnly="['ACTION_EDIT_APPLICANT']">
+    <span>
+      <button 
+        (click)="$event.stopPropagation();" 
+        class="mr-2" 
+        [matMenuTriggerData]="{ applicant: row }" 
+        [matMenuTriggerFor]="actionsMenu" 
+        color="primary" 
+        mat-raised-button 
+        type="button">
+        Actions
+        <ic-icon [icon]="iconService.icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+      </button>
+    </span>
+  </div>
+  
+  <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+    <ng-template let-applicant="applicant" matMenuContent>
+      <button [disabled]="validateRecruiter(applicant)" (click)="assignToSelf(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icPersonAdd" size="18px" inline="true" [matTooltip]="'Assign Recruiter'"></ic-icon>
+        <span>Assign to Myself</span>
+      </button>
+  
+      <button (click)="assignApplicant(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icPersonAdd" size="18px" inline="true" [matTooltip]="'Assign Recruiter'"></ic-icon>
+        <span>Assign Recruiter</span>
+      </button>
+  
+      <button (click)="reviewApplicant(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icratereview" size="18px" inline="true" [matTooltip]="'Send for Review'"></ic-icon>
+        <span>Send for Review</span>
+      </button>
+  
+      <button (click)="ignoreApplicant(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icDelete" size="18px"  inline="true" [matTooltip]="'Ignore Applicant'"></ic-icon>
+        <span>Ignore Applicant</span>
+      </button>
+  
+      <button (click)="shareApplicant(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icShare" size="18px" inline="true" [matTooltip]="'Share Applicant'"></ic-icon>
+        <span>Share Applicant</span>
+      </button>
+  
+      <button [disabled]="applicant?.CandidateMasterId != null" (click)="saveToDB(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icPerson" size="18px" inline="true" [matTooltip]="'Save to Database'"></ic-icon>
+        <span>Save to Database</span>
+      </button>
+  
+      <button (click)="assignForTechScreen(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icShare" size="18px" inline="true" [matTooltip]="'Move to Tech-Screen'"></ic-icon>
+        <span>Move to Tech-Screen</span>
+      </button>
+  
+      <button (click)="assignForMarketing(applicant)" mat-menu-item>
+        <ic-icon [icon]="iconService.icShare" size="18px" inline="true" [matTooltip]="'Move to Marketing'"></ic-icon>
+        <span>Move to Marketing</span>
+      </button>
+    </ng-template>
+  </mat-menu>
+  

@@ -1,0 +1,219 @@
+<vex-page-layout>
+  <!-- <mat-sidenav-content> -->
+    <mat-sidenav-container class="example-sidenav-container">
+      <mat-sidenav class="mat-sidenav-fixed" #activitylog mode="over" hasBackdrop="true" position="end">
+        <div fxLayout="column" *ngIf="selectedConfirmationId">
+          <div  class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none"
+          style="margin-top:60px">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+          <span fxFlex></span>
+          <a (click)="OnActiviyLogclose()"
+            class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+            mat-icon-button>
+            <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+          </a>
+        </div>
+          <mat-divider></mat-divider>
+          <div class="MsgList" id="wallmessages" *ngIf="ActivityLogs.length>0">
+            <div class="MsgItem" *ngFor="let logitem of ActivityLogs; let index = index">
+                <div class="MsgIn">
+                    <div class="message-head clearfix">
+                        <div class="user-detail">
+  
+                            <div class="msg-date">{{logitem.CreatedDate}} </div>
+                            <div class="msg-by">by {{logitem.CreatedBy}}</div>
+                            <div class="msg-content" [innerHtml] = "logitem.Action"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      </mat-sidenav>
+    </mat-sidenav-container>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">Confirmations</h1>
+        <vex-breadcrumbs  [crumbs]="['TalentCentral','Confirmations']"></vex-breadcrumbs>
+      </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+    <div class="card overflow-auto -mt-16 mb-10">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <div class="mr-2">
+          <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px" style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+        </div>
+        <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+          fxLayoutAlign="start center">
+          <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+          <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..." type="search">
+        </div>
+       
+        <div class="ml-4" *ngxPermissionsOnly="['ACTION_CONFIRMATIONS_ASSIGNEE']">
+          Sales Rep
+        </div>
+        <div *ngxPermissionsOnly="['ACTION_CONFIRMATIONS_ASSIGNEE']" class="bg-card  border ml-2"
+          style="width: 180px;border-radius: 4px !important;">
+          <button mat-button [matMenuTriggerFor]="statusMenu" fxFlex="auto" color="primary">
+            {{selectedAssignee}} <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+        
+
+        <span fxFlex></span>
+
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+        <button [matMenuTriggerFor]="columnFilterMenu"
+                  class="ml-4"
+                  fxFlex="none"
+                  mat-icon-button
+                  matTooltip="Filter Columns"
+                  type="button">
+            <mat-icon [icIcon]="icFilterList"></mat-icon>
+          </button>
+        <button *ngxPermissionsOnly="['ACTION_CONFIRMATIONS_ADD']"  (click)="AddConfirmation()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab
+          matTooltip="Add Confirmation" type="button">
+          <mat-icon [icIcon]="icAdd"></mat-icon>
+        </button>
+
+      </div>
+      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+
+        <!-- Text Columns -->
+        <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+          <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase  th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:20 }}</span>
+            </td>
+          </ng-container>
+        </ng-container>
+      
+        <ng-container matColumnDef="ConfirmationCategory">
+          <th *matHeaderCellDef class="uppercase  th-text-bold" mat-header-cell mat-sort-header> category</th>
+          <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+                <span>{{row['ConfirmationCategory']}}</span>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ConfirmationType">
+          <th *matHeaderCellDef class="uppercase  th-text-bold" mat-header-cell mat-sort-header> TYPE</th>
+          <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxLayoutGap="4px" 
+            class="box bg-app-bar text-secondary rounded caption bg-green text-contrast-white">
+              <span class="box-text">
+                <span>{{row['ConfirmationType']}}</span>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="ShortPOC">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>POC</th>
+          <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+            <div  fxLayout="row" fxLayoutAlign="center center">
+              <a style="margin-right: -8px;" (click)="$event.stopPropagation()"
+                class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+                mat-icon-button>
+                <span matTooltip="{{row.POC}}"> {{row.ShortPOC}} </span>
+              </a>
+            </div>
+          </td>
+        </ng-container>
+         <!--Status Column-->
+         <ng-container matColumnDef="StatusName">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+          <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <span *ngIf="row['Status']===1" 
+                class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['Status']===3 || row['Status']===2" 
+                class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['Status']===4" 
+                class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                {{row['StatusName']}}
+              </span>
+             
+            <span *ngIf="row['Status']===5" 
+            class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+            {{row['StatusName']}}
+          </span>
+              <div *ngxPermissionsOnly="['ACTION_CONFIRMATIONS_MODIFY']"  (click)="labelSelect.open()" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover"
+                fxFlex="none" fxLayout="row" fxLayoutAlign="center center">
+                <ic-icon [icon]="icEdit" size="18px"></ic-icon>
+              </div>
+
+              <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event, row)" [value]="row.labels"
+                class="invisible w-0 h-0 text-sm" fxFlex="0 1 0px">
+                <mat-option *ngFor="let label of ConfirmationStatusList" [value]="label">
+                  <div [ngClass]="label.bgClass" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                  </div>
+                  <span>{{ label.StatusName }}</span>
+                </mat-option>
+              </mat-select>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell class="th-text-bold">ACTIVITY</th>
+          <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+            <div class="flex">
+            <a (click)="$event.stopPropagation();ViewLogs(row);"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icFormattedList" size="16px" matTooltip="Activity Logs"></mat-icon>
+              </a>
+
+            </div>
+           
+          </td>
+        </ng-container>
+      
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr (click)="updateConfirmation(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+          class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>
+
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+<mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
+  <ng-template let-confirmation="confirmation" matMenuContent>
+    <button (click)="updateConfirmation(confirmation)" mat-menu-item>
+      <mat-icon style="font-size: 19px !important;margin-right: 0px !important;" [icIcon]="icEdit"></mat-icon>
+      <span>Modify</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #statusMenu="matMenu">
+  <div *ngFor="let item of assignees" fxFlex="none">
+    <button mat-menu-item (click)="filterByAssignee(item)">
+      <span>{{ item.name }}</span>
+    </button>
+  </div>
+</mat-menu>

@@ -1,0 +1,87 @@
+<div fxLayout="row">
+    <div class="child-1 text-secondary" fxFlex="18"><span>Skills:</span></div>
+    <div class="child-2" *ngFor="let skill of keywordsText">
+        <div fxFlex="none">
+            <span class="certtags">{{skill}}</span>
+        </div>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<div class="flex-container" fxLayout="row">
+    <div class="child-1 text-secondary" fxFlex="18"><span>Tags:</span></div>
+    <div class="child-2" *ngFor="let tag of hashtags">
+        <div fxFlex="none">
+            <span class="certtags">{{tag}}</span>
+        </div>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<div class="flex-container" fxLayout="row">
+    <div fxFlex="50%">
+        <div class="child-1 text-secondary" fxFlex="35"><span>Title:</span></div>
+        <div class="child-2" fxFlex="65"><span>{{job.JobTitle}}</span></div>
+    </div>
+
+    <div fxFlex="50%">
+        <div class="child-3 text-secondary" fxFlex="43" id="middlebuttons1">Education:</div>
+        <div class="child-3" fxFlex="57"><span>{{job.Education}}</span></div>
+    </div>
+
+</div>
+<mat-divider></mat-divider>
+<div class="flex-container" fxLayout="row">
+    <div fxFlex="50%">
+        <div class="child-3 text-secondary" fxFlex="35">Exp (Years):</div>
+        <div class="child-3" fxFlex="65"><span>{{job.MinExperience}} - {{job.MaxExperience}}</span></div>
+    </div>
+    <div fxFlex="50%">
+        <div class="child-1 text-secondary" fxFlex="43" id="middlebuttons1"><span>No of
+                Openings:</span></div>
+        <div class="child-2" fxFlex="57"><span>10</span></div>
+    </div>
+
+</div>
+<mat-divider></mat-divider>
+<div class="flex-container" fxLayout="row">
+    <div fxFlex="50%">
+        <div class="child-3 text-secondary" fxFlex="35"><span>Location:</span>
+        </div>
+        <div class="child-3" fxFlex="65">
+            <span class="rounded-full text-secondary font-medium locationbtn">
+                <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2"
+                    inline="true" size="14px">
+                </ic-icon>
+                <span *ngIf="job.Location">{{job.Location}}</span>
+                <span *ngIf="!job.Location">- Not Disclosed -</span>
+            </span>
+        </div>
+    </div>
+    <div fxFlex="50%">
+        <div class="child-1 text-secondary" fxFlex="43" id="middlebuttons1"><span>Work
+                Permit:</span></div>
+        <div class="child-2" fxFlex=57>
+            <span *ngIf="job.WorkStatus" class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+                <span>{{job.WorkStatus}}</span>
+            </span>
+        </div>
+    </div>
+
+
+</div>
+<mat-divider></mat-divider>
+<div class="flex-container" fxLayout="row">
+    <div fxFlex="50%">
+        <div class="child-1 text-secondary" fxFlex="35"><span>Billing Rate:</span></div>
+        <div class="child-2" fxFlex="65"><span *ngIf="job.BillingRate">$ {{job.BillingRate}} / 
+            <span *ngIf="job.BillingType===1">Hourly</span>
+            <span *ngIf="job.BillingType===4">Yearly</span>
+        </span></div>
+    </div>
+    <div fxFlex="100%">
+        <div class="child-3 text-secondary" fxFlex="43" id="middlebuttons1">Expected Start Date:
+        </div>
+        <div class="child-3" fxFlex="57"><span>09/30/2021</span></div>
+    </div>
+
+</div>
+<mat-divider></mat-divider>

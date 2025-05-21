@@ -1,0 +1,50 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Settings</h1>
+                <vex-breadcrumbs [matIcon]="icSettings" [crumbs]="['TalentCentral','Settings']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+        <div class="card overflow-auto -mt-16">
+                  <div class="card">
+                    <mat-tab-group [selectedIndex]="index">
+                      <mat-tab label="Account Types">
+                        <div class="p-3">
+                          <cv-account-types></cv-account-types>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Interview Status" *ngxPermissionsOnly="['ACTION_VIEW_INTERVIEW_STATUS']">
+                        <div class="p-3">
+                          <cv-interview-status *ngxPermissionsOnly="['ACTION_VIEW_INTERVIEW_STATUS']"></cv-interview-status>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Submission Status" *ngxPermissionsOnly="['ACTION_VIEW_SUBMISSION_STATUS']">
+                        <div class="p-3">
+                          <cv-submissions-status *ngxPermissionsOnly="['ACTION_VIEW_SUBMISSION_STATUS']"></cv-submissions-status>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Interview Rounds">
+                        <div class="p-3">
+                          <cv-interview-rounds></cv-interview-rounds>
+                        </div>
+                      </mat-tab>
+                       <mat-tab label="Interview Types" *ngxPermissionsOnly="['ACTION_VIEW_INTERVIEW_STATUS']">
+                        <div class="p-3">
+                          <cv-interview-types *ngxPermissionsOnly="['ACTION_VIEW_INTERVIEW_STATUS']"></cv-interview-types>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Notifications" *ngxPermissionsOnly="['ACTION_VIEW_NOTIFICATION_SETTINGS']">
+                        <div class="p-3">
+                          <cv-notification-settings *ngxPermissionsOnly="['ACTION_VIEW_NOTIFICATION_SETTINGS']"></cv-notification-settings>
+                        </div>
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </div>
+    </vex-page-layout-content>
+</vex-page-layout>
+
+

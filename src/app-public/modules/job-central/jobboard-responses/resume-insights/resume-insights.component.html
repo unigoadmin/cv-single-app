@@ -1,0 +1,54 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">CV Insights</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+
+<!-- Progress Bar -->
+<mat-progress-bar *ngIf="isResumeLoading" mode="indeterminate"></mat-progress-bar>
+
+<!-- Chat Section -->
+<mat-dialog-content fxLayout="column">
+    <div class="chat-container">
+        <!-- Chat Messages -->
+        <div class="chat-messages">
+            <div *ngFor="let msg of messages" class="message" [ngClass]="msg.role">
+                <div *ngIf="msg.visible" class="message-content">
+                    <strong>{{ msg.role === 'user' ? 'You:' : 'AI:' }}</strong>
+                    <div [innerHTML]="formatMessage(msg.text)"></div>
+                </div>
+            </div>
+            <div *ngIf="isLoading" class="loading">
+                <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+                Processing your request...
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="custom-chat-container">
+            <div class="input-container">
+              <mat-form-field appearance="outline" class="textarea-container">
+                <textarea
+                  matInput
+                  [(ngModel)]="userInput"
+                  rows="3"
+                  placeholder="Ask a question about candidate.."
+                ></textarea>
+              </mat-form-field>
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="isLoading || !userInput.trim()"
+                (click)="sendMessage()"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+    </div>
+</mat-dialog-content>

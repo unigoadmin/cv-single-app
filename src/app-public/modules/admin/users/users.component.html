@@ -1,0 +1,124 @@
+<vex-page-layout>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+      <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+              <h1 class="title mt-0 mb-1">Admin</h1>
+              <vex-breadcrumbs [crumbs]="['Admin','Users']"></vex-breadcrumbs>
+          </div>
+      </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+      <div class="card overflow-auto -mt-16 mb-10">
+        <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+          <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                Users
+          </h2>
+            <div class="bg-card rounded-full border px-4"
+                 fxFlex="400px"
+                 fxFlex.lt-md="auto"
+                 fxHide.xs
+                 fxLayout="row"
+                 fxLayoutAlign="start center">
+              <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+              <input [formControl]="searchCtrl"
+                     class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                     placeholder="Search users"
+                     type="search">
+            </div>
+            <div  class="bg-card  border  ml-5" style="width: 170px;">
+              <button mat-button [matMenuTriggerFor]="categoryMenu" fxFlex="auto" color="primary">
+                {{selectedCategory}} <mat-icon>expand_more</mat-icon>
+              </button>
+            </div>
+            <div  class="bg-card  border  ml-5" style="width: 110px;">
+              <button mat-button [matMenuTriggerFor]="statusMenu" fxFlex="auto" color="primary">
+               {{selectedStatus}}  <mat-icon>expand_more</mat-icon>
+              </button>
+            </div>
+            <span fxFlex></span>
+    
+            <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+              <mat-icon [icIcon]="icSearch"></mat-icon>
+            </button>
+            <button 
+                    [matMenuTriggerFor]="userAddMenu"
+                    class="ml-4"
+                    color="primary"
+                    fxFlex="none"
+                    mat-mini-fab
+                    matTooltip="Add User"
+                    type="button">
+              <ic-icon [icon]="icAdd" inline="true" size="21px" ></ic-icon>
+            </button>
+          </div>
+        
+<!--          
+          <mat-drawer-container class="bg-transparent flex-auto flex">
+            <mat-drawer [(opened)]="menuOpen" mode="over">
+              <cv-users-table-menu (filterChange)="setData($event)"
+                                       (openAddNew)="addUser(1)"
+                                       class="sm:hidden"></cv-users-table-menu>
+            </mat-drawer>
+            <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
+              <cv-users-table-menu (filterChange)="setData($event)"
+                                       (openAddNew)="addUser(1)"
+                                       class="hidden sm:block mr-6"></cv-users-table-menu>
+      
+              <div class="card h-full overflow-hidden flex-auto">
+                <cv-users-data-table (editUser)="editUser($event)"
+                                      (viewUser)="viewUser($event)"
+                                      (resetPassword)="resetPassword($event)"
+                                         (toggleStatus)="toggleStatus($event)"
+                                         [columns]="tableColumns"
+                                         [data]="tableData"
+                                         [searchStr]="searchStr$ | async"
+                                         ></cv-users-data-table>
+              </div>
+            </mat-drawer-content>
+      
+          </mat-drawer-container> -->
+          <div class="card h-full overflow-hidden flex-auto">
+            <cv-users-data-table (editUser)="editUser($event)"
+                                  (viewUser)="viewUser($event)"
+                                  (resetPassword)="resetPassword($event)"
+                                  (toggleStatus)="toggleStatus($event)"
+                                  [columns]="tableColumns"
+                                  [data]="tableData"
+                                  [searchStr]="searchStr$ | async"
+                                  ></cv-users-data-table>
+          </div>
+      </div>
+  </vex-page-layout-content>
+  <mat-menu #userAddMenu="matMenu" xPosition="before" yPosition="below">
+    <button mat-menu-item (click)="addUser(1)">
+      <mat-icon [icIcon]="icPerson"></mat-icon>
+      <span>Internal User</span>
+    </button>
+    <button mat-menu-item (click)="addUser(0)">
+      <mat-icon [icIcon]="icPerson_Pin" ></mat-icon>
+      <span>Consultant User</span>
+    </button>
+  </mat-menu>
+  <mat-menu #categoryMenu="matMenu">
+    <button mat-menu-item (click)="filterCategory('all')">
+      <span>All Users</span>
+    </button>
+    <button mat-menu-item (click)="filterCategory('internal')">
+      <span>Internal Users</span>
+    </button>
+    <button mat-menu-item (click)="filterCategory('consultant')">
+      <span>Consultant Users</span>
+    </button>
+  </mat-menu>
+  <mat-menu #statusMenu="matMenu">
+    <button mat-menu-item (click)="filterStatus(true)">
+      <span>Active</span>
+    </button>
+    <button mat-menu-item (click)="filterStatus(false)">
+      <span>Inactive</span>
+    </button>
+  </mat-menu>
+
+
+
+

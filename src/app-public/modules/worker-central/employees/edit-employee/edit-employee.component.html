@@ -1,0 +1,402 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Edit Worker</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="confirm" style="overflow: auto;">
+    <form [formGroup]="AddEmployeeFormGroup">
+        <div class="card overflow-auto mt-4"
+            style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+            <div>
+                <mat-card>
+                    <mat-card-title>
+                        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                            Worker Information</div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                <mat-label>Worker ID</mat-label>
+                                <input cdkFocusInitial [disabled]="true" [(ngModel)]="Employee.ComapnyEmployeeID"
+                                    formControlName="EmployeeId" matInput required>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                <mat-label>Employment Type</mat-label>
+                                <mat-select required id="EmploymentType" formControlName="EmploymentType"
+                                    [(ngModel)]="Employee.EmploymentType">
+                                    <mat-option [value]="'C2C'">C2C</mat-option>
+                                    <mat-option [value]="'1099'">1099</mat-option>
+                                    <mat-option [value]="'W2'">W2</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                           
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>First Name</mat-label>
+                                <input matInput TrimInput required formControlName="FirstName" id="FirstName"
+                                [ngModel]="Employee.FirstName | titlecase" (ngModelChange)="Employee.FirstName=$event">
+
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Middle Name</mat-label>
+                                <input matInput TrimInput formControlName="MiddleName" id="MiddleName"
+                                    [ngModel]="Employee.MiddleName | titlecase" (ngModelChange)="Employee.MiddleName=$event">
+
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput TrimInput required formControlName="LastName" id="LastName"
+                                    [ngModel]="Employee.LastName | titlecase" (ngModelChange)="Employee.LastName=$event">
+                            </mat-form-field>
+
+                        </div>
+                        
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Email</mat-label>
+                                <input matInput TrimInput required formControlName="Email" id="Email"
+                                    [(ngModel)]="Employee.Email" [disabled]="true" >
+
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Phonenumber</mat-label>
+                                <input matInput required formControlName="PrimaryPhoneNumber"
+                                    id="PrimaryPhoneNumber" (change)="PhonenumberFormate('emp')"
+                                    [(ngModel)]="Employee.PrimaryPhoneNumber">
+                            </mat-form-field>
+
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" 
+                                class="flex-auto">
+                                <mat-label>DOB</mat-label>
+                                <input [matDatepicker]="dob" matInput formControlName="dob" id="dob"
+                                    [(ngModel)]="Employee.DOB" required>
+                                <mat-datepicker-toggle [for]="dob" matSuffix></mat-datepicker-toggle>
+                                <mat-datepicker #dob></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Gender</mat-label>
+                                <mat-select required formControlName="Gender" id="Gender"
+                                    [(ngModel)]="Employee.Gender">
+                                    <mat-option [value]="'Male'">Male</mat-option>
+                                    <mat-option [value]="'Female'">Female</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                <mat-label>Martial Status</mat-label>
+                                <mat-select required formControlName="MaritalStatus" id="MaritalStatus"
+                                    [(ngModel)]="Employee.MaritalStatus">
+                                    <mat-option [value]="'Single'">Single</mat-option>
+                                    <mat-option [value]="'Married'">Married</mat-option>
+                                    <mat-option [value]="'Head of Household'">Head of Household</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                           
+
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                <cv-google-place style="display:contents;" (setAddress)="getAddress($event)"
+                                    (inputAddress)="inputEmployeeAddress($event)" disable="false"
+                                    selectedAddress="{{Employee.Address1}}"
+                                    adressType="address" InputMode="Edit-WC"></cv-google-place>
+                            </div>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Apt, City...</mat-label>
+                                <input matInput formControlName="Address2" id="Address2"
+                                    [(ngModel)]="Employee.Address2">
+
+                            </mat-form-field>
+                        </div>
+
+
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>City</mat-label>
+                                <input matInput required formControlName="City" id="City"
+                                    [(ngModel)]="Employee.City">
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>State</mat-label>
+                                <input matInput required formControlName="State" id="State"
+                                    [(ngModel)]="Employee.State">
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput required (keypress)="onInputKeyPress($event)" maxlength="5" formControlName="ZipCode" id="ZipCode"
+                                    [(ngModel)]="Employee.ZipCode">
+                            </mat-form-field>
+
+                        </div>
+                       
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50"
+                                class="flex-auto">
+                                <mat-label>Designation</mat-label>
+                                <input matInput required formControlName="Designation" id="Designation"
+                                    [(ngModel)]="Employee.Designation">
+
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                            <mat-label>Department</mat-label>
+                            <input matInput formControlName="Department" id="Department"
+                                [(ngModel)]="Employee.Department">
+                           </mat-form-field>
+                            
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Work Status</mat-label>
+                                <mat-select required formControlName="WorkStatus" id="WorkStatus"
+                                    [(ngModel)]="Employee.WorkStatus"
+                                    (selectionChange)="Workstatuchange($event)">
+                                    <mat-option *ngFor="let work of workStatusFields" [value]="work.value">
+                                        {{work.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" 
+                                class="flex-auto">
+                                <mat-label>Work Status Expiration</mat-label>
+                                <input [matDatepicker]="workexp" formControlName="WorkStatusExpiry"
+                                    id="WorkStatusEffective" (dateChange)="OnDateChange($event,'WorkStatusExpiry')"
+                                    [(ngModel)]="Employee.WorkStatusExpiry" matInput
+                                    required>
+                                <mat-datepicker-toggle [for]="workexp" matSuffix></mat-datepicker-toggle>
+                                <mat-datepicker #workexp></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" 
+                                class="flex-auto">
+                                <mat-label>Work Status Effective Date</mat-label>
+                                <input [matDatepicker]="workstatusdate" formControlName="WorkStatusEffective"
+                                    id="WorkStatusEffective" (dateChange)="OnDateChange($event,'WorkStatusEffective')"
+                                    [(ngModel)]="Employee.WorkStatusEffective" matInput
+                                    required>
+                                <mat-datepicker-toggle [for]="workstatusdate" matSuffix></mat-datepicker-toggle>
+                                <mat-datepicker #workstatusdate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                <mat-label>Employment Start Date</mat-label>
+                                <input [matDatepicker]="employementstartdate" formControlName="EmpStartDate"
+                                    id="EmpStartDate" [(ngModel)]="Employee.EmpStartDate" (dateChange)="OnDateChange($event,'EmpStartDate')"
+                                    matInput required>
+                                <mat-datepicker-toggle [for]="employementstartdate" matSuffix>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #employementstartdate></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                                <mat-select class="example-full-width" (selectionChange)="assignmentStatusChange($event)" [disabled]="Employee.AssignmentStatus===4 && Employee.EmployeeType == 'Internal'" required formControlName="assignmentStatus"
+                                  [(ngModel)]="Employee.AssignmentStatus" placeholder="Assignment Status"
+                                  name="assignmentStatus" id="assignmentStatus">
+                                  <!-- <mat-option [value]="1">On Project</mat-option> -->
+                                  <mat-option [value]="2">On Bench</mat-option>
+                                  <mat-option [value]="3">On Training</mat-option>
+                                  <mat-option *ngIf="Employee.EmployeeType == 'Internal'" [value]="4">N/A</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                           
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutGap="10px">
+                                <mat-form-field  fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>I-94 Number</mat-label>
+                                    <input matInput TrimInput formControlName="I94Number" id="I94Number" [ngModel]="Employee.I94Number | I94Format" (ngModelChange)="Employee.I94Number=$event">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50"  class="flex-auto">
+                                    <mat-label>I-94 Expiry Date</mat-label>
+                                    <input [matDatepicker]="I94Expirydate" formControlName="I94ExpiryDate" id="EmpStartDate"
+                                        [(ngModel)]="Employee.I94ExpiryDate" matInput (dateChange)="OnDateChange($event,'I94ExpiryDate')">
+                                    <mat-datepicker-toggle [for]="I94Expirydate" matSuffix>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #I94Expirydate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutGap="10px">
+                                <!-- <mat-checkbox id="website" formControlName="CreateUserAccount" id="CreateUserAccount"
+                                    [(ngModel)]="Employee.CreateUserAccount">Enable Website
+                                    Access</mat-checkbox> -->
+                                <mat-checkbox id="insure" formControlName="HealthInsuranceEnrolled" id="HealthInsuranceEnrolled"
+                                    [(ngModel)]="Employee.HealthInsuranceEnrolled">Health
+                                    Insurance Enrolled</mat-checkbox>
+                            </div>
+                        
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+        <div class="card overflow-auto mt-4">
+            <div>
+                <mat-card>
+                    <mat-card-title>
+                        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                            Reporting Details</div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>HR</mat-label>
+                                <mat-select formControlName="HRManager" id="HRManager"
+                                    [(ngModel)]="Employee.HRManager">
+                                    <mat-option *ngFor="let user of manageEmployerProfile"
+                                        [value]="user.UserId">{{user.FullName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Training</mat-label>
+                                <mat-select formControlName="TrainingManager" id="TrainingManager"
+                                    [(ngModel)]="Employee.TrainingManager">
+                                    <mat-option *ngFor="let user of manageEmployerProfile"
+                                        [value]="user.UserId">{{user.FullName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Finance</mat-label>
+                                <mat-select formControlName="FinanceManager" id="FinanceManager"
+                                    [(ngModel)]="Employee.FinanceManager">
+                                    <mat-option *ngFor="let user of manageEmployerProfile"
+                                        [value]="user.UserId">{{user.FullName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Immigration</mat-label>
+                                <mat-select formControlName="ImmigrationManager" id="ImmigrationManager"
+                                    [(ngModel)]="Employee.ImmigrationManager">
+                                    <mat-option *ngFor="let user of manageEmployerProfile"
+                                        [value]="user.UserId">{{user.FullName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="card overflow-auto mt-4">
+            <div>
+                <mat-card>
+                    <mat-card-title>
+                        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                            Attachments</div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field class="mt-10" fxFlex="100" fxFlex.gt-xs="50" >
+                                <mat-label>Document Type</mat-label>
+                                <mat-select class="example-full-width" formControlName="empDocumentType"
+                                    [(ngModel)]="empDocumentType" name="empDocument" id="empDocument"
+                                    (selectionChange)="empDocumentTypechange($event)">
+                                    <mat-option [value]="1">Offer Letter</mat-option>
+                                    <mat-option [value]="2">Work Authorization</mat-option>
+                                    <mat-option [value]="3">eVerify</mat-option>
+                                    <mat-option [value]="4">I-9</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="example" style="padding-top:43px;" fxFlex="100" fxFlex.gt-xs="50">
+                                <input  id="file" formControlName="EmployeeFileName"
+                                    [(ngModel)]="EmployeeFileName" style="line-height: 1.42 !important;"
+                                    type="text" readonly>
+                                <button id="close" type="submit" (click)="onDownlaodablesemployeeClear()">
+                                    <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+                                </button>
+                                <div class="image-preview-input">
+                                    <span class="image-preview-input-title">
+                                        <button [disabled]="isempDocumentType"
+                                            style="padding:5px;border-radius: 0 4px 4px 0;" mat-raised-button
+                                            color="primary" type="file">
+                                            <img *ngIf="isempdocloading"
+                                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                            <mat-icon [icIcon]="iconService.icfileupload">
+                                            </mat-icon>Upload
+                                        </button>
+                                    </span>
+                                    <input [disabled]="isempDocumentType" style="height:48px !important;" (click)="onEmpFileClick($event)"
+                                        accept="application/pdf" name="input-file-preview"
+                                        class="image-preview-input" type="file" ng2FileSelect
+                                        [uploader]="Employeedownlaodables">
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row">
+                            <table mat-table [dataSource]="empdataSource" fxFlex="100" fxFlex.gt-xs="100">
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef> # </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs"
+                                        *matCellDef="let element;let i=index"> {{i+1}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Name of the
+                                        Document
+                                    </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs"
+                                        *matCellDef="let element"> {{element.DownloadableFileName}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Document Type </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs"
+                                        *matCellDef="let element">
+                                        <span *ngIf="element.DocumentType===1">MSA</span>
+                                        <span *ngIf="element.DocumentType===2">PO</span>
+                                        <span *ngIf="element.DocumentType===3">SOW</span>
+                                        <span *ngIf="element.DocumentType===4">COI</span>
+                                        <span *ngIf="element.DocumentType===5">Misc</span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef> Actions </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs"
+                                        *matCellDef="let element;let i=index">
+                                        <span class="text-primary" style="margin-right: 15px;"
+                                            (click)="ViewDocViewer(element,'Employee Documment')">
+                                            <mat-icon [icIcon]="iconService.icvieweye"></mat-icon>
+                                        </span>
+                                        <span class="text-danger" (click)="DeleteEmployeeDocument(element,i)">
+                                            <mat-icon [icIcon]="iconService.icdelete"></mat-icon>
+                                        </span>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+            <button [disabled]="AddEmployeeFormGroup.invalid" color="primary" (click)="updateEmployee()" mat-button type="submit" matTooltip="Submit">SUBMIT</button>
+        </div>
+    </div>
+</mat-dialog-footer>

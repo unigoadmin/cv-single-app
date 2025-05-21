@@ -1,0 +1,64 @@
+<div fxLayout="row" fxLayoutAlign="start center"  class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">{{title}}</h2>
+    <button class="text-secondary" (click)="onDismissProcess()" mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-progress-bar style="width: 100% !important;margin-left: -1.5rem !important;" *ngIf="isPageload===true"
+    mode="indeterminate"></mat-progress-bar>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;">
+    <mat-card class="mb-4" style="padding-bottom: 0 !important;">
+        <mat-card-title>
+            <div>
+                <p [innerHTML]="message"></p>
+            </div>
+        </mat-card-title>
+        <mat-card-content *ngIf="failType=='Duplicate'">
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>Worker Id</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.ComapnyEmployeeID}}</span></div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.FirstName}}</span></div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last Name:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{existingCandidate.LastName}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.Email}}</span></div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{existingCandidate.PrimaryPhoneNumber}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button *ngIf="failType=='Duplicate' && modescreen!='AddWorker'" mat-raised-button type="button" color="primary" (click)="onUseExistingWorker()" class="mr-2" matTooltip="Use Existing Worker">Use Existing Info For Worker</button>
+            <!-- <button *ngIf="failType=='Duplicate' && modescreen!='AddWorker'" mat-raised-button type="button" color="primary" (click)="onUpdateExistingWorker()" class="mr-2" matTooltip="Update & Use Exsiting Worker">Update Worker Info</button> -->
+            <button *ngIf="failType=='Mismatch-New'" mat-raised-button type="button" color="primary" (click)="onCreateNewWorker()" class="mr-2" matTooltip="Create New Worker">Yes</button>
+            <button mat-button type="button" (click)="onDismissProcess()" class="mr-2" matTooltip="Cancel">CANCEL</button>
+        </div>
+    </div>
+</mat-dialog-footer>

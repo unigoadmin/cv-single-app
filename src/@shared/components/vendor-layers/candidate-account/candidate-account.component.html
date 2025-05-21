@@ -1,0 +1,180 @@
+<mat-card>
+    <mat-card-title>
+        <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+            <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                    style="margin-top: -12px !important;font-size: 14px !important;">
+                    <span class="subheading-2 font-medium pb-1 pt-1">Sub Vendor Information</span>
+                </div>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div  class="mt-4">
+            <div fxLayout="row">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                                        style="margin-top: -12px !important;font-size: 16px !important;">
+                                        <span>Sub Vendor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <form [formGroup]="candidateSubVendorFormGroup">
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                                        class="vex-flex-form-field flex-auto">
+                                        <mat-label>Company Name</mat-label>
+                                        <input required [formControl]="CandSubVendorControl" [matAutocomplete]="auto"
+                                            [(ngModel)]="cansubVClientAccount.AccountName" matInput (change)="SubVendorChange($event)">
+                                        <mat-autocomplete #auto="matAutocomplete"
+                                            (optionSelected)="SeelectedAccount($event,'subvendor')">
+                                            <mat-option *ngFor="let client of CandSubVendorOptions | async"
+                                                [value]="client.AccountName" [id]="client.AccountID">
+                                                <span class="body-1">{{ client.AccountName }}</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC First Name</mat-label>
+                                        <input required formControlName="fcsubName" cdkFocusInitial matInput
+                                            name="pvfname" [(ngModel)]="cansubVClientAccount.SalesPOC.FirstName" (change)="SubVendorChange($event)">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC Last Name</mat-label>
+                                        <input required formControlName="lcsubName" cdkFocusInitial matInput
+                                            name="pvlname" [(ngModel)]="cansubVClientAccount.SalesPOC.LastName" (change)="SubVendorChange($event)">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC Email</mat-label>
+                                        <input required formControlName="csubEmail" cdkFocusInitial matInput
+                                            name="pvemail" [ngModel]="cansubVClientAccount.SalesPOC.Email | lowercase" 
+                                            (change)="SubVendorChange($event)" 
+                                            (ngModelChange)="cansubVClientAccount.SalesPOC.Email=$event">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC Phone</mat-label>
+                                        <input required formControlName="csubPhone" cdkFocusInitial matInput
+                                            name="pvphone" (keypress)="onInputKeyPress($event)"
+                                            (change)="PhonenumberFormate('cansubvendor')"
+                                            [(ngModel)]="cansubVClientAccount.SalesPOC.Phonenumber" (change)="SubVendorChange($event)">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                                        <mat-label>Bill Rate ($/Hr)</mat-label>
+                                        <input required cdkFocusInitial formControlName="BillRate" matInput name="BillRate"
+                                            [(ngModel)]="cansubVClientAccount.BillRate" (change)="SubVendorChange($event)">
+                                    </mat-form-field>
+                                    <section style="padding: 20px 0px;clear: both;" fxFlex="20" fxFlex.gt-xs="25">
+                                        <mat-checkbox id="checkcanEmployer" formControlName="checkcanEmployer"
+                                            [(ngModel)]="cansubVClientAccount.Employer" class="example-margin"
+                                            (change)="onClickCheckBox($event,'cand')">
+                                            Employer</mat-checkbox>
+                                    </section>
+
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isCanReferralVendor===true" class="mt-4">
+            <div fxLayout="row">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                                        style="margin-top: -12px !important;font-size: 16px !important;">
+                                        <span>Referral Vendor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <form [formGroup]="canrefFormGroup">
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                                        class="vex-flex-form-field flex-auto">
+                                        <mat-label>Company Name</mat-label>
+                                        <input required [formControl]="CandRefControl" [matAutocomplete]="auto"
+                                            [(ngModel)]="canrefClientAccount.AccountName" matInput (change)="RefVendorChange($event)">
+                                        <mat-autocomplete #auto="matAutocomplete"
+                                            (optionSelected)="SeelectedAccount($event,'candref')">
+                                            <mat-option *ngFor="let client of CandRefOptions | async"
+                                                [value]="client.AccountName" [id]="client.AccountID">
+                                                <span class="body-1">{{ client.AccountName }}</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC First Name</mat-label>
+                                        <input required formControlName="canreffcName" cdkFocusInitial matInput
+                                            name="pvfname" [(ngModel)]="canrefClientAccount.SalesPOC.FirstName" (change)="RefVendorChange($event)">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC Last Name</mat-label>
+                                        <input required formControlName="canreflcName" cdkFocusInitial matInput
+                                            name="pvlname" [(ngModel)]="canrefClientAccount.SalesPOC.LastName" (change)="RefVendorChange($event)">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                                        class="flex-auto">
+                                        <mat-label>POC Email</mat-label>
+                                        <input required formControlName="canrefEmail" cdkFocusInitial matInput
+                                            name="pvemail" [(ngModel)]="canrefClientAccount.SalesPOC.Email" (change)="RefVendorChange($event)">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                                        class="flex-auto">
+                                        <mat-label>POC Phone</mat-label>
+                                        <input required formControlName="canrefPhone" cdkFocusInitial matInput
+                                            name="pvphone" (keypress)="onInputKeyPress($event)"
+                                            (change)="PhonenumberFormate('candref')"  (change)="RefVendorChange($event)"
+                                            [(ngModel)]="canrefClientAccount.SalesPOC.Phonenumber">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                                        <mat-label>Bill Rate ($/Hr)</mat-label>
+                                        <input required cdkFocusInitial formControlName="candrefBillrate" matInput name="candrefBillrate"
+                                            [(ngModel)]="canrefClientAccount.BillRate" (change)="RefVendorChange($event)">
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" class="mt-2 mb-2" >
+            <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                <button [matMenuTriggerFor]="addSubmitMenu" color="primary" mat-raised-button type="button">Add
+                    Layer
+                </button>
+                <mat-menu #addSubmitMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+                    <button mat-menu-item *ngFor="let third of c2cTypeList"
+                        (click)="addCandidateLayerSelection(third);">
+                        <mat-icon [icIcon]="icPerson"></mat-icon>
+                        <span matTooltip="{{third.label}}">{{third.label}}</span>
+                    </button>
+
+                </mat-menu>
+            </div>
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

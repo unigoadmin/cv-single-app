@@ -1,0 +1,525 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+  <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">{{title}}</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;">
+  <form role="form" [formGroup]="QuickSubmitForm">
+    <div class="flex flex-col sm:flex-row" fxLayoutAlign="center">
+      <mat-button-toggle-group  formControlName="SubmissionType" style="margin:10px" [(ngModel)]="SelectedType"
+      (change)="OnRequirementChange($event.value)">
+        <mat-button-toggle  [value]="2">Direct / Internal</mat-button-toggle>
+        <mat-button-toggle  [value]="3">Contract / C2C</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="card overflow-auto">
+      <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-xs="100">
+          <mat-card>
+            <mat-card-title>
+              <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                Job Information</div>
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <div fxFlex="50%" fxLayout="row">
+                  <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto" color="primary">
+                    <mat-label>Job Title</mat-label>
+                    <input cdkFocusInitial formControlName="JobTitle" matInput required id="JobTitle" name="JobTitle"
+                      [ngModel]="submissionJob.JobTitle | titlecase" (ngModelChange)="submissionJob.JobTitle=$event">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxLayout="row" fxLayoutGap="10px">
+                  <mat-form-field appearance="outline" class="flex-auto">
+                    <mat-label>Job Duration(Months)</mat-label>
+                    <input formControlName="JobDurtionMonths" type="number" required id="JobDurtionMonths" name="JobDurtionMonths"
+                      [(ngModel)]="submissionJob.DurationInMonths" appearance="outline" matInput min="1" max="60" oninput="validity.valid||(value='');">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="100" fxFlex.gt-xs="100" class="flex-auto full-view">
+                  <cv-google-place  style="display:contents;" (setAddress)="getAssignAddress($event)"
+                    (inputAddress)="inputAssignAddress($event)" selectedAddress="{{submissionJob.Location}}"
+                    adressType="(cities)" InputMode="Add" [required]="true"></cv-google-place>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field appearance="outline" class="flex-auto">
+                  <mat-label>Job Description</mat-label>
+                  <textarea formControlName="JobDescription" id="JobDescription" name="JobDescription"
+                  [ngModel]="submissionJob.JobDescription | titlecase" matInput
+                  required (ngModelChange)="submissionJob.JobDescription=$event"></textarea>
+
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="card overflow-auto" class="mt-4 mb-4">
+      <form role="form" [formGroup]="subinfoForm">
+      <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-xs="100">
+          <mat-card>
+            <mat-card-title>
+              <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                Submission Information</div>
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutGap="16px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                  <mat-label>Sell Rate ($/hr)</mat-label>
+                  <input type="number" id="SubmissionRate" name="SubmissionRate" formControlName="SubmissionRate" 
+                  [(ngModel)]="SelectedSubmission.SubmittedRate" matInput required min="0" max="1000" 
+                  oninput="validity.valid||(value='');">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                  <mat-label>Availability to Start</mat-label>
+                  <mat-select name="Availability_To" id="Availability_To" formControlName="AvailabilityTo" id="AvailabilityTo" name="AvailabilityTo" required
+                    [(ngModel)]="SelectedSubmission.AvailabilityToStart">
+                    <mat-option value="Immediately">Immediately</mat-option> 
+                    <mat-option value="2 Weeks from confirmation">2 Weeks from confirmation</mat-option>
+                    <mat-option value="1 Month from confirmation">1 Month from confirmation</mat-option>
+                    <mat-option value="6 weeks from confirmation"> 6 weeks from confirmation</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </form>
+    </div>
+
+  </form>
+  <div class="card overflow-auto" class="mt-4">
+    <mat-card>
+      <mat-card-title>
+          <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+              <div fxLayout="row wrap">
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                      style="margin-top: -12px !important;font-size: 14px !important;">
+                      <span class="subheading-2 font-medium pb-1 pt-1">End Client Information
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </mat-card-title>
+      <mat-card-content>
+           <form [formGroup]="EndclientFromGroup">
+              <div fxLayout="row" fxLayoutGap="10px">
+                  <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                      class="vex-flex-form-field flex-auto">
+                      <mat-label>Company Name</mat-label>
+                      <input required [formControl]="EndClientControl" formControlName="EndclientName" id="EndclientName" name="EndclientName" [matAutocomplete]="auto"
+                          [ngModel]="endClientAccount.AccountName | titlecase" (ngModelChange)="endClientAccount.AccountName=$event" matInput>
+                      <mat-autocomplete #auto="matAutocomplete"
+                          (optionSelected)="SeelectedAccount($event,'end')">
+                          <mat-option *ngFor="let client of EndClientOptions | async"
+                              [value]="client.AccountName" [id]="client.AccountID">
+                              <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                      class="flex-auto">
+                      <mat-label>POC First Name</mat-label>
+                      <input required formControlName="fEndclientName" cdkFocusInitial matInput name="fEndclientName" 
+                      [ngModel]="endClientAccount.AccountContacts.FirstName | titlecase" (ngModelChange)="endClientAccount.AccountContacts.FirstName=$event">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                      class="flex-auto">
+                      <mat-label>POC Last Name</mat-label>
+                      <input required formControlName="lEndclientName" cdkFocusInitial matInput  name="lEndclientName"
+                    [ngModel]="endClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="endClientAccount.AccountContacts.LastName=$event">
+                  </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutGap="10px">
+                  <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                      class="flex-auto">
+                      <mat-label>POC Email</mat-label>
+                      <input required formControlName="EEndclientmail" cdkFocusInitial matInput name="EEndclientmail"
+                      [ngModel]="endClientAccount.AccountContacts.Email | lowercase" (ngModelChange)="endClientAccount.AccountContacts.Email=$event" >
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                      class="flex-auto">
+                      <mat-label>POC Phone</mat-label>
+                      <input required formControlName="Endclientphone" cdkFocusInitial matInput
+                          name="Endclientphone" (keypress)="onInputKeyPress($event)"
+                          (change)="PhonenumberFormate('end')"
+                          [(ngModel)]="endClientAccount.AccountContacts.Phonenumber">
+                  </mat-form-field>
+              </div>
+          </form> 
+      </mat-card-content>
+  </mat-card>
+  </div>
+  <div *ngIf="thirdPartycontractType===true" class="card overflow-auto" class="mt-4">
+    <mat-card>
+      <mat-card-title>
+        <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+          <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+              style="margin-top: -12px !important;font-size: 14px !important;">
+              <span>Vendor Information</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+        <div >
+          <div fxLayout="row">
+            <div fxFlex="100" fxFlex.gt-xs="100">
+              <mat-card>
+                <mat-card-title>
+                  <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                        style="margin-top: -12px !important;font-size: 14px !important;">
+                        <span>Prime Vendor</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <form [formGroup]="primeVendorFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                        class="vex-flex-form-field flex-auto">
+                        <mat-label>Company Name</mat-label>
+                        <input required [formControl]="primeClientControl" formControlName="PEndclientName" [matAutocomplete]="priauto"
+                          [ngModel]="primeVClientAccount.AccountName | titlecase" (ngModelChange)="primeVClientAccount.AccountName=$event" matInput>
+                        <mat-autocomplete #priauto="matAutocomplete" (optionSelected)="SeelectedAccount($event,'prime')">
+                          <mat-option *ngFor="let client of primeClientOptions | async" [value]="client.AccountName"
+                            [id]="client.AccountID">
+                            <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC First Name</mat-label>
+                        <input required formControlName="fName" cdkFocusInitial matInput name="pvfname"
+                          [ngModel]="primeVClientAccount.AccountContacts.FirstName | titlecase" (ngModelChange)="primeVClientAccount.AccountContacts.FirstName=$event" >
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC Last Name</mat-label>
+                        <input required formControlName="lName" cdkFocusInitial matInput name="pvlname"
+                          [ngModel]="primeVClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="primeVClientAccount.AccountContacts.LastName=$event">
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Email</mat-label>
+                        <input required formControlName="Email" cdkFocusInitial matInput name="pvemail"
+                          [ngModel]="primeVClientAccount.AccountContacts.Email | lowercase" (ngModelChange)="primeVClientAccount.AccountContacts.Email=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Phone</mat-label>
+                        <input required formControlName="Phone" cdkFocusInitial matInput name="pvphone"
+                          (keypress)="onInputKeyPress($event)" (change)="PhonenumberFormate('prime')"
+                          [(ngModel)]="primeVClientAccount.AccountContacts.Phonenumber">
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" *ngIf="isManagedServiceProvider===true && thirdPartycontractType===true">
+          <div fxLayout="row">
+            <div fxFlex="100" fxFlex.gt-xs="100">
+              <mat-card>
+                <mat-card-title>
+                  <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                        style="margin-top: -12px !important;font-size: 14px !important;">
+                        <span>Managed Service Provider(MSP)</span>
+                      </div>
+                      <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutAlign="end" class="flex-auto pr-1">
+                        <button type="button" matTooltip="Remove" (click)="onRemoveClick('MSP')" class="text-warn"
+                          style="margin-top: -12px !important;">
+                          <mat-icon style="font-size: 21px !important;" [icIcon]="icClose"></mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <form [formGroup]="mspFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                        class="vex-flex-form-field flex-auto">
+                        <mat-label>Company Name</mat-label>
+                        <input required [formControl]="MSPControl" formControlName="mEndclientName" [matAutocomplete]="mspauto"
+                          [ngModel]="mspClientAccount.AccountName | titlecase" (ngModelChange)="mspClientAccount.AccountName=$event" matInput>
+                        <mat-autocomplete #mspauto="matAutocomplete" (optionSelected)="SeelectedAccount($event,'msp')">
+                          <mat-option *ngFor="let client of MSPOptions | async" [value]="client.AccountName"
+                            [id]="client.AccountID">
+                            <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC First Name</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="fmspName" name="mspfname"
+                          [ngModel]="mspClientAccount.AccountContacts.FirstName | titlecase" (ngModelChange)="mspClientAccount.AccountContacts.FirstName=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC Last Name</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="lmspName" name="msplname"
+                          [ngModel]="mspClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="mspClientAccount.AccountContacts.LastName=$event">
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Email</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="mspEmail" name="mspemail"
+                          [ngModel]="mspClientAccount.AccountContacts.Email | lowercase" (ngModelChange)="mspClientAccount.AccountContacts.Email=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Phone</mat-label>
+                        <input required cdkFocusInitial matInput (keypress)="onInputKeyPress($event)"
+                          (change)="PhonenumberFormate('msp')" formControlName="mspPhone" name="mspphone"
+                          [(ngModel)]="mspClientAccount.AccountContacts.Phonenumber">
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" *ngIf="isImplementationPartner===true && thirdPartycontractType===true">
+          <div fxLayout="row">
+            <div fxFlex="100" fxFlex.gt-xs="100">
+              <mat-card>
+                <mat-card-title>
+                  <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                        style="margin-top: -12px !important;font-size: 14px !important;">
+                        <span>Implementation Partner(IP)</span>
+                      </div>
+                      <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutAlign="end" class="flex-auto pr-1">
+                        <button type="button" matTooltip="Remove" (click)="onRemoveClick('IP')" class="text-warn"
+                          style="margin-top: -12px !important;">
+                          <mat-icon style="font-size: 21px !important;" [icIcon]="icClose"></mat-icon>
+                        </button>
+
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <form [formGroup]="ipFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                        class="vex-flex-form-field flex-auto">
+                        <mat-label>Company Name</mat-label>
+                        <input required [formControl]="IPControl" formControlName="iEndclientName" [matAutocomplete]="ipauto"
+                          [ngModel]="ipClientAccount.AccountName | titlecase" (ngModelCahnge)="ipClientAccount.AccountName=$event" matInput>
+                        <mat-autocomplete #ipauto="matAutocomplete" (optionSelected)="SeelectedAccount($event,'ip')">
+                          <mat-option *ngFor="let client of IPOptions | async" [value]="client.AccountName"
+                            [id]="client.AccountID">
+                            <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC First Name</mat-label>
+                        <input required cdkFocusInitial formControlName="fipName" matInput name="ipfname"
+                          [ngModel]="ipClientAccount.AccountContacts.FirstName | titlecase" (ngModelChange)="ipClientAccount.AccountContacts.FirstName=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC Last Name</mat-label>
+                        <input required cdkFocusInitial formControlName="lipName" matInput name="iplname"
+                          [ngModel]="ipClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="ipClientAccount.AccountContacts.LastName=$event">
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Email</mat-label>
+                        <input required cdkFocusInitial formControlName="ipEmail" matInput name="ipemail"
+                          [ngModel]="ipClientAccount.AccountContacts.Email | lowercase" (ngModelChange)="ipClientAccount.AccountContacts.Email=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Phone</mat-label>
+                        <input required cdkFocusInitial formControlName="ipPhone" (keypress)="onInputKeyPress($event)"
+                          (change)="PhonenumberFormate('ip')" matInput name="ipphone"
+                          [(ngModel)]="ipClientAccount.AccountContacts.Phonenumber">
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" *ngIf="isSubPrimeVendor===true && thirdPartycontractType===true">
+          <div fxLayout="row">
+            <div fxFlex="100" fxFlex.gt-xs="100">
+              <mat-card>
+                <mat-card-title>
+                  <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                        style="margin-top: -12px !important;font-size: 14px !important;">
+                        <span>Sub Prime Vendor</span>
+                      </div>
+                      <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutAlign="end" class="flex-auto pr-1">
+                        <button type="button" matTooltip="Remove" (click)="onRemoveClick('Sub Prime Vendor')"
+                          class="text-warn" style="margin-top: -12px !important;">
+                          <mat-icon style="font-size: 21px !important;" [icIcon]="icClose"></mat-icon>
+                        </button>
+
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <form [formGroup]="subFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                        class="vex-flex-form-field flex-auto">
+                        <mat-label>Company Name</mat-label>
+                        <input required [formControl]="subPrimeVendorControl" formControlName="subEndclientName" [matAutocomplete]="subauto"
+                          [ngModel]="subPVClientAccount.AccountName |titlecase" (ngModelChange)="subPVClientAccount.AccountName=$event" matInput>
+                        <mat-autocomplete #subauto="matAutocomplete" (optionSelected)="SeelectedAccount($event,'sub')">
+                          <mat-option *ngFor="let client of subPrimeVendorOptions | async" [value]="client.AccountName"
+                            [id]="client.AccountID">
+                            <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC First Name</mat-label>
+                        <input required cdkFocusInitial formControlName="fsubName" matInput name="subfname"
+                          [ngModel]="subPVClientAccount.AccountContacts.FirstName | titlecase" (ngModelChange)="subPVClientAccount.AccountContacts.FirstName=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC Last Name</mat-label>
+                        <input required cdkFocusInitial formControlName="lsubName" matInput name="sublname"
+                          [ngModel]="subPVClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="subPVClientAccount.AccountContacts.LastName=$event">
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Email</mat-label>
+                        <input required cdkFocusInitial formControlName="subEmail" matInput name="subemail"
+                          [ngModel]="subPVClientAccount.AccountContacts.Email | lowercase" (ngModelChange)="subPVClientAccount.AccountContacts.Email=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Phone</mat-label>
+                        <input required cdkFocusInitial formControlName="subPhone" (keypress)="onInputKeyPress($event)"
+                          (change)="PhonenumberFormate('sub')" matInput name="subphone"
+                          [(ngModel)]="subPVClientAccount.AccountContacts.Phonenumber">
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" *ngIf="isReffralVendor===true && thirdPartycontractType===true">
+          <div fxLayout="row">
+            <div fxFlex="100" fxFlex.gt-xs="100">
+              <mat-card>
+                <mat-card-title>
+                  <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                        style="margin-top: -12px !important;font-size: 14px !important;">
+                        <span>Refferal Vendor</span>
+                      </div>
+                      <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutAlign="end" class="flex-auto pr-1">
+                        <button type="button" matTooltip="Remove" (click)="onRemoveClick('Referral Vendor')"
+                          class="text-warn" style="margin-top: -12px !important;">
+                          <mat-icon style="font-size: 21px !important;" [icIcon]="icClose"></mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <form [formGroup]="refFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                        class="vex-flex-form-field flex-auto">
+                        <mat-label>Company Name</mat-label>
+                        <input required [formControl]="RefControl" formControlName="refEndclientName" [matAutocomplete]="refauto"
+                          [ngModel]="refClientAccount.AccountName | titlecase" (ngModelChange)="refClientAccount.AccountName=$event" matInput>
+                        <mat-autocomplete #refauto="matAutocomplete" (optionSelected)="SeelectedAccount($event,'ref')">
+                          <mat-option *ngFor="let client of RefOptions | async" [value]="client.AccountName"
+                            [id]="client.AccountID">
+                            <span class="body-1">{{ client.AccountName }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC First Name</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="frefName" name="reffname"
+                          [ngModel]="refClientAccount.AccountContacts.FirstName |titlecase" (ngModelChange)="refClientAccount.AccountContacts.FirstName=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                        <mat-label>POC Last Name</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="lrefName" name="reflname"
+                          [ngModel]="refClientAccount.AccountContacts.LastName | titlecase" (ngModelChange)="refClientAccount.AccountContacts.LastName=$event">
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Email</mat-label>
+                        <input required cdkFocusInitial matInput formControlName="refEmail" name="refemail"
+                          [ngModel]="refClientAccount.AccountContacts.Email | lowercase"  (ngModelChange)="refClientAccount.AccountContacts.Email=$event">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>POC Phone</mat-label>
+                        <input required cdkFocusInitial matInput (keypress)="onInputKeyPress($event)"
+                          (change)="PhonenumberFormate('ref')" formControlName="refPhone" name="refphone"
+                          [(ngModel)]="refClientAccount.AccountContacts.Phonenumber">
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" class="mt-2 mb-2" *ngIf="thirdPartycontractType===true">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button [matMenuTriggerFor]="addSubmitMenu" color="primary" mat-raised-button type="button">Add Layer
+            </button>
+            <mat-menu #addSubmitMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+
+              <button mat-menu-item *ngFor="let third of thirdTypeList" (click)="addLayerSelection(third);">
+                <mat-icon [icIcon]="icPerson"></mat-icon>
+                <span matTooltip="{{third.label}}">{{third.label}}</span>
+              </button>
+
+            </mat-menu>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+  
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button" (click)="findInvalidControls()">CANCEL</button>
+  <button color="primary" mat-button type="submit"
+    [disabled]="IsLoading || !(IsLocation && QuickSubmitForm.valid && EndclientFromGroup.valid && primeVendorFromGroup.valid && mspFromGroup.valid && ipFromGroup.valid && subFromGroup.valid && refFromGroup.valid && subinfoForm.valid)"
+    (click)="save()">SUBMIT</button>
+
+</mat-dialog-actions>

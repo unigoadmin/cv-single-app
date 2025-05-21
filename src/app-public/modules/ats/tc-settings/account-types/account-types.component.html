@@ -1,0 +1,55 @@
+
+    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <!-- <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none"
+        fxHide.xs>
+        <span>Account Types</span>
+      </h2> -->
+      <div class="mr-2">
+        <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px" style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+      </div>
+      <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+            fxLayoutAlign="start center">
+            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+            <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+              placeholder="Search..." type="search">
+          </div>
+
+      <span fxFlex></span>
+      <button class="ml-8" (click)="AddAccountType()" color="primary" fxFlex="none" mat-mini-fab
+        matTooltip="Add Account Type" type="button">
+        <mat-icon [icIcon]="icAdd"></mat-icon>
+      </button>
+
+    </div>
+    <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+
+      <!-- Text Columns -->
+      <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+        </ng-container>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell class="uppercase th-text-bold">Actions</th>
+        <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+          <div class="flex">
+          <a (click)="$event.stopPropagation();EditAccountType(row);"
+            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+            mat-icon-button>
+            <mat-icon [icIcon]="icEdit" size="16px" matTooltip="Edit Resume Source"></mat-icon>
+          </a>
+          </div>
+         
+        </td>
+      </ng-container>
+      
+      <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+        class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+
+  
+
+

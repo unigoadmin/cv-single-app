@@ -1,0 +1,35 @@
+<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+
+    <div class="mr-2">
+        <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+            style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+    </div>
+    <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+        fxLayoutAlign="start center">
+        <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+        <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..." type="search">
+    </div>
+
+    <span fxFlex></span>
+
+</div>
+
+<form [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="">
+
+    <div formArrayName="notficationsItems" fxLayout="column" fxLayoutGap="10px" class="mt-6">
+        <div *ngFor="let notification of notificationsItems.controls; let i = index" [formGroupName]="i" fxFlex class="mb-10">
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="px-10 mb-6">
+                <mat-label>{{ notification.value.notificationLabel }}</mat-label>
+                <mat-slide-toggle formControlName="sendNotification" color="primary"></mat-slide-toggle>
+            </div>
+
+        </div>
+    </div>
+  
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" class="buttons-container">
+        <button mat-button type="button">RESET</button>  
+        <button mat-raised-button color="primary" type="submit">SAVE</button>
+    </div>
+</form>

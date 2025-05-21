@@ -1,0 +1,74 @@
+<mat-dialog-content class="confirm" fxLayout="column" style="overflow: auto;min-height: 400px;">
+    <!-- <div class="-mt-16"> -->
+    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                            
+        <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="450px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+            fxLayoutAlign="start center">
+            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+            <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                placeholder="Search with FirstName, LastName, Email & Phone" (keyup.enter)="SearchCandidates()" type="search">
+        </div>
+
+        <div class="ml-4 bg-primary-light">
+            <button color="primary" mat-stroked-button type="submit" (click)="SearchCandidates()">Search</button>
+          </div>
+    
+        <span fxFlex></span>
+    
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+            <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+       
+    </div>
+    <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Text Columns -->
+        <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+          <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+            </th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:20 }}</span>
+            </td>
+          </ng-container>
+        </ng-container>
+
+    
+        <!--Location--bg-primary-light-->
+        <ng-container matColumnDef="Location">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Location</th>
+          <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+            <span class="rounded-full text-secondary font-medium locationbtn">
+              <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+              </ic-icon>
+              <span>{{row['Location']}}</span>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="WorkStatus">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Work Permit</th>
+          <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+                <span>{{row['WorkStatus']}}</span>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr style="--background-hover: rgba(var(--color-primary), .1)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+          class="hover:bg-hover trans-ease-out cursor-pointer" (click)="SelectCandidate(row)"  mat-row></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+
+    <!-- </div> -->
+</mat-dialog-content>

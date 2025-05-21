@@ -1,0 +1,31 @@
+
+
+.spinput{
+    padding: 0% !important;
+}
+
+li {
+  display: inline;
+  padding-right: 5px;
+}
+
+.splabel{
+padding-top: 20px;
+padding-right: 10px;
+}
+
+.spend{
+margin-left: 10px;
+padding-right: 10px;
+}
+
+.mat-list-base.inline-list {
+display: flex;
+}
+
+
+
+::ng-deep cv-rpt-scheduling mat-dialog-content {
+background: var(--background-base);
+}
+

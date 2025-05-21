@@ -1,0 +1,11 @@
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+<mat-form-field class="example-chip-list" fxFlex="100">
+    <mat-label>HashTags</mat-label>
+    <mat-chip-list multiple id="chipList" [selectable]="true">
+        <mat-chip *ngFor="let chip of hashtags" [selected]="chip.state"
+            (click)="chip.state=!chip.state;HashTagschangeSelected('s', chip.HashTagId)">
+            {{chip.HashTagText}}
+        </mat-chip>
+    </mat-chip-list>
+</mat-form-field>
+</div>

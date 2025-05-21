@@ -1,0 +1,28 @@
+<vex-page-layout>
+    <!-- <mat-sidenav-content> -->
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Settings</h1>
+                <vex-breadcrumbs [matIcon]="icSettings" [crumbs]="['WorkerCentral','Timesheet Settings']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  ">
+        <div class="card overflow-auto -mt-16 mb-10">
+            <mat-tab-group class="mt-4">
+                <mat-tab label="Features">
+                    <cv-timesheet-features></cv-timesheet-features>
+                </mat-tab>
+                <mat-tab label="Notify">
+                    <div fxLayout="row" class="mt-4 mb-4" style="text-align: center;">
+                        <div fxFlex="100" fxFlex.gt-xs="50" style="text-align: right;">
+                            <cv-setting-notify></cv-setting-notify>
+                        </div> 
+                    </div>
+                    
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>

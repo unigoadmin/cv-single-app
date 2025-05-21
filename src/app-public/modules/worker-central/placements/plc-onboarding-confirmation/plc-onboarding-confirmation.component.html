@@ -1,0 +1,20 @@
+
+<mat-dialog-content>
+    <div class="row">
+       <blockquote>
+         <p>{{Data.successmsg}}</p>
+       </blockquote>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxFlex="auto">
+            <label class="mt-16">Create CV user account with email </label><b><span class="displayEmail"> {{Data.Email}} </span></b> ?  
+        </div>
+        <button  mat-button type="button" mat-dialog-close class="mr-2 mat-focus-indicator  mat-button-base  bg-cancel-light" matTooltip="Cancel" (click)="onDismiss()">LATER</button>
+        <button color="primary" mat-button type="button" matTooltip="YES" (click)="onConfirm()"
+        class="mat-focus-indicator mat-button-base mat-primary bg-primary-light" >YES</button>
+      </div>
+</mat-dialog-content>
+
+
+
+

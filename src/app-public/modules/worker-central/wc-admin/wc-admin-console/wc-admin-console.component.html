@@ -1,0 +1,63 @@
+<vex-page-layout>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">Admin</h1>
+        <vex-breadcrumbs [crumbs]="['WorkerCentral','Admin Console']"></vex-breadcrumbs>
+      </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+    <div class="card overflow-auto -mt-16">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+          Admin Console
+        </h2>
+        <span fxFlex></span>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="32px" fxLayoutAlign="start" class="p-10">
+        <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+          style="width:33%;min-width: 350px;">
+          <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+            <mat-accordion>
+              <mat-expansion-panel (opened)="companyPanelOpenState = true" (closed)="companyPanelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                      <span fxLayoutAlign="center center">
+                        <mat-icon [icIcon]="icBusiness" size="22px" color="primary"></mat-icon>
+                      </span>
+                      <span fxLayout="column center">
+                        <span class="Text">
+                          TimeSheets
+                        </span>
+                        <span class="link" style="opacity:0.7;font-size: 12px; margin-bottom: 5px;"
+                          *ngIf="!companyPanelOpenState">
+                          Manage Timesheets
+                        </span>
+                      </span>
+                    </div>
+                  </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                <mat-selection-list [multiple]="false">
+                  <mat-list-option>
+                    <a class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                        style="font-size: 12px;" [routerLink]="['delete-timesheets']">Manage TimeSheets</span></a>
+                  </mat-list-option>
+                  <mat-list-option>
+                    <a class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                        style="font-size: 12px;" [routerLink]="['generate-timesheets']">Generate TimeSheets</span></a>
+                  </mat-list-option>
+                </mat-selection-list>
+
+
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>

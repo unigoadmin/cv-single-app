@@ -1,0 +1,82 @@
+<div class="bg-pattern h-full">
+  <vex-page-layout>
+
+    <vex-page-layout-content vexContainer>
+
+      <div class="card mt-10" fxLayout="column" fxLayout.gt-sm="row">
+        <div class="p-6" fxFlex="70">
+          <h2 class="title mt-0 mb-4 ml-3">Send Message</h2>
+          <div [formGroup]="form">
+            <div class="px-3 pt-1 pb-0" fxLayout="column">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="auto">
+                  <mat-label> Name</mat-label>
+                  <input [ngModel]="contactEnquiry.Name|titlecase" (ngModelChange)="contactEnquiry.Name=$event" 
+                  formControlName="Name" name="fname" id="fname" matInput required>
+                </mat-form-field>
+                <mat-form-field fxFlex="auto">
+                  <mat-label>E-mail</mat-label>
+                  <input formControlName="EmailId" name="EmailId" id="EmailId"  [ngModel]="contactEnquiry.EmailId | lowercase" 
+                  (ngModelChange)="contactEnquiry.EmailId=$event" matInput required>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="auto">
+                  <mat-label> Phone Number</mat-label>
+                  <input formControlName="PhoneNo" name="PhoneNo" id="PhoneNo" [ngModel]="contactEnquiry.PhoneNo | phoneformat" 
+                 (ngModelChange)="contactEnquiry.PhoneNo=$event" matInput required>
+                </mat-form-field>
+                <mat-form-field fxFlex="auto">
+                  <mat-label>Subject</mat-label>
+                  <mat-select formControlName="Subject" name="Subject" id="Subject" [(ngModel)]="contactEnquiry.Subject" required>
+                    <mat-option value="General question">General question</mat-option>
+                    <mat-option value="Product Support">Product Support</mat-option>
+                    <mat-option value="Request A Quote">Request A Quote</mat-option>
+                    <mat-option value="Applying A Career">Applying A Career</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <mat-form-field appearance="standard" color="primary">
+                <mat-label>Message</mat-label>
+                <textarea matInput [(ngModel)]="contactEnquiry.Message" formControlName="Message" name="Message" id="Message"  required></textarea>
+              </mat-form-field>
+            </div>
+            <div class="p-6" fxLayout="column" fxLayoutGap="16px">
+              <button (click)="saveContactEnquiry()" color="primary" mat-raised-button type="button"
+                [disabled]="!form.valid">
+                SEND
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="border-l bg-primary text-primary-contrast" fxFlex="auto">
+          <div class="pl-6 pb-3 pt-3">
+            <h2 class="title mt-3 mb-4">Contact Information</h2>
+
+          </div>
+          <div class="pl-6 pt-1 pb-0" fxLayout="column">
+            
+           
+             <h3 class="title mb-0 mt-4">
+              <ic-icon [icon]="icLocation_On" class="mt-1" size="20px" fxFlex="none"></ic-icon>
+              <span class="ml-2">Development Center</span> 
+            </h3>
+          
+            <h4 class="subheading-2 m-0 ">16th Floor, Kapil Towers,ISB Road</h4>
+            <h4 class="subheading-2 m-0 ">Financial District, Nanakramguda</h4>
+            <h4 class="subheading-2 m-0 ">Hyderabad – 500032</h4>
+            <h4 class="subheading-2 m-0 ">Telangana – INDIA</h4>
+
+            <h3 class="title mb-5 mt-4">
+              <ic-icon [icon]="icMail" class="mt-1" size="20px" fxFlex="none"></ic-icon>
+              <span class="ml-2">info@consultvite.com</span>
+
+            </h3>
+          </div>
+        </div>
+      </div>
+    </vex-page-layout-content>
+
+
+  </vex-page-layout>
+</div>

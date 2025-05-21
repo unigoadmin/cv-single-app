@@ -1,0 +1,105 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <div @fadeInUp class="card overflow-hidden w-full max-w-xs mt-2">
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="fill-current text-center">
+        <a routerLink="/"><img class="w-40" src="assets/img/demo/consultvite_logo.png"> </a>
+      </div>
+    </div>
+
+    <div *ngIf="!signUpSuccess">
+      <div class="text-center mt-4">
+        <h2 class="title m-0">Register as a company</h2>
+        <h4 class="body-2 text-secondary m-0">Simply fill out the form below</h4>
+      </div>
+
+      <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="auto" fxLayout="column">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <mat-form-field fxFlex="grow">
+            <mat-label>Company Name</mat-label>
+            <input formControlName="CompanyName" [(ngModel)]="signUpUser.CompanyName" matInput required>
+          </mat-form-field>
+          <mat-form-field fxFlex="grow">
+            <mat-label>Company Website</mat-label>
+            <input formControlName="Website" [(ngModel)]="signUpUser.Website" matInput required>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <mat-form-field fxFlex="grow">
+            <mat-label>First Name</mat-label>
+            <input [ngModel]="signUpUser.FirstName|titlecase" (ngModelChange)="signUpUser.FirstName=$event" 
+             formControlName="FirstName" name="fname" matInput required>
+          </mat-form-field>
+          <mat-form-field fxFlex="grow">
+            <mat-label>Last Name</mat-label>
+            <input [ngModel]="signUpUser.LastName|titlecase" (ngModelChange)="signUpUser.LastName=$event"  
+             formControlName="LastName" name="lname" matInput required>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+          <mat-form-field fxFlex="none">
+            <mat-label>Country Code</mat-label>
+            <mat-select formControlName="PhoneExt"  [(ngModel)]="signUpUser.PhoneExt">
+              <mat-option *ngFor="let country of countries" [value]="country.iso2">
+                {{"(+"+country.dialCode+") - " + country.name }}
+              </mat-option>
+          </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="auto">
+            <mat-label>Phone Number</mat-label>
+            <input formControlName="PhoneNumber" [ngModel]="signUpUser.PhoneNumber | phoneformat" 
+            (ngModelChange)="signUpUser.PhoneNumber=$event" matInput required>
+          </mat-form-field>
+          <mat-form-field fxFlex="grow">
+            <mat-label>E-Mail</mat-label>
+            <input formControlName="Email"  [ngModel]="signUpUser.Email | lowercase" 
+            (ngModelChange)="signUpUser.Email=$event" matInput required>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <mat-form-field fxFlex="grow">
+            <mat-label>Password</mat-label>
+            <input [type]="inputType" formControlName="Password" [(ngModel)]="signUpUser.Password" matInput required>
+            <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+              <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+              <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+            </button>
+            <mat-hint>Click the eye to toggle visibility</mat-hint>
+          </mat-form-field>
+          <mat-form-field fxFlex="grow">
+            <mat-label>Password (Confirm)</mat-label>
+            <input [type]="confinputType" formControlName="ConfirmPassword" [(ngModel)]="signUpUser.ConfirmPassword" matInput required>
+            <button (click)="conftoggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+              <mat-icon *ngIf="confvisible" [icIcon]="icVisibility"></mat-icon>
+              <mat-icon *ngIf="!confvisible" [icIcon]="icVisibilityOff"></mat-icon>
+            </button>
+            <mat-hint>Please repeat your password from above</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-checkbox [(ngModel)]="signUpUser.AgreeTAC" class="caption" color="primary" formControlName="AgreeTAC" >I accept the <a (click)="viewTermsAndCondtions()">terms and conditions.</a></mat-checkbox>
+      </div>
+      <button (click)="createAccount()" color="primary" [disabled]="!form.valid" mat-raised-button type="button">
+        REGISTER
+      </button>
+      <p class="text-secondary text-center">
+        Already have an account?<br/>
+        <a (click)="login()" class="text-primary">Sign in here</a> 
+      </p>
+      </div>
+    </div>
+    <div *ngIf="signUpSuccess">
+      <div class="text-center mt-4  mb-10">
+        <h2 class="title m-0">You have registered successfully!</h2>
+        <h4 class="body-2 text-secondary m-0">
+          We are pleased to inform you that your account has been successfully created and is currently under review by our team.
+          Rest assured, one of our executives will be in touch with you shortly to guide you through the next steps of the process.
+        </h4>
+        <!-- <p
+            <a (click)="resendActivation()" class="text-primary">Resend activation link</a>
+        </p> -->
+      </div>
+    </div>
+  </div>
+</div>

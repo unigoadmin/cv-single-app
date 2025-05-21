@@ -1,0 +1,173 @@
+ <div fxLayout="column" style="height:auto;"> 
+
+  <div *ngIf="IsMode=='view'" class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none"
+    style="max-width:650px;margin-top:60px">
+    <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">{{CandidateName}}</h2>
+    <span fxFlex></span>
+    <a (click)="Onclose()"
+      class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+      mat-icon-button>
+      <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+    </a>
+  </div>
+
+  <div *ngFor="let card of benchCanSubmissions;let i=index" class="m-3 ">
+    <mat-card>
+      <mat-card-content>
+        <div class="" fxLayout="row" fxFlexFill fxLayoutGap="5px" style="display: flex;">
+          <div class="py-2" fxLayout="row" fxLayoutAlign="start">
+            <div @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <ic-icon [icon]="icJob" size="20px"></ic-icon>
+            </div>
+            <div @fadeInRight>
+              <h2 class="title mb-1">
+                <span matTooltip="{{card.JobTitle}}">{{ card.JobTitle | shorten:20 }}</span>
+              </h2>
+
+              <span class="rounded-full text-secondary font-medium text-xs locationbtn">
+                <ic-icon [icon]="iclocationon" class="ltr:-ml-0 rtl:-mr-1 ltr:mr-2 rtl:ml-0" inline="true" size="14px">
+                </ic-icon>
+                <span>{{card.Location}}</span>
+              </span>
+            </div>
+
+          </div>
+          <span fxFlex></span>
+
+          <span class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+            <span>{{card.SubmissionTypeName}}</span>
+          </span>
+       
+          <div>
+            <div [ngClass]="[card.bgClass]" class="rounded px-2 py-1 font-medium text-xs labelcard"
+            fxLayoutAlign="end">{{ card.StatusName }}
+          </div>
+          <div *ngxPermissionsOnly="['ACTION_SUBMISSIONS_MODIFY']" (click)="labelSelect.open()" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover labelcard" fxFlex="none"
+            fxLayout="row" fxLayoutAlign="center center">
+            <ic-icon [icon]="icEdit" size="18px"></ic-icon>
+          </div>
+          <!-- <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange(card,$event)" class="invisible w-0 h-0 text-sm"
+            fxFlex="0 1 0px">
+            <mat-option *ngFor="let label of SubmissionStatusList" [value]="label">
+              <div [ngClass]="status_bgClass" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>
+              <span>{{ label.StatusName }}</span>
+            </mat-option>
+          </mat-select> -->
+
+          <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange(card,$event)"
+              class="invisible w-0 h-0 text-sm" fxFlex="0 1 0px">
+              <mat-option *ngFor="let label of SubmissionStatusList" [value]="label">
+                <div [ngClass]="label.bgdisplay" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                </div>
+                <span>{{ label.StatusName }}</span>
+              </mat-option>
+            </mat-select>
+
+          </div>
+         
+
+        </div>
+        <div fxLayout="row" fxFlexFill fxLayoutGap="20px">
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <ic-icon [icon]="icCompany" size="20px"></ic-icon>
+            </div>
+            <div>
+              <h4 *ngIf="card.EndClient" class="body-2 m-0 leading-snug text-secondary"> 
+                <span matTooltip="{{card.JobTitle}}">{{ card.EndClient | shorten:30 }}</span>
+              </h4>
+              <h4 *ngIf="!card.EndClient" class="body-2 m-0 leading-snug text-secondary">- Not Disclosed - </h4>
+              <h5 class="caption text-secondary m-0 leading-snug text-primary">Client / Vendor </h5>
+            </div>
+          </div>
+         
+          <span fxFlex></span>
+          <div fxLayoutAlign="start center">
+            <div
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <ic-icon [icon]="icDollar" size="20px"></ic-icon>
+            </div>
+            <div>
+              <h4 *ngIf="card.SubmittedRate" class="body-2 m-0 leading-snug text-secondary">$ {{card.SubmittedRate}} /hour</h4>
+              <h4 *ngIf="!card.SubmittedRate" class="body-2 m-0 leading-snug text-secondary">- Not Disclosed -</h4>
+              <h5 class="caption text-secondary m-0 leading-snug text-primary">Bill Rate</h5>
+            </div>
+          </div>
+          <div fxLayoutAlign="start center">
+            <div
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <ic-icon [icon]="icschedule" size="20px"></ic-icon>
+            </div>
+            <div>
+              <h4 class="body-2 m-0 leading-snug text-secondary">{{card.SchedulesCount}} &nbsp;
+                <div *ngxPermissionsOnly="['ACTION_SUBMISSIONS_MODIFY']" (click)="addInterview(card)" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover" fxFlex="none" fxLayout="row"
+                  fxLayoutAlign="center center">
+                  <ic-icon [icon]="icAdd" size="18px"></ic-icon>
+                </div>
+              </h4>
+              <h5 class="caption text-secondary m-0 leading-snug text-primary">Interviews</h5>
+            </div>
+          </div>
+
+        </div>
+
+
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions style="margin-bottom: -7px !important; padding: 0px !important">
+        <div fxLayout="row">
+          <div class="pt-2">
+            <h4 class="body-2 ml-3 leading-snug text-secondary italic"> {{card.UpdatedName}}
+             <span class="msg-date">{{card.UpdatedDate}}</span> 
+            </h4>
+            <h5 *ngIf="!card.IsUpdated" class="caption text-secondary ml-3 leading-snug text-primary italic">Submitted By & On</h5>
+            <h5 *ngIf="card.IsUpdated" class="caption text-secondary ml-3 leading-snug text-primary italic">Last Updated By & On</h5>
+          </div>
+          <span fxFlex></span>
+          <div fxLayout="center center">
+            <button *ngxPermissionsOnly="['ACTION_SUBMISSIONS_MODIFY']" class="" color="primary" text-secondary font-medium mat-button (click)="OnEditSubmission(card);">
+              <mat-icon [icIcon]="icEdit" size="14px" class="editicon"></mat-icon>Edit
+            </button>
+          </div>
+          <div fxLayout="center center">
+            <button *ngIf="!collapsed" color="primary" text-secondary font-medium mat-button (click)="collapse()" >
+              <mat-icon [icIcon]="icKeyboard_Arrow_Up" size="14px" class="editicon"></mat-icon>Activity Log
+            </button>
+            <button *ngIf="collapsed" color="primary" text-secondary font-medium mat-button (click)="expand(card)">
+              <mat-icon [icIcon]="icKeyboard_Arrow_Down" size="14px" class="editicon"></mat-icon>Activity Log
+            </button>
+           
+          </div>
+         
+        </div>
+      </mat-card-actions>
+
+      <div  class="collapsible mb-0" [@collapse]="collapsed">
+        <div *ngIf="selectedSubmission && selectedSubmission.SubmissionID==card.SubmissionID">
+       
+          <mat-divider></mat-divider>
+          <div class="MsgList" id="wallmessages" *ngIf="card.ActivityLogs.length>0">
+            <div class="MsgItem" *ngFor="let logitem of card.ActivityLogs; let index = index">
+                <div class="MsgIn">
+                    <div class="message-head clearfix">
+                        <div class="user-detail">
+
+                            <div class="msg-date">{{logitem.CreatedDate}} </div>
+                            <div class="msg-by">by {{logitem.CreatedBy}}</div>
+                            <div class="msg-content" [innerHtml] = "logitem.Action"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+       
+      </div>
+    </mat-card>
+
+  </div>
+
+ </div>

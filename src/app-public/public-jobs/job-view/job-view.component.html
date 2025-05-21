@@ -1,0 +1,54 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="start center">
+    <div fxLayoutAlign="start center">
+        <a
+        class="ltr:mr-4 rtl:ml-4 block"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        [fxHide]="mobileQuery">
+       <img class="w-25 select-none" src="{{job.Logo}}" style="height: 50px;">
+     </a>
+    </div>
+    <div @fadeInUp class="card overflow-hidden w-full max-w-xs mt-4" style="overflow: auto;">
+        <div *ngIf="IsFormSubmitted==false" class="job-description-container">
+            <h2 class="job-title text-primary">{{ job.JobTitle }}</h2>
+            <h4 *ngIf="job.Location">
+                <span class="fa fa-map-marker text-primary" aria-hidden="true"></span><span class="job-company">
+                    {{job.Location}}</span>
+            </h4>
+            <h4>
+                <span class="fa fa-briefcase text-primary" aria-hidden="true"></span> {{job.JobLocationType}}
+            </h4>
+            <h4>
+                <span class="fa fa-briefcase text-primary" aria-hidden="true"></span> {{job.ContractType}}
+            </h4>
+            
+            <!-- <div class="flex-container" fxLayout="row" class="mt-2">
+                <div fxFlex="100%">
+                    <div class="child-2" fxFlex="95">
+                        <div *ngFor="let label of SelectedKwywods" fxFlex="none">
+                            <span class="certtags">{{ label }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="job-description mt-6">
+                <p class="ContentScroll" [innerHtml]="job.JobDescription"> </p>
+            </div>
+
+            <button mat-raised-button color="primary" (click)="QuickApply()" >Apply Now</button>
+        </div>
+
+        <div *ngIf="IsFormSubmitted==true">
+            <div class="text-center mt-4 mb-10">
+                <h2 class="m-0 text-primary">Your job application has been submitted successfully!</h2>
+                <h4 class="body-2 text-secondary m-0 mt-4"> We will be in touch with you soon regarding the next steps in the hiring process.</h4>
+              </div>
+        </div>
+        
+
+    </div>
+</div>
+
+
+

@@ -1,0 +1,129 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card style="padding:2px !important;">
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="5">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 14px !important;">
+                            <span>Reference 1</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="ref1FromGroup">
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>First Name</mat-label>
+                            <input [ngModel]="reference1.FirstName|titlecase" formControlName="firstName"
+                                matInput name="fname" (ngModelChange)="reference1.FirstName=$event"
+                                (change)="OnReferece1_InputChange($event)" [required]="IsMandatory" [readOnly]="IsReadonly"
+                                [class.grayed-out]="IsReadonly">
+
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Last Name</mat-label>
+                            <input [ngModel]="reference1.LastName|titlecase" formControlName="lastName"
+                                matInput name="lname" (ngModelChange)="reference1.LastName=$event"
+                                (change)="OnReferece1_InputChange($event)" [required]="IsMandatory" [readOnly]="IsReadonly"
+                                [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Company</mat-label>
+                            <input [(ngModel)]="reference1.Company" formControlName="company" matInput
+                                name="lname" (change)="OnReferece1_InputChange($event)" [required]="IsMandatory" [readOnly]="IsReadonly"
+                                [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Designation</mat-label>
+                            <input [(ngModel)]="reference1.Designation" formControlName="designation"
+                                matInput name="lname" (change)="OnReferece1_InputChange($event)" [required]="IsMandatory" [readOnly]="IsReadonly"
+                                [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Email</mat-label>
+                            <input [ngModel]="reference1.Email | lowercase" formControlName="email" matInput
+                                name="lname" (change)="OnReferece1_InputChange($event)" 
+                                [required]="IsMandatory" [readOnly]="IsReadonly" (ngModelChange)="reference1.Email=$event"
+                                [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Phone Number</mat-label>
+                            <input [ngModel]="reference1.PhoneNumber | phoneformat"
+                                formControlName="phonenumber" matInput name="lname"
+                                (ngModelChange)="reference1.PhoneNumber=$event"
+                                (change)="OnReferece1_InputChange($event)" [required]="IsMandatory" [readOnly]="IsReadonly" 
+                                [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+        <mat-card style="padding:2px !important;">
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 14px !important;">
+                            <span>Reference 2</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="ref2FromGroup">
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>First Name</mat-label>
+                            <input [required]="IsMandatory" [ngModel]="reference2.FirstName|titlecase" formControlName="firstName"
+                                matInput name="fname" (ngModelChange)="reference2.FirstName=$event"
+                                (change)="OnReferece2_InputChange($event)" [readOnly]="IsReadonly" [class.grayed-out]="IsReadonly">
+
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Last Name</mat-label>
+                            <input [required]="IsMandatory" [ngModel]="reference2.LastName|titlecase" formControlName="lastName"
+                                matInput name="lname" (ngModelChange)="reference2.LastName=$event"
+                                (change)="OnReferece2_InputChange($event)" [readOnly]="IsReadonly" [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Company</mat-label>
+                            <input [required]="IsMandatory" [(ngModel)]="reference2.Company" formControlName="company" matInput
+                                name="lname" (change)="OnReferece2_InputChange($event)" [readOnly]="IsReadonly" [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Designation</mat-label>
+                            <input [required]="IsMandatory" [(ngModel)]="reference2.Designation" formControlName="designation"
+                                matInput name="lname" (change)="OnReferece2_InputChange($event)" [readOnly]="IsReadonly" [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Email</mat-label>
+                            <input [ngModel]="reference2.Email | lowercase" formControlName="email" matInput
+                            [required]="IsMandatory" name="lname" (ngModelChange)="reference2.Email=$event"
+                            (change)="OnReferece2_InputChange($event)">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                            <mat-label>Phone Number</mat-label>
+                            <input [ngModel]="reference2.PhoneNumber | phoneformat"
+                                formControlName="phonenumber" matInput name="lname"
+                                (ngModelChange)="reference2.PhoneNumber=$event"
+                                (change)="OnReferece2_InputChange($event)"
+                                [required]="IsMandatory" [readOnly]="IsReadonly" [class.grayed-out]="IsReadonly">
+                        </mat-form-field>
+                    </div>
+
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

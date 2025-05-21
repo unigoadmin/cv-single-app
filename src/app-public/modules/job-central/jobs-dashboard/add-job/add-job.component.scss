@@ -1,0 +1,94 @@
+// mat-button-toggle {
+//     border: 1px solid rgba(var(--color-primary), 1);
+//     border-radius: 4px;
+//     margin-left: 0px;
+//     margin-right:0px;
+//     font-size: 14px;
+//     font-style: bold;
+// }
+.sal-anu {
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: 4px 0 0 4px;
+    margin-left: 0px;
+    margin-right:0px;
+    font-size: 14px;
+    font-style: bold;
+    width: 150px;
+}
+.sal-lef{
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: 0 4px 4px 0;
+    margin-left: 0px;
+    margin-right:0px;
+    font-size: 14px;
+    font-style: bold;
+    width: 150px;
+}
+// .mat-button-toggle-disabled {
+//     border: 1px solid #c5c0c7;
+//     background-color: #e1dde5;
+// }
+
+
+
+.mat-button-toggle-checked {
+    border: 1px solid rgba(var(--color-primary), 1);
+    background-color: rgba(var(--color-primary), 1);
+    color: white;
+ }
+ .docsbox{
+    border-radius: 2px;
+    margin: 24px 0;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: 10px 10px 0px 10px;
+ }
+
+ .divbackground{
+  background: var(--background-app-bar);
+ }
+
+ /*::ng-deep cv-add-job mat-dialog-content {
+    background: var(--background-app-bar);
+}*/
+ ::ng-deep .full-view .mat-form-field{
+     display: block !important;
+     margin-right: 6px !important;
+ }
+ ::ng-deep cv-add-job .mat-slider-horizontal .mat-slider-thumb-label {
+    right: -27px !important;
+    top: -75px !important;
+   
+ }
+ ::ng-deep cv-add-job .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 35px !important;
+}
+
+.readonly-input {
+    /* Add your custom styles here */
+    background-color: #f1f1f1;
+    color: #999999;
+    cursor: not-allowed;
+  }
+
+  .column-1 {
+    flex-basis: 50%; /* sets initial width to 70% */
+    
+  }
+  
+  .column-2 {
+    flex-basis: 50%; /* sets initial width to 70% */
+  }
+  .box {
+   /* background-color: rgb(245, 215, 160);*/
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid rgb(116, 113, 113);
+    margin: 1rem;
+    box-shadow: 1px 1px 1px #fafafa;
+    height: 100%;
+    min-height: 1000px;
+    /* background-color: #f1f1f1; */
+  }
+
+ 
+  

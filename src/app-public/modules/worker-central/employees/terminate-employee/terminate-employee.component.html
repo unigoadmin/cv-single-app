@@ -1,0 +1,206 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Worker Termination</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="confirm" fxLayout="column" style="overflow: auto;">
+    <mat-card class="mt-4" style="padding-bottom:0 !important;">
+        <mat-card-title>
+            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                Worker Information</div>
+        </mat-card-title>
+        <mat-card-content>
+            <mat-divider></mat-divider>
+            <div class="flex-container" fxLayout="row">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>Worker ID:</span></div>
+                    <div class="child-2" fxFlex="65">
+                        <span>{{Employee.ComapnyEmployeeID}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Employment Type:</div>
+                    <div class="child-3" fxFlex="55">
+                        <span class="pb-0 pt-0"
+                            class="rounded-full text-secondary font-medium text-xs categorybtn">{{Employee.EmploymentType}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Designation:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{Employee.Designation}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="flex-container" fxLayout="row">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span></div>
+                    <div class="child-1" fxFlex="65">
+                        <span>{{Employee.FirstName}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-2 text-secondary" fxFlex="35" id="middlebuttons1">Middle Name:</div>
+                    <div class="child-2" fxFlex="65">
+                        <span>{{Employee.MiddleName}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last Name:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{Employee.LastName}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <mat-divider></mat-divider>
+            <div class="flex-container" fxLayout="row">
+
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35" ><span>Email:</span></div>
+                    <div class="child-2" fxFlex="65">
+                        <span>{{Employee.Email}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{Employee.PrimaryPhoneNumber}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>DOB:</span></div>
+                    <div class="child-1" fxFlex="65">
+                        <span>{{Employee.DOB}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="flex-container" fxLayout="row">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35" ><span>Work Permit:</span></div>
+                    <div class="child-1" fxFlex="65">
+                        <span class="pb-0 pt-0"
+                            class="rounded-full text-secondary font-medium text-xs categorybtn">{{Employee.WorkStatus}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-2 text-secondary" fxFlex="35" id="middlebuttons1">Work Permit Expiration:</div>
+                    <div class="child-2" fxFlex="65">
+                        <span>{{Employee.WorkStatusExpiry|date:'MM/dd/yyyy'}}</span>
+                    </div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Work Permit Effective
+                            Date:</span></div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{Employee.WorkStatusEffective|date:'MM/dd/yyyy'}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt-4 mb-4">
+        <mat-card-title>
+            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                Terminate Information</div>
+        </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="TerminateEmployeeFormGroup">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="25" appearance="outline" class="flex-auto">
+                    <mat-label>Termination Date</mat-label>
+                    <input [matDatepicker]="tmdate" matInput formControlName="TerminationDate" id="tmdate"
+                        [(ngModel)]="Employee.TerminationDate" required>
+                    <mat-datepicker-toggle [for]="tmdate" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #tmdate></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="25" appearance="outline" class="flex-auto">
+                    <mat-label>LastWorking Date</mat-label>
+                    <input [matDatepicker]="lwdate" matInput formControlName="LastWorkingDate" id="lwdate"
+                        [(ngModel)]="Employee.LastWorkingDate" required>
+                    <mat-datepicker-toggle [for]="lwdate" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #lwdate></mat-datepicker>
+                </mat-form-field>
+                <section style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                    <mat-checkbox id="laptopreturned" formControlName="laptopreturned" id="laptopreturned"
+                        [(ngModel)]="Employee.LaptopReturned">Laptop Returned
+                    </mat-checkbox>
+                </section>
+                <section style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                    <mat-checkbox id="eligibleforRehire" formControlName="eligibleforRehire"
+                        id="eligibleforRehire" [(ngModel)]="Employee.EligibleForRehire">Eligible
+                        for Rehire</mat-checkbox>
+                </section>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+              
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Termination Reason</mat-label>
+                    <textarea name="terminationreason" formControlName="terminationreason"
+                        [(ngModel)]="Employee.TerminationReason" matInput></textarea>
+                </mat-form-field>
+            </div>
+        </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt-4 mb-4">
+        <mat-card-title>
+            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                Assignments Information</div>
+        </mat-card-title>
+        <mat-card-content>
+            <div *ngFor="let assign of employeeAssignment; let i=index">
+                <label class="mt-10">Employee currently working on <b style="color: #3f51b5;">"{{assign.AssignmentName}}"</b>. Are you sure you want to terminate?
+                </label>
+                <p>* Please select assignment end date.</p>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    
+                    <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                        <mat-label>Assignment Name</mat-label>
+                        <input matInput [disabled]="true" id="AssignmentName_{{i}}" required
+                          [(ngModel)]="assign.AssignmentName" placeholder="Assignment Name" name="AssignmentName_{{i}}"
+                          type="text">
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput [disabled]="true" [matDatepicker]="jbexaStart" required
+                          [(ngModel)]="assign.StartDate" name="astartdate_{{i}}" placeholder="Start Date"
+                          id="aStartDate_{{i}}">
+                        <mat-datepicker-toggle matSuffix [for]="jbexaStart"></mat-datepicker-toggle>
+                        <mat-datepicker #jbexaStart></mat-datepicker>
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                        <mat-label>End Date</mat-label>
+                        <input matInput required [disabled]="assign.assignDisable" [matDatepicker]="jbexaEnd"
+                          [(ngModel)]="assign.EndDate" name="aenddate_{{i}}" placeholder="End Date"
+                          id="EandDate_{{i}}">
+                        <mat-datepicker-toggle matSuffix [for]="jbexaEnd"></mat-datepicker-toggle>
+                        <mat-datepicker #jbexaEnd></mat-datepicker>
+                      </mat-form-field>
+
+                </div>
+             
+            </div>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+            <button [disabled]="TerminateEmployeeFormGroup.invalid" color="primary" (click)="terminateEmployee()" mat-button type="submit" matTooltip="Submit">TERMINATE</button>
+        </div>
+    </div>
+</mat-dialog-footer>

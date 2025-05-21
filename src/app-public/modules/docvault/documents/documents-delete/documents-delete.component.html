@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <!-- <img *ngIf="contact?.imageSrc" [src]="contact?.imageSrc" class="avatar ltr:mr-5 rtl:ml-5"> -->
+  <h2 class="headline m-0" fxFlex="auto">Confirm Document Deletion!</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <div class="mt-2" fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px" >
+      Are you sure you want to delete document  <b>"{{document.OrgFileName}}?"</b>
+    
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button mat-button  color="primary" mat-dialog-close type="button" (click)="deleteDocument()">OK</button>
+  </mat-dialog-actions>
+

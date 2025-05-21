@@ -1,0 +1,85 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card>
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 16px !important;">
+                            <span>Implementation Partner(IP)</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayoutAlign="end" class="flex-auto pr-1">
+                            <button type="button" matTooltip="Remove" (click)="onRemoveClick('IP')" class="text-warn"
+                                style="margin-top: -12px !important;">
+                                <mat-icon style="font-size: 21px !important;" [icIcon]="icClose">
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="ipFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="vex-flex-form-field flex-auto">
+                            <mat-label>Company Name</mat-label>
+                            <input required [formControl]="IPControl" formControlName="ipEndclientName" [matAutocomplete]="auto"
+                                [ngModel]="ipClientAccount.AccountName | titlecase" (ngModelChange)="ipClientAccount.AccountName=$event" matInput>
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="SeelectedAccount($event,'IP')">
+                                <mat-option *ngFor="let client of IPOptions | async"
+                                    [value]="client.AccountName" [id]="client.AccountID">
+                                    <span class="body-1">{{ client.AccountName }}</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <section *ngIf="DisplayBilling===true" style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                            <mat-checkbox id="ipcheckbill" formControlName="Evbilling" [(ngModel)]="ipClientAccount.Isbilling"
+                                (change)="SelectBillingAccount($event,'IP')">
+                                Billing Vendor
+                            </mat-checkbox>
+                        </section>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                            class="flex-auto">
+                            <mat-label>POC First Name</mat-label>
+                            <input required formControlName="fName"  matInput name="ipfname" 
+                            [ngModel]="ipClientAccount.SalesPOC.FirstName | titlecase" (ngModelChange)="ipClientAccount.SalesPOC.FirstName=$event"
+                            (change)="OnInputChange($event)">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                            class="flex-auto">
+                            <mat-label>POC Last Name</mat-label>
+                            <input required formControlName="lName"  matInput  name="iplname"
+                          [ngModel]="ipClientAccount.SalesPOC.LastName | titlecase" (ngModelChange)="ipClientAccount.SalesPOC.LastName=$event"
+                          (change)="OnInputChange($event)">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                            <mat-label>POC Email</mat-label>
+                            <input required formControlName="Email"  matInput name="ipEmail"
+                            [ngModel]="ipClientAccount.SalesPOC.Email | lowercase" (ngModelChange)="ipClientAccount.SalesPOC.Email=$event"
+                            (change)="OnInputChange($event)">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                            <mat-label>POC Phone</mat-label>
+                            <input required formControlName="Phone"  matInput
+                                name="ipphone" (keypress)="onInputKeyPress($event)"
+                                (change)="PhonenumberFormate('end')"
+                                [(ngModel)]="ipClientAccount.SalesPOC.Phonenumber"
+                                >
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="ipClientAccount.Isbilling==true">
+                        <cv-billing-vendor [billingAccount]="ipClientAccount" [vendortype]="'IP'"
+                        (out_billing)="GetBllingData($event)" (formValidityChanged)="OnBillingFormValidity($event)">
+                        </cv-billing-vendor>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

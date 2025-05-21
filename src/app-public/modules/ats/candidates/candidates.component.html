@@ -1,0 +1,82 @@
+<vex-page-layout>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav class="mat-sidenav-fixed" #activitylog mode="over" hasBackdrop="true" position="end">
+      <div fxLayout="column" *ngIf="selectedCandidateId">
+        <div class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none" style="margin-top:60px">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+          <span fxFlex></span>
+          <a (click)="OnActiviyLogclose()"
+            class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+            mat-icon-button>
+            <mat-icon [icIcon]="iconService.icClose" size="18px"></mat-icon>
+          </a>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="MsgList" id="wallmessages" *ngIf="ActivityLogs.length>0">
+          <div class="MsgItem" *ngFor="let logitem of ActivityLogs; let index = index">
+            <div class="MsgIn">
+              <div class="message-head clearfix">
+                <div class="user-detail">
+
+                  <div class="msg-date">{{logitem.CreatedDate}} </div>
+                  <div class="msg-by">by {{logitem.CreatedByName}}</div>
+                  <div class="msg-content" [innerHtml]="logitem.Action"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+            <h1 class="tblMenutitle mt-0 mb-1">Candidates</h1>
+            <vex-breadcrumbs [crumbs]="['TalentCentral','Candidates']"></vex-breadcrumbs>
+          </div>
+        </div>
+      </vex-page-layout-header>
+      <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+        
+        <div class="card overflow-auto -mt-16 mb-10">
+          <div class="card">
+            <mat-tab-group #tabGroup [(selectedIndex)]="index" (selectedTabChange)="handleMatTabChange($event)">
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  Active Candidates
+                </ng-template>
+                <div class="p-3">
+                  <ng-template matTabContent style="overflow:hidden !important">
+                    <cv-candidates-data-table *ngIf="IsLoaded==true" [InputSrc]="'Active'" ></cv-candidates-data-table>
+                  </ng-template>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  Under Tech Screen<span class="item-badge bg-green text-green-contrast"></span>
+                </ng-template>
+                <div class="p-3">
+                  <ng-template matTabContent>
+                    <cv-candidates-data-table *ngIf="IsTechScreenLoaded==true" [InputSrc]="'TechScreen'" [IsMarketing]="false" [IsUnderTechScreen]="true" ></cv-candidates-data-table>
+                  </ng-template>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  Marketing<span class="item-badge bg-green text-green-contrast"></span>
+                </ng-template>
+                <div class="p-3">
+                  <ng-template matTabContent>
+                    <cv-candidates-data-table *ngIf="IsMarketingLoaded==true" [InputSrc]="'Marketing'"  [IsMarketing]="true" [IsUnderTechScreen]="false" ></cv-candidates-data-table>
+                  </ng-template>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </vex-page-layout-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</vex-page-layout>
+

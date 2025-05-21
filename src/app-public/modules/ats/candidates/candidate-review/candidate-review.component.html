@@ -1,0 +1,182 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Send Candidate for Review</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content fxLayout="column">
+    <form [formGroup]="addForm">
+        <div @fadeInUp class="overflow-auto mt-4">
+            
+            <cv-internal-users-chips [existingAssigness]="existingAssigness" [module]="currentModule" [ctrlName]="'Select Recruiter'" (out_selectedAssigness)="GetSelectedAssignees($event)"></cv-internal-users-chips>
+
+            <div fxLayout="row" class="mt-2" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field  fxFlex="100" class="flex-auto">
+                    <mat-label>Candidate Notes</mat-label>
+                    <input type="text" formControlName="Notes" [(ngModel)]="benchCandidates.Notes" matInput required>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-label>Job Title</mat-label>
+                    <input [ngModel]="benchCandidates.Title | titlecase" formControlName="jobtitle" matInput required
+                        (ngModelChange)="benchCandidates.Title=$event">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>First Name</mat-label>
+                    <input [ngModel]="benchCandidates.FirstName | titlecase" formControlName="firstName" matInput
+                        required name="fname" (ngModelChange)="benchCandidates.FirstName=$event">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Last Name</mat-label>
+                    <input [ngModel]="benchCandidates.LastName | titlecase" formControlName="lastName" matInput required
+                        name="lname" (ngModelChange)="benchCandidates.LastName=$event">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Phone</mat-label>
+                    <input [(ngModel)]="benchCandidates.PrimaryPhoneNumber" formControlName="phone" matInput required
+                        name="phone">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Email</mat-label>
+                    <input [(ngModel)]="benchCandidates.Email" formControlName="email" matInput required name="email">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>DOB:(MM/DD)</mat-label>
+                    <input [(ngModel)]="benchCandidates.DOB" [ngModel]="benchCandidates.DOB"
+                        [textMask]="{mask: datemask}" formControlName="DOB" matInput name="lname">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Last 4 Digit of SSN</mat-label>
+                    <input [(ngModel)]="benchCandidates.SSN" formControlName="SSN" matInput name="lname">
+
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Work Experience</mat-label>
+                    <input [(ngModel)]="benchCandidates.ExperienceYears" formControlName="wexperience" matInput
+                        name="wexperience">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Work Permit</mat-label>
+                    <mat-select required formControlName="wpermit" name="WorkStatus"
+                        [(ngModel)]="benchCandidates.WorkStatus" id="WorkStatus">
+                        <mat-option *ngFor="let work of workStatuFields" [value]="work.value">{{work.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Education</mat-label>
+                    <mat-select [(ngModel)]="benchCandidates.Qualification" formControlName="Qualification"
+                        name="inputQualification" id="inputQualification">
+                        <mat-option value="High School Diploma">High School Diploma</mat-option>
+                        <mat-option value="Bachelors">Bachelors</mat-option>
+                        <mat-option value="Masters">Masters</mat-option>
+                        <mat-option value="PhD">PhD</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <cv-google-place style="display:contents;" (setAddress)="getAssignAddress($event)"
+                    (inputAddress)="inputAssignAddress($event)" selectedAddress="{{benchCandidates.Location}}"
+                    adressType="(cities)" InputMode="Edit"></cv-google-place>
+
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-label>LinkedIn</mat-label>
+                    <input [(ngModel)]="benchCandidates.LinkedIn" formControlName="LinkedIn" matInput name="LinkedIn">
+                </mat-form-field>
+                <mat-form-field fxFlex="50" fxFlex.gt-xs="50">
+                    <mat-label>Candidate Source</mat-label>
+                    <mat-select [(ngModel)]="benchCandidates.Source" name="skills" formControlName="cansource">
+                        <mat-option *ngFor="let rsSource of resumeSource" [value]="rsSource.SourceName">
+                            {{rsSource.SourceName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Pay Rate</mat-label>
+                    <input [(ngModel)]="benchCandidates.PayRate" formControlName="PayRate" matInput>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Employment Type</mat-label>
+                    <mat-select name="workCategory" required formControlName="EmployementType" id="EmployementType"
+                        [(ngModel)]="benchCandidates.EmploymentType" (selectionChange)="onEmploymentTypeChange($event)">
+                        <mat-option [value]="'C2C'">C2C</mat-option>
+                        <mat-option [value]="'W2'">W2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-label>Availability to join the Project</mat-label>
+                    <mat-select name="Availability_To" id="Availability_To" formControlName="AvailablityToStart"
+                        [(ngModel)]="benchCandidates.AvailabilityToStart">
+                        <mat-option value="Immediately">Immediately</mat-option>
+                        <mat-option value="2 Weeks from confirmation">2 Weeks from confirmation</mat-option>
+                        <mat-option value="1 Month from confirmation">1 Month from confirmation</mat-option>
+                        <mat-option value="6 weeks from confirmation">6 weeks from confirmation
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                    <mat-label>Technical Skills Rating</mat-label>
+                    <cv-half-star-rating [RatingType]="'TECH'" [Techrating]="benchCandidates.TechnicalSkillRating"
+                        (out_TechRating)="GetTechRating($event)"></cv-half-star-rating>
+                    <input hidden [(ngModel)]="benchCandidates.TechnicalSkillRating" formControlName="SkillRating"
+                        matInput>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                    <mat-label>Communication Skills Rating</mat-label>
+                    <cv-comm-star-rating [RatingType]="'COMM'" [Commrating]="benchCandidates.CommunicationSkillRating"
+                        (out_CommRating)="GetCommRating($event)"></cv-comm-star-rating>
+                    <input hidden [(ngModel)]="benchCandidates.CommunicationSkillRating" formControlName="CommRating"
+                        matInput>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="benchCandidates.EmploymentType==='C2C'">
+                <cv-candidate-sub-vendor *ngIf="benchCandidates.EmploymentType==='C2C'"
+                    [canSubvendorAccount]="cansubVClientAccount" (out_candsubvendor)="GetCandSubVendorData($event)"
+                    (formValidityChanged)="onChildFormValidityChanged($event)">
+                </cv-candidate-sub-vendor>
+            </div>
+
+            <cv-skills-autocomplete [existingSkills]="SelectedKwywods"
+                (out_selectedSkills)="GetSelectedSkills($event)"></cv-skills-autocomplete>
+
+                <cv-hashtags-chips [existingTags]="dbHashTags"
+                (out_selectedHashTaga)="GetSelectedHashTags($event)"></cv-hashtags-chips>    
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button class="mr-2" mat-button type="button" (click)="clearFields()">CANCEL</button>
+            <button [disabled]="addForm.invalid || !c2cFormValid || !addForm.dirty || !IsPageDirty" color="primary" mat-raised-button type="submit" (click)="UpdateCandidate()">SEND</button>
+        </div>
+    </div>
+
+</mat-dialog-footer>

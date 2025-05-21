@@ -1,0 +1,52 @@
+
+export class JobCentralSummary{
+    TotalApplicants:number;
+    TotalLinkedIn:number;
+    TotalDice:number;
+    TotalAppsAssiged:number;
+    TotalActiveAssingend:number;
+    TotalReviewAssigned:number;
+    TotalAddedToDB:number;
+    TotalDiceDB:number;
+    TotalLinkedInDB:number;
+    TotalOthersrcDB:number;
+    TotalApplicantsProcessed:number;
+    TotalIgnored:number;
+    TotalLinkedInIgnored:number;
+    TotalDiceIgnored:number;
+    UnreadLinkedIn:number;
+    UnreadDice:number;
+    TotalProcessed:number;
+    TotalViewed:number;
+    TotalUnViewed:number;
+    TodayReceivedApplicants:number;
+    TodayDiceApplicants:number;
+    TodayLinkedInApplicants:number;
+    TodayMonsterApplicants:number;
+    constructor(){
+        this.TotalApplicants=0;
+        this.TotalLinkedIn=0;
+        this.TotalActiveAssingend=0;
+        this.TotalDice=0;
+        this.TotalAppsAssiged=0;
+        this.TotalReviewAssigned=0;
+        this.TotalAddedToDB=0;
+        this.TotalDiceDB=0;
+        this.TotalLinkedInDB=0;
+        this.TotalOthersrcDB=0;
+        this.TotalApplicantsProcessed=0;
+        this.TotalIgnored=0;
+        this.TotalLinkedInIgnored=0;
+        this.TotalDiceIgnored=0;
+        this.UnreadLinkedIn=0;
+        this.UnreadDice=0;
+        this.TotalProcessed=0;
+        this.TotalViewed=0;
+        this.TotalUnViewed=0;
+        this.TodayReceivedApplicants=0;
+        this.TodayDiceApplicants=0;
+        this.TodayLinkedInApplicants=0;
+        this.TodayMonsterApplicants=0;
+    }
+}
+

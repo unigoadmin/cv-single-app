@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="border-b py-4 px-6" fxLayout="row" fxLayoutAlign="start center">
+    <h2 class="m-0 title" fxFlex="auto">Workers Overview</h2>
+  </div>
+
+  <div class="py-6 px-6" fxLayout="row" fxLayout.lt-md="column">
+    <div class="pb-6 pt-4 px-6" fxFlex="auto" fxLayout="column">
+      <a style="cursor: pointer;" [routerLink]="['/worker-central/workers']">
+        <h2 class="display-2 font-bold m-0">{{ total }}</h2>
+        <h3 class="title font-medium mt-2 mb-0">Active Workers</h3>
+      </a>
+      <a style="cursor: pointer;" [routerLink]="['/worker-central/workers']">
+        <div class="mt-6" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+          <div class="w-8 h-8 rounded text-green bg-green-light" fxFlex="none" fxLayout="row"
+            fxLayoutAlign="center center">
+            <b>{{W2Value}}</b>
+          </div>
+
+          <p class="text-secondary m-0"><span class="font-medium text-orange text-primary"> </span> <b>W2 Workers</b>
+          </p>
+        </div>
+      </a>
+      <a style="cursor: pointer;" [routerLink]="['/worker-central/workers']">
+        <div class="mt-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+          <div class="w-8 h-8 rounded text-green bg-green-light" fxFlex="none" fxLayout="row"
+            fxLayoutAlign="center center">
+            <b>{{C2CValue}}</b>
+          </div>
+
+          <p class="text-secondary m-0"><span class="font-medium text-blue text-primary"></span> <b>C2C Workers</b></p>
+        </div>
+      </a>
+
+      <div class="mt-6" fxFlex="auto" fxLayout="column" fxLayoutAlign="end">
+        <button color="primary" mat-raised-button type="button" [routerLink]="['/worker-central/workers']">
+          VIEW WORKERS
+        </button>
+      </div>
+    </div>
+
+    <div fxFlex="50%" fxFlexOffset="48px">
+      <vex-chart [options]="options" [series]="series"></vex-chart>
+    </div>
+  </div>
+</div>

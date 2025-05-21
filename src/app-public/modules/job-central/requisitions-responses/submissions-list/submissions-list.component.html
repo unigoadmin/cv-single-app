@@ -1,0 +1,95 @@
+<div *ngIf="IsTableView">
+  <div *ngIf="DisplayHeader" class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row"
+    fxLayoutAlign="start center">
+    <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+      Existing Submissions
+    </h2>
+    <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+      fxLayoutAlign="start center">
+      <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+      <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+        placeholder="Search..." type="search">
+    </div>
+
+    <span fxFlex></span>
+
+    <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+      <mat-icon [icIcon]="iconService.icSearch"></mat-icon>
+    </button>
+
+    <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+      matTooltip="Filter Columns" type="button">
+      <mat-icon [icIcon]="iconService.icFilterList"></mat-icon>
+    </button>
+
+    <button class="text-secondary" mat-icon-button mat-dialog-close type="button">
+      <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+
+  </div>
+  <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th *matHeaderCellDef mat-header-cell></th>
+      <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+        <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+      </td>
+    </ng-container>
+
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+      <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+        </th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+          <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:25 }}</span>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="SubmissionStatus">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+      <td *matCellDef="let row" mat-cell>
+        <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+          <span [ngClass]="[row.bgclass]" class="rounded px-2 py-1 font-medium text-xs">
+            {{row['SubmissionStatusName']}}
+          </span>
+          <div (click)="$event.stopPropagation();labelSelect.open()"
+            class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover" fxFlex="none" fxLayout="row"
+            fxLayoutAlign="center center">
+            <ic-icon [icon]="iconService.icEdit" size="18px"></ic-icon>
+          </div>
+          <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event,row)"
+            class="invisible w-0 h-0 text-sm" fxFlex="0 1 0px">
+            <mat-option *ngFor="let label of SubmssionStausList" [value]="label">
+              <div [ngClass]="label.bgdisplay" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+              </div>
+              <span>{{ label.label }}</span>
+            </mat-option>
+          </mat-select>
+
+        </div>
+
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr (click)="ViewApplicant(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp class="hover:bg-hover trans-ease-out cursor-pointer"
+      mat-row></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+  </mat-paginator>
+
+  <mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+      class="checkbox-item mat-menu-item">
+      <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+        {{ column.label }}
+      </mat-checkbox>
+    </button>
+  </mat-menu>
+</div>
+<div *ngIf="IsDetailView">
+<cv-response-view [Input_ResponseId]="SelectedApplicantId" [Input_Source]="'submissions'" (onBackToSubmissions)="OnBackToList()"></cv-response-view>
+</div>

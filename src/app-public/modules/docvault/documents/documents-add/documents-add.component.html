@@ -1,0 +1,75 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <!-- <img *ngIf="contact?.imageSrc" [src]="contact?.imageSrc" class="avatar ltr:mr-5 rtl:ml-5"> -->
+  <h2 class="headline m-0" fxFlex="auto">Upload Documents</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"  style="min-height: 450px;">
+     <div  fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px" fxFlex="auto">
+      <div @fadeInUp>
+        <div fxFlex="25" justify-content="end" class="mt-4 mb-2">
+          <input id="attachR" type="file" (change)="onUploadFile($event)"
+          style="display:none;" #fileInput />
+          <a color="primary" mat-raised-button (click)="fileInput.click()"
+          class="btnnewlog"><strong>
+              <mat-icon style="margin-bottom: -5px;" [icIcon]="icfileupload">
+              </mat-icon> Choose file here
+          </strong></a>
+      </div>
+    </div>
+      <div class="px-6 py-4" fxLayout="column" *ngIf="docvaultFileUpload.length>0 ">
+        <table class="table w-full">
+          <thead>
+            <tr class="border-b">
+              <td class="body-2 text-secondary" fxFlex="10">S.NO</td>
+              <td class="body-2 text-secondary" fxFlex="50">DOCUMENT NAME</td>
+              <td class="body-2 text-secondary" fxFlex="30">CATEGORY</td>
+              <td fxFlex="10">Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let file of docvaultFileUpload;let index=index;">
+              <td class="py-3 border-b" fxFlex="10" style="margin-top: 15px;">
+                {{index+1}}
+              </td>
+              <td class="py-3 border-b" fxFlex="50">
+                <mat-form-field fxFlex="90" appearance="outline">
+                  <input matInput [(ngModel)]="file.FileName">
+                </mat-form-field>
+              </td>
+              <td class="py-3 border-b" fxFlex="30">
+                <mat-form-field fxFlex="90" appearance="outline">
+                <mat-select name="Category" required  id="Category"
+                  [(ngModel)]="file.Category">
+                  <mat-option [value]="'HR'">HR</mat-option>
+                  <mat-option [value]="'Training'">Training</mat-option>
+                </mat-select>
+                </mat-form-field>
+              </td>
+              <!-- <td class="py-3 border-b" fxFlex="30" style="margin-top: 15px;">
+                {{file.FileSize}}
+              </td> -->
+              <td class="py-3 border-b" fxFlex="10" style="margin-top: 15px;">
+                <a (click)="onDeleteUploadDocs(file)" 
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                  mat-icon-button>
+                  <mat-icon [icIcon]="icDelete" size="18px"></mat-icon>
+                  </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+     
+      </div>
+    </div>
+    
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button color="primary" mat-button type="submit" (click)="saveDocuments()">UPLOAD</button>
+  </mat-dialog-actions>
+

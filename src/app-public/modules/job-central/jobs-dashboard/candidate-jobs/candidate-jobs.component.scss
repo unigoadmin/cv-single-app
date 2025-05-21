@@ -1,0 +1,235 @@
+
+.editicon{
+    height: 18px;
+    width: 18px;
+  }
+  .labelcard{
+    margin-top: 10px;
+    height: 25px;
+    align-items: center;
+    margin-right: 2px;
+  }
+  
+    .submissionType{
+      height: 35px;
+      align-items: center;
+      text-align:start;
+      padding: 6px;
+      background-color: rgba(var(--color-primary), .1);
+    }
+  
+    .locationsubcard{
+      height: 25px;
+      align-items: center;
+      text-align:center;
+      margin-top: 10px;
+      padding-right: 8px;
+      background-color: #ebebee;
+      margin-right: 10px;
+      padding-left: 8px;
+      padding: 4px;
+    }
+  
+    .submissionTypeCard{
+      height: 25px;
+      align-items: center;
+      text-align:center;
+      padding: 4px;
+      margin-top: 10px;
+      padding-left: 8px;
+      padding-right: 8px;
+      color:white;
+      background-color: rgba(var(--color-primary));
+      margin-right: 10px;
+    }
+  
+    .statuslabel{
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      margin-right: 4px;
+    }
+   .max-w-xxs {
+      max-width: 70rem;
+  }
+  
+  
+  
+  ::ng-deep {
+      .vex-style-dark {
+        vex-scrumboard {
+          .scrumboard-card:hover {
+            background: rgba(black, 0.5);
+          }
+        }
+      }
+    }
+    
+    .scrumboard-card {
+      margin-bottom: var(--padding-16);
+    
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    
+      &:hover {
+        background: rgba(white, 0.5);
+      }
+    
+      .box {
+        padding: 3px;
+    
+        .box-text {
+          font-size: 11px;
+          font-weight: var(--font-weight-medium);
+          margin-left: 3px;
+          margin-right: 3px;
+          vertical-align: bottom;
+        }
+      }
+    }
+    
+    .avatar.overlapping {
+      border: 2px solid var(--background-card);
+      height: 23px;
+      margin-right: -8px;
+      width: 23px;
+    
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+    
+    /*
+      Cdk Drag & Drop
+     */
+    
+    .cdk-drag-preview {
+      box-shadow: var(--elevation-z8);
+    }
+    
+    .cdk-drag-placeholder {
+      opacity: 0.2;
+    }
+    
+    .cdk-drop-list-dragging .scrumboard-card:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    
+    .cdk-drag-animating {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1) !important;
+    }
+  
+  
+    .info-timeline ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .info-timeline ul li span.timeline-circle {
+      position: relative;
+      border: 2px solid #999;
+      border-radius: 50%;
+      width: 50px;
+      line-height: 50px;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #fff;
+      z-index: 2;
+      display: inline-block;
+    }
+    
+    .info-timeline ul li:not(:first-of-type) span.timeline-circle::before {
+      position: absolute;
+      border: 1px solid #999;
+      width: 0;
+      height: 50px;
+      display: block;
+      content: '';
+      left: 50%;
+      z-index: 1;
+      top: -54px;
+      margin-left: -1px;
+    }
+    
+    .info-timeline ul li a {
+      color: #000;
+    }
+  
+    ::ng-deep cv-submissions-list mat-divider-horizontal {
+      border-top-width: 2px;
+  }
+  
+  
+  
+  
+  /*All Messages styles list*/
+  
+  .MsgItem {
+    margin: 10px 10px 0px 30px;
+    position: relative;
+  }
+  
+  .MsgItem .MsgIn {
+    padding: 10px 0px 0px;
+    position: relative;
+  }
+  
+  .MsgItem:before {
+    background: rgba(38, 39, 60, 0.2);
+    border-radius: 2px;
+    bottom: -25px;
+    content: "";
+    height: 100%;
+    left: -15px;
+    position: absolute;
+    width: 1px;
+  }
+  
+  .MsgItem:after {
+    background: white;
+    border: 2px solid rgba(38, 39, 60, 0.2);
+    border-radius: 50%;
+    content: "";
+    height: 15px;
+    left: -22px;
+    position: absolute;
+    top: 12px;
+    width: 15px;
+  }
+  
+  .MsgItem:last-child:before {
+    display: none;
+  }
+  
+  .msg-date {
+    font-size: 10px;
+    line-height: 20px;
+    color: rgba(var(--color-primary), 1);
+  }
+  
+  .msg-by {
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  
+  .msg-content {
+    font-weight: 400;
+  }
+  
+  .msg-content:before,
+  .msg-content:after {
+    font-size: 18px;
+  }
+  .apli-location{
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 7px 15px;
+    background-color: #ebebee;
+    margin-right: 10px;
+  }
+  
+    
+    
+   

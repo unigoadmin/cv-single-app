@@ -1,0 +1,31 @@
+<div *ngxPermissionsOnly="['ACTION_VIEW_JCSETTINGS']">
+    <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-xs="100">
+            <mat-card>
+                <mat-card-content>
+                    <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                            <mat-label>Forms</mat-label>
+                            <mat-select (selectionChange)="OnFormSelectionChanged($event)">
+                                <mat-option *ngFor="let item of jcFormSettingList" [value]="item.FormId">
+                                    {{item.FormName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <cv-form-permissons-table *ngIf="IsDataLaoaded" 
+            [columns]="tableColumns" 
+            [data]="tableData" 
+            class="w-full overflow-auto shadow"
+            (out_UpdatedPermissons)="updatePermissionsData($event)"
+            ></cv-form-permissons-table>
+
+        </div>
+        
+
+        
+    </div>
+</div>

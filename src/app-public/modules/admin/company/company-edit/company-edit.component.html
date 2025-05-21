@@ -1,0 +1,186 @@
+<form (ngSubmit)="onSave()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="contact?.imageSrc" [src]="contact?.imageSrc" class="avatar ltr:mr-5 rtl:ml-5"> -->
+    <h2 class="headline m-0" fxFlex="auto">Company Details</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <div class="card" fxLayout="column" fxLayout.gt-sm="row">
+      <div class="p-6" fxFlex="none">
+        <div class="image_container">
+          <img mat-card-image [attr.src]="companyLogo" *ngIf="companyLogo">
+          <!-- <img  mat-card-image [attr.src]="defaultLogo" *ngIf="!companyLogo"> -->
+        </div>
+        <div>
+          <div class="p-2 text-center">
+            <button mat-button type="button" color="primary" (click)="fileInput.click()">
+              <ic-icon [icon]="icCloud_Upload" class="ltr:mr-2 rtl:ml-3" inline="true"></ic-icon>
+              <span>Upload</span>
+            </button>
+            <input type="file" (change)="onChange($event)" style="display:none;" #fileInput />
+            <button mat-button type="button" (click)="removeLogo()" *ngIf="companyLogo">
+              <ic-icon [icon]="icRemove_Circle_Outline" class="ltr:mr-2 rtl:ml-3" inline="true" size="18px"></ic-icon>
+              <span>Remove</span>
+            </button>
+
+          </div>
+        </div>
+      </div>
+      <div class="border-l" class="card" fxFlex="auto">
+        <div class="px-6 py-4" fxLayout="column">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Name</mat-label>
+              <input cdkFocusInitial formControlName="Name" matInput required>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Website</mat-label>
+              <input formControlName="Website" matInput required>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Email</mat-label>
+              <input cdkFocusInitial formControlName="Email" matInput required>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Phone</mat-label>
+              <input formControlName="Phone" matInput required>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+
+            <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+              <cv-admin-google-places style="display:contents;" (setAddress)="getAddress($event)"
+                (inputAddress)="inputEmployeeAddress($event)" disable="false" selectedAddress="{{company.Address1}}"
+                adressType="address" InputMode="Edit">
+              </cv-admin-google-places>
+
+            </div>
+
+            <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+              <mat-label>Apt, Suite, Unit, Building, Floor, etc.</mat-label>
+              <input matInput name="name" [(ngModel)]="company.Address2" formControlName="Address2" id="Address2">
+            </mat-form-field>
+          </div>
+          <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Address 1</mat-label>
+              <input formControlName="Address1" matInput>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Address 2</mat-label>
+              <input formControlName="Address2" matInput>
+            </mat-form-field>
+          </div> -->
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+              <mat-label>City</mat-label>
+              <input matInput name="City" [(ngModel)]="company.City" required formControlName="City" id="City">
+            </mat-form-field>
+            <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+              <mat-label>State</mat-label>
+              <input matInput name="State" [(ngModel)]="company.State" required formControlName="State" id="State">
+            </mat-form-field>
+            <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+              <mat-label>ZipCode</mat-label>
+              <input matInput name="zipcode" [(ngModel)]="company.ZipCode" required formControlName="ZipCode"
+                id="ZipCode">
+            </mat-form-field>
+            <!-- <mat-form-field fxFlex="auto">
+              <mat-label>State</mat-label>
+              <input formControlName="State" matInput 
+             [formControl]="stateControl" [matAutocomplete]="stateauto">
+              <mat-autocomplete #stateauto="matAutocomplete" 
+                  (optionSelected)="onSelectionChanged($event)">
+                  <mat-option *ngFor="let state of filteredStates$ | async"
+                      [value]="state.StateName">
+                      {{state.StateName}}
+                  </mat-option>
+              </mat-autocomplete>
+
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>City</mat-label>
+              <input formControlName="City" matInput 
+              [formControl]="cityControl"  [matAutocomplete]="cityauto">
+              <mat-autocomplete #cityauto="matAutocomplete">
+                  <mat-option *ngFor="let city of filteredCities$ | async"
+                      [value]="city.CityName">
+                      {{city.CityName}}
+                  </mat-option>
+              </mat-autocomplete>
+            </mat-form-field> -->
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Country of Operations</mat-label>
+              <mat-select formControlName="OperationsCountry">
+                <mat-option *ngFor="let country of countries" [value]="country.iso3">
+                  {{country.display_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Currency</mat-label>
+              <mat-select formControlName="Currency">
+                <mat-option [value]="'USD'">USD</mat-option>
+                <mat-option [value]="'EUR'">EUR</mat-option>
+                <mat-option [value]="'GBP'">GBP</mat-option>
+                <mat-option [value]="'JPY'">JPY</mat-option>
+                <mat-option [value]="'CHF'">CHF</mat-option>
+                <mat-option [value]="'CAD'">CAD</mat-option>
+                <mat-option [value]="'AUD'">AUD</mat-option>
+                <mat-option [value]="'NZD'">NZD</mat-option>
+                <mat-option [value]="'ZAR'">ZAR</mat-option>
+                <mat-option [value]="'INR'">ZAR</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Date Format</mat-label>
+              <mat-select formControlName="Display_DateFormat">
+                <mat-option [value]="'DD-MM-YYYY'">DD-MM-YYYY</mat-option>
+                <mat-option [value]="'MM-DD-YYYY'">MM-DD-YYYY</mat-option>
+                <mat-option [value]="'YYYY-MM-DD'">YYYY-MM-DD</mat-option>
+                <mat-option [value]="'MMMM Do YYYY'">MMMM Do YYYY</mat-option>
+                <mat-option [value]="'MMM Do YY'">MMM Do YY</mat-option>
+                <mat-option [value]="'dddd, MMMM Do YYYY'">dddd, MMMM Do YYYY</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Time Format</mat-label>
+              <mat-select formControlName="Display_TimeFormat">
+                <mat-option [value]="'12hrs'">12 Hour Clock</mat-option>
+                <mat-option [value]="'24hrs'">24 Hour Clock</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Timezone</mat-label>
+              <mat-select formControlName="TimeZoneID">
+                <mat-option *ngFor="let zone of TimeZones" [value]="zone.TimeZoneID">
+                  {{zone.TimeZoneName+" " +zone.UTC}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+          <mat-form-field fxFlex="auto">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="Description" matInput></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button color="primary" mat-button type="submit" [disabled]="!form.valid">SAVE CHANGES</button>
+  </mat-dialog-actions>
+</form>

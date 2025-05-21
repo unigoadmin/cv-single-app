@@ -1,0 +1,39 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+      <h2 class="title my-0 leading-snug text-secondary textcgs">Update Custom Message</h2>
+      <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs">
+      </h3>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+        <div class="border-l border-r" fxFlex="auto" fxFill>
+            <form [formGroup]="form">
+                <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                  <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+                    <mat-form-field>
+                      <mat-label>Description</mat-label>
+                      <input formControlName="Description" matInput  [(ngModel)]="currentMessage.Description" required readonly="true">
+                    </mat-form-field>
+                    <mat-form-field >
+                      <mat-label>Message</mat-label>
+                      <input required name="ResourceValue" formControlName="ResourceValue"
+                                    [(ngModel)]="currentMessage.ResourceValue" matInput>
+                    </mat-form-field> 
+                  
+                </div>
+                </div>
+              </form>
+        </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button color="primary" mat-button type="submit"(click)="SaveChanges()" [disabled]="!form.valid">SAVE CHANGES</button>
+  </mat-dialog-actions>

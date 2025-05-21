@@ -1,0 +1,446 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Company Information
+        </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        <button [matMenuTriggerFor]="settingsMenu" style="margin-right: 6px;bottom: 5px;" color="primary"
+            mat-raised-button type="button">Actions
+            <ic-icon [icon]="iconService.icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+        </button>
+
+        <button [mat-dialog-close]="'Close'"
+            style="top:3px;--tw-bg-opacity: 1 !important;background-color: rgba(158, 158, 158, var(--tw-bg-opacity)) !important;color: rgba(var(--color-accent-contrast), 1) !important;height: 40px !important;width: 40px !important;"
+            mat-fab type="button">
+            <mat-icon style="bottom: 8px !important;position: relative;" [icIcon]="iconService.icClose"></mat-icon>
+        </button>
+    </div>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm pl-tabs" style="overflow: auto;">
+    <mat-tab-group class="mt-4">
+        <mat-tab label="Company Information">
+            <div class="px-6 py-4" fxLayout="column">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
+                    <div fxFlex="25">
+                        <div class="p-6" fxFlex="none">
+                            <div class="image_container">
+                                <img mat-card-image [attr.src]="companyDetails.Logo" *ngIf="companyDetails.Logo">
+                                <img mat-card-image [attr.src]="defaultLogo" *ngIf="!companyDetails.Logo">
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="75">
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>Company Name:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span>{{companyDetails.CompanyName}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="40" id="middlebuttons1">Website:
+                                </div>
+                                <div class="child-3" fxFlex="60">
+                                    <span>
+                                        {{companyDetails.Website}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>Primary Email:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span>
+                                        {{companyDetails.PrimaryEmail}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1"><span>Phone
+                                        Number:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span>
+                                        {{companyDetails.PhoneNo}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>Address1:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.Address1}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1">
+                                    <span>Address2:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.Address2}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>City:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.City}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1"><span>State:</span>
+                                </div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.State}}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40">
+                                    <span>zipCode:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.ZipCode}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1">
+                                    <span>Date Format:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.Display_DateFormat}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" ><span>Time
+                                        Format:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.Display_TimeFormat}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1">
+                                    <span>TimeZone:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>
+                                        {{companyDetails.TimeZoneName}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>Status:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span *ngIf="companyDetails.IsActive == true" class="pb-0 pt-0"
+                                        class="rounded px-4 py-2 font-medium text-green bg-green-light">
+                                        ACTIVE
+                                    </span>
+                                    <span *ngIf="companyDetails.IsActive == false" class="pb-0 pt-0"
+                                        class="rounded px-4 py-2 font-medium text-gray bg-gray-light">
+                                        IN-ACTIVE
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40" id="middlebuttons1"><span>Email
+                                        Verification:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span *ngIf="companyDetails.IsEmailConfirmed == true"
+                                        class="pb-0 pt-0 rounded px-4 py-2 font-medium  text-green bg-green-light">
+                                        VERIFIED
+                                    </span>
+                                    <span *ngIf="companyDetails.IsEmailConfirmed == false"
+                                        class="pb-0 pt-0 rounded px-4 py-2 font-medium  text-gray bg-gray-light">
+                                        PENDING
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="40"><span>On Boarding Status:</span></div>
+                                <div class="child-2" fxFlex="60">
+                                    <span [ngClass]="companyDetails.bgClass"
+                                        class="rounded px-2 py-1 font-medium text-xs">
+                                        {{companyDetails.onboarding_status}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Root User">
+            <div fxLayout="column" fxLayout.gt-sm="row">
+                <div class="p-6" fxFlex="none">
+                    <div class="image_container">
+                        <img  mat-card-image [attr.src]="profilePic" *ngIf="profilePic">
+                        <span *ngIf="!profilePic">
+                        <ic-icon [icon]="iconService.icPerson"  class="ltr:mr-3 rtl:ml-3" size="250px" class="text-primary" ></ic-icon>
+                      </span>
+                    </div>
+                </div>
+                <div class="border-l" fxFlex="auto">
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3 pt-4 border-b">
+                        <div fxFlex="50%">
+                            <p> <span class="text-secondary" fxFlex="33">First Name:</span> {{currentUser?.FirstName}} </p>
+                        </div>
+                        <div fxFlex="50%">
+                            <p> <span class="text-secondary"  fxFlex="33">Last Name:</span> {{currentUser?.LastName}}</p>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+                      <div fxFlex="50%">
+                          <p> <span class="text-secondary"  fxFlex="33">Primary Email:</span> {{currentUser?.PrimaryEmail}}</p>
+                      </div>
+                      <div fxFlex="50%">
+                          <p> <span class="text-secondary"  fxFlex="33">Secondary Email:</span> {{currentUser?.SecondaryEmail}}</p>
+                      </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+                      <div fxFlex="50%">
+                          <p> <span class="text-secondary"  fxFlex="33">Primary Phone:</span> <span fxFlex="40">{{"("+currentUser?.PrimaryCountryCode+") " + currentUser?.PrimaryPhoneNo}} </span> <span class="text-secondary"  fxFlex="10">Ext</span> {{currentUser?.PrimaryPhoneExt }}</p>
+                      </div>
+                      <div fxFlex="50%">
+                          <p> <span class="text-secondary"  fxFlex="33">Secondary Phone:</span> <span fxFlex="40"><span  *ngIf="currentUser?.SecondaryPhoneNo">{{"("+currentUser?.SecondaryCountryCode+") " + currentUser?.SecondaryPhoneNo}}</span> </span><span class="text-secondary" fxFlex="10">Ext</span> {{currentUser?.SecondaryPhoneExt }}</p>
+                      </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3 pt-4 border-b">
+                        <div fxFlex="50%">
+                            <p> <span class="text-secondary"  fxFlex="33">Address 1:</span> {{currentUser?.Address1}}</p>
+                        </div>
+                        <div fxFlex="50%">
+                            <p> <span class="text-secondary"  fxFlex="33">Address 2:</span> {{currentUser?.Address2}}</p>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+                      <div fxFlex="33%">
+                        <p> <span class="text-secondary" fxFlex="52">City:</span> {{currentUser?.City}}</p>
+                      </div>
+                      <div fxFlex="33%">
+                        <p> <span class="text-secondary" fxFlex="45">State:</span> {{currentUser?.State}}</p>
+                      </div>
+                      <div fxFlex="33%">
+                        <p> <span class="text-secondary" fxFlex="45">Zip:</span> {{currentUser?.Zip}}</p>
+                      </div>
+                    
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+                      <div fxFlex="100%">
+                        <p> <span class="text-secondary" fxFlex="17">Timezone:</span> {{currentUser?.TimeZoneName}}</p>
+                      </div>
+                      
+                  </div>
+                </div>
+              </div>
+            
+        </mat-tab>
+        <mat-tab label="Modules">
+            <div class="px-6 pt-4 pb-0" fxLayout="column">
+                <table class="table w-full mt-8">
+                    <thead>
+                        <tr>
+                            <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="20">MODULE</td>
+                            <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="20">STATUS</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let module of companyModules">
+                            <td class="py-4 border-b" fxFlex="20">{{module.ModuleName}}</td>
+                            <td class="py-4 border-b" fxFlex="20">
+                                <span *ngIf="module.IsEnabled == true" class="pb-0 pt-0"
+                                    class="rounded px-4 py-2 font-medium text-green bg-green-light">
+                                    ENABLED
+                                </span>
+                                <span *ngIf="module.IsEnabled == false" class="pb-0 pt-0"
+                                    class="rounded px-4 py-2 font-medium text-gray bg-gray-light">
+                                    NOT ENABLED
+                                </span>
+                               
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+    <span>
+        <button mat-menu-item [mat-dialog-close]="'Edit'">
+            <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="iconService.icEdit"></mat-icon>
+            <span>Manage Company</span>
+        </button>
+    </span>
+    <span *ngIf="companyDetails.onboarding_status=='Pending Review'">
+        <button (click)="OnboardCompany()" mat-menu-item>
+            <mat-icon [icIcon]="iconService.icLayers" size="18px" [matTooltip]="'Update Onbarding Status'">
+            </mat-icon><span>Onboard Company</span>
+          </button>
+    </span>
+    <span *ngIf="companyDetails.EmailConfirmed==false">
+        <button (click)="ActivateCompany()" mat-menu-item>
+            <mat-icon [icIcon]="iconService.icDelete" size="18px" [matTooltip]="'Activation Link'">
+            </mat-icon><span>Send Activation Link</span>
+          </button>
+    </span>
+    <span>
+        <button (click)="DeleteCompany()" mat-menu-item>
+          <mat-icon [icIcon]="iconService.icDelete" size="18px" [matTooltip]="'Delete Company'">
+          </mat-icon><span>Delete Company</span>
+        </button>
+      </span>
+   
+</mat-menu>
+
+<ng-template #OnboardModal>
+    <div>
+      <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Company OnBoard</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              Modify with appropiate Onbarding Status.
+            </p>
+      
+            <mat-form-field fxFlex="none">
+              <mat-label>Onbarding Status</mat-label>
+              <mat-select [(ngModel)]="onboardingStatus">
+                <mat-option value="Approved">Approved</mat-option>
+                <mat-option value="Suspended">Suspended</mat-option>
+                <mat-option value="On Hold">On Hold</mat-option>
+      
+              </mat-select>
+            </mat-form-field>
+      
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Notes</mat-label>
+              <textarea matInput [(ngModel)]="OnbardingNotes"></textarea>
+            </mat-form-field>
+      
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="UpdateOnbaordStatus()" mat-button
+                      type="submit" matTooltip="Submit">SUBMIT</button>
+              </div>
+          </div>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #DeleteModal>
+    <div>
+      <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Delete Company</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              Are you sure you want to delete this company? Once deleted, it will no longer be available in the list.
+            </p>
+    
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Notes</mat-label>
+              <textarea matInput [(ngModel)]="DeleteNotes"></textarea>
+            </mat-form-field>
+      
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="OnCompanyDelete()" mat-button
+                      type="submit" matTooltip="Submit">DELETE</button>
+              </div>
+          </div>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #ResendModal>
+   <div>
+    <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Resend Activation Link</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              This user is the root for the company, and their email ID is <strong>{{companyDetails.PrimaryEmail}}</strong>.  Please confirm that we will send an activation link
+            </p>
+  
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="SendActivationLink()" mat-button
+                      type="submit" matTooltip="Submit">SEND</button>
+              </div>
+          </div>
+        </div>
+   </div>
+  </ng-template>

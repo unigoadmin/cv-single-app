@@ -1,0 +1,360 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">{{data.mode}}</h2>
+    <span fxFlex></span>
+    <div fxLayoutAlign="start center" fxLayoutGap="4px">
+        <span *ngIf="CurrentRequisition.Status===3 || CurrentRequisition.Status===4"
+            class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+            {{CurrentRequisition.StatusName}}
+        </span>
+        <span *ngIf="CurrentRequisition.Status===2" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+            {{CurrentRequisition.StatusName}}
+        </span>
+        <span *ngIf="CurrentRequisition.Status===1" class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+            {{CurrentRequisition.StatusName}}
+        </span>
+
+        <div (click)="labelSelect.open()" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover" fxFlex="none"
+            fxLayout="row" fxLayoutAlign="center center">
+            <ic-icon [icon]="iconService.icEdit" size="18px"></ic-icon>
+        </div>
+        <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event)" class="invisible w-0 h-0 text-sm"
+            fxFlex="0 1 0px">
+            <mat-option *ngFor="let label of ApplicantStausList" [value]="label">
+                <div [ngClass]="label.bgdisplay" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                </div>
+                <span>{{ label.label }}</span>
+            </mat-option>
+        </mat-select>
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="confirm pl-tabs" fxLayout="column" style="overflow: auto;">
+    <div class="row" fxLayout="row" style="overflow:auto">
+        <div class="column-1 box">
+            <div class="p-gutter container">
+                <div class="card">
+                    <form role="form" [formGroup]="FieldGlassForm">
+                        <quill-editor  class="content-editor" formControlName="JobDescription"
+                            [placeholder]="'Job Description(*)'" [styles]="{'min-height': '900px'}" [modules]="modules"
+                            class="content-editor" (onEditorCreated)="EditorCreated($event)"
+                            (onContentChanged)="contentChanged($event)" [(ngModel)]="CurrentRequisition.JobDescription">
+                        </quill-editor>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="column-2 box">
+            <mat-tab-group mat-align-tabs="start" (selectedTabChange)="onTabChanged($event)">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="pl-4">
+                            <ic-icon [icon]="iconService.icInfo" inline="true"></ic-icon> Details
+                        </span>
+                    </ng-template>
+                    <form role="form" [formGroup]="FieldGlassForm">
+                        <div class="mt-5" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                            <div @fadeInUp class="card" fxFlex="auto">
+                                <div class="px-6 py-4" fxLayout="column">
+                                    <div fxFlex="100%" fxLayout="row">
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto" color="primary">
+                                            <mat-label>Job Title</mat-label>
+                                            <input cdkFocusInitial formControlName="JobTitle" matInput required id="JobTitle"
+                                                name="JobTitle" [ngModel]="CurrentRequisition.JobTitle | titlecase"
+                                                (ngModelChange)="CurrentRequisition.JobTitle=$event">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="100%" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Posting Id</mat-label>
+                                            <input [class.readonly-input]="true" [readonly]="true" formControlName="PostingId"
+                                                matInput id="UniqueJobId" name="PostingId" [(ngModel)]="CurrentRequisition.PostingId">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Positions</mat-label>
+                                            <input type="number" formControlName="Positions"
+                                                matInput required id="UniqueJobId" name="Positions" [(ngModel)]="CurrentRequisition.Positions">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="100%" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Buyer</mat-label>
+                                            <input  formControlName="Buyer"
+                                                matInput required id="Buyer" name="Buyer" [(ngModel)]="CurrentRequisition.Buyer">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Site</mat-label>
+                                            <input formControlName="Site"
+                                                matInput required id="Site" name="Site" [(ngModel)]="CurrentRequisition.Site">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="100%" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Coordinator</mat-label>
+                                            <input  formControlName="Coordinator"
+                                                matInput required id="Coordinator" name="Coordinator" [(ngModel)]="CurrentRequisition.Coordinator">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>PostingOwner</mat-label>
+                                            <input formControlName="PostingOwner"
+                                                matInput required id="PostingOwner" name="PostingOwner" [(ngModel)]="CurrentRequisition.PostingOwner">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="100%" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Start Date</mat-label>
+                                            <input [matDatepicker]="startdatepickerRef" formControlName="StartDate"
+                                                [(ngModel)]="CurrentRequisition.StartDate" matInput name="StartDate">
+                                            <mat-datepicker-toggle [for]="startdatepickerRef" matSuffix></mat-datepicker-toggle>
+                                            <mat-datepicker #startdatepickerRef></mat-datepicker>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>End Date</mat-label>
+                                            <input [matDatepicker]="enddatepickerRef" formControlName="EndDate"
+                                                [(ngModel)]="CurrentRequisition.EndDate" matInput name="EndDate">
+                                            <mat-datepicker-toggle [for]="enddatepickerRef" matSuffix></mat-datepicker-toggle>
+                                            <mat-datepicker #enddatepickerRef></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="100%" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                            <mat-label>Bill Rate ($/hr)</mat-label>
+                                            <input type="number" id="BillRate" name="BillRate" formControlName="BillRate" [(ngModel)]="CurrentRequisition.BillRate" matInput required>
+                                          </mat-form-field>
+                                          <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" color="primary">
+                                            <mat-label>Max Submissions</mat-label>
+                                            <input type="number" formControlName="MaxSubmissions" min="1" max="100"
+                                                matInput id="MaxSubmissions" name="MaxSubmissions" [(ngModel)]="CurrentRequisition.MaxSubmissions">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                            <div @fadeInUp class="card" fxFlex="50">
+                                <div class="px-6 py-4" fxLayout="column">
+                                    <p class="mt-0 mb-4 text-secondary">
+                                        Job Location
+                                    </p>
+            
+                                    <div fxLayout="column" fxLayoutGap="16px">
+                                        <mat-radio-group fxLayout="row" formControlName="JobMode" fxLayoutGap="16px"
+                                            [(ngModel)]="SelectedJobMode">
+                                            <mat-radio-button [value]="'Remote'"
+                                                (change)="JobModeChange($event)">Remote</mat-radio-button>
+                                            <mat-radio-button [value]="'OnSite'" (change)="JobModeChange($event)">On
+                                                Site</mat-radio-button>
+                                            <mat-radio-button [value]="'Hybrid'" (change)="JobModeChange($event)">
+                                                Hybrid</mat-radio-button>    
+                                        </mat-radio-group>
+                                    </div>
+                                </div>
+                                <div *ngIf="CurrentRequisition.JobLocationType!='Remote'" class="px-6 py-4" fxLayout="column">
+                                    <cv-google-place style="display:contents;" (setAddress)="getAssignAddress($event)"
+                                        (inputAddress)="inputAssignAddress($event)" selectedAddress="{{CurrentRequisition.Location}}"
+                                        adressType="(cities)" InputMode="Add">
+                                    </cv-google-place>
+                                    <input type="hidden" formControlName="Location">
+                                </div>
+                                <div class="px-6 py-4" fxLayout="column">
+                                    <p class="mt-0 mb-4 text-secondary">
+                                        Visa Sponsorship
+                                    </p>
+                                    <mat-radio-group fxLayout="row" formControlName="VisaSponsor" fxLayoutGap="16px" [(ngModel)]="CurrentRequisition.VisaSponsorship">
+                                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                                        <mat-radio-button [value]="false">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div @fadeInUp class="card" fxFlex="50">
+                                
+                                <div class="px-6 py-4" fxLayout="column" style="width: fit-content;">
+                                    <mat-button-toggle-group formControlName="SelectedType" [(ngModel)]="SelectedType">
+                                        <mat-button-toggle (click)="OnRequirementChange(2)" [value]="2">
+                                            <button style="pointer-events:none;">
+                                                Direct / Internal
+                                            </button>
+                                        </mat-button-toggle>
+                                        <mat-button-toggle (click)="OnRequirementChange(3)" color="accent" [value]="3">Contract /
+                                            C2C
+                                        </mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </div>
+                                <div *ngIf="SelectedType==2" class="px-6 py-4" fxLayout="column" fxLayout="column">
+                                    <mat-radio-group fxLayout="row" fxLayoutGap="16px" formControlName="JobTypeID"
+                                        [(ngModel)]="CurrentRequisition.JobTypeId">
+                                        <mat-radio-button [value]='1'>Full-time</mat-radio-button>
+                                        <mat-radio-button [value]='3'>Part-time</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div *ngIf="SelectedType==3" class="px-6 py-4" fxLayout="column">
+                                    <section style="padding: 5px 0px;clear: both;" fxFlex="100">
+                                        <mat-checkbox (change)="OnContractTypeChanged($event,'C2C')" class="mr-4 ml-4" id="C2C" formControlName="C2C" [(ngModel)]="IsC2C">C2C
+                                        </mat-checkbox>
+                                        <mat-checkbox (change)="OnContractTypeChanged($event,'W2')" class="mr-4 ml-4" id="W2" formControlName="W2" [(ngModel)]="IsW2">W2
+                                        </mat-checkbox>
+                                        <mat-checkbox (change)="OnContractTypeChanged($event,'CTH')" class="mr-4 ml-4" id="CTH" formControlName="CTH" [(ngModel)]="IsCTH">CTH
+                                        </mat-checkbox>
+                                        <span>(*)</span>
+                                    </section>
+                                    
+                                    <input type="hidden" formControlName="JcType">
+                                </div>
+                                <div *ngIf="SelectedType==3" class="px-6 py-4" fxLayout="column">
+                                    <mat-form-field appearance="outline" class="flex-auto">
+                                        <mat-label>Conract Length(Months)</mat-label>
+                                        <input formControlName="JobDurtionMonths" type="number" min="0" max="24"
+                                            [(ngModel)]="CurrentRequisition.DurationInMonths" appearance="outline" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                            <div @fadeInUp class="card" fxFlex="50">
+                                <div class="px-6 py-4">
+                                    <mat-button-toggle-group formControlName="SalaryType"
+                                        [(ngModel)]="SalaryType">
+                                        <mat-button-toggle [value]="3" (click)="onSalaryTypeChange(3)">
+                                            <button style="pointer-events:none;">
+                                                Annual
+                                            </button>
+                                        </mat-button-toggle>
+                                        <mat-button-toggle color="accent" [value]="1" (click)="onSalaryTypeChange(1)">Hourly
+                                        </mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </div>
+                                <div fxLayout="column" class="px-6 py-4">
+                                    <mat-form-field appearance="outline" class="flex-auto">
+                                        <mat-label>Salary Value Type</mat-label>
+                                        <mat-select name="salaryRangeType" formControlName="salaryRangeType"
+                                            id="salaryRangeType" [(ngModel)]="salaryRangeType" (change)="OnsalaryRangeTypeChanged()">
+                                            <mat-option [value]="1">Range</mat-option>
+                                            <mat-option [value]="2">Exact</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div *ngIf="salaryRangeType==1 && SalaryType==3" fxFlex="50" fxLayout="row">
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                                            <mat-label>Min Salary</mat-label>
+                                            <mat-select name="MinSalary"  formControlName="MinSalary" id="MinSalary"
+                                                [(ngModel)]="CurrentRequisition.MinSalary">
+                                                <mat-option [value]="'$40,000'">$40,000</mat-option>
+                                                <mat-option [value]="'$60,000'">$60,000</mat-option>
+                                                <mat-option [value]="'$80,000'">$80,000</mat-option>
+                                                <mat-option [value]="'$100,000'">$100,000</mat-option>
+                                                <mat-option [value]="'$120,000'">$120,000</mat-option>
+                                                <mat-option [value]="'$140,000'">$140,000</mat-option>
+                                                <mat-option [value]="'$160,000'">$160,000</mat-option>
+                                                <mat-option [value]="'$180,000'">$180,000</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+            
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                                            <mat-label>Max Salary</mat-label>
+                                            <mat-select name="MaxSalary"  formControlName="MaxSalary" id="MaxSalary"
+                                                [(ngModel)]="CurrentRequisition.MaxSalary">
+                                                <mat-option [value]="'$40,000'">$40,000</mat-option>
+                                                <mat-option [value]="'$60,000'">$60,000</mat-option>
+                                                <mat-option [value]="'$80,000'">$80,000</mat-option>
+                                                <mat-option [value]="'$100,000'">$100,000</mat-option>
+                                                <mat-option [value]="'$120,000'">$120,000</mat-option>
+                                                <mat-option [value]="'$140,000'">$140,000</mat-option>
+                                                <mat-option [value]="'$160,000'">$160,000</mat-option>
+                                                <mat-option [value]="'$180,000'">$180,000</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+            
+                                    </div>
+                                    <div *ngIf="salaryRangeType==1 && SalaryType==1" fxFlex="50" fxLayout="row">
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                                            <mat-label>Min Salary</mat-label>
+                                            <mat-select name="MinSalary"  formControlName="MinSalary" id="MinSalary"
+                                                [(ngModel)]="CurrentRequisition.MinSalary">
+                                                <mat-option [value]="'$40'">$40</mat-option>
+                                                <mat-option [value]="'$50'">$50</mat-option>
+                                                <mat-option [value]="'$60'">$60</mat-option>
+                                                <mat-option [value]="'$70'">$70</mat-option>
+                                                <mat-option [value]="'$80'">$80</mat-option>
+                                                <mat-option [value]="'$90'">$90</mat-option>
+                                                <mat-option [value]="'$100'">$100</mat-option>
+                                                <mat-option [value]="'$110'">$110</mat-option>
+                                                <mat-option [value]="'$120'">$120</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+            
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                                            <mat-label>Max Salary</mat-label>
+                                            <mat-select name="MaxSalary"  formControlName="MaxSalary" id="MaxSalary"
+                                                [(ngModel)]="CurrentRequisition.MaxSalary">
+                                                <mat-option [value]="'$40'">$40</mat-option>
+                                                <mat-option [value]="'$50'">$50</mat-option>
+                                                <mat-option [value]="'$60'">$60</mat-option>
+                                                <mat-option [value]="'$70'">$70</mat-option>
+                                                <mat-option [value]="'$80'">$80</mat-option>
+                                                <mat-option [value]="'$90'">$90</mat-option>
+                                                <mat-option [value]="'$100'">$100</mat-option>
+                                                <mat-option [value]="'$110'">$110</mat-option>
+                                                <mat-option [value]="'$120'">$120</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+            
+                                    </div>
+                                    <div *ngIf="salaryRangeType==2" fxFlex="50" fxLayout="row">
+                                        <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                                            <mat-label>Salary</mat-label>
+                                            <input [(ngModel)]="CurrentRequisition.MaxSalary" formControlName="MaxSalary" matInput
+                                                name="MaxSalary">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+            
+            
+                            </div>
+                            <div @fadeInUp class="card" fxFlex="50">
+                                <div class="px-6 py-4" fxLayout="column">
+                                    <p class="mt-0 mb-4 text-secondary">
+                                        Top 3 Primary Skills(*)
+                                    </p>
+                                    <div>
+                                        <cv-skills-autocomplete [existingSkills]="SelectedPrimarySkills" [IsPrimary]="true"
+                                        (out_selectedSkills)="GetPrimarySkills($event)"></cv-skills-autocomplete>
+                                        <input type="hidden" formControlName="PrimarySkills">
+                                    </div>
+                                    <p [ngClass]="{'red-text': SelectedPrimarySkills.length === 3}">
+                                        Only 3 Skills are allowed.
+                                      </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="pl-4">
+                            <ic-icon [icon]="iconService.icInfo" inline="true"></ic-icon>Submissions
+                        </span>
+                    </ng-template>
+                    <cv-req-submissions-list *ngIf="IsSubmissions===true" [RequisitionId]="CurrentRequisition.RequisitionId" [ViewHeader]="false"></cv-req-submissions-list>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="pl-4">
+                            <ic-icon [icon]="iconService.icInfo" inline="true"></ic-icon>Notes
+                        </span>
+                    </ng-template>
+                    <cv-requisition-notes-dialog *ngIf="IsNotes===true" [Input_Id]="CurrentRequisition.RequisitionId"></cv-requisition-notes-dialog>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div *ngIf="isSummary===true" fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button class="mr-2" mat-button  type="button" (click)="ResetForm()">RESET</button>
+            <button color="primary" mat-raised-button mat-dialog-close type="button"
+                [disabled]="!(FieldGlassForm.valid) || !FieldGlassForm.dirty || !IsPageDirty" 
+                (click)="save()">SAVE</button>
+        </div>
+    </div>
+</mat-dialog-footer>

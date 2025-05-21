@@ -1,0 +1,166 @@
+<div fxLayout="column" style="background-color: #fafafa;" *ngIf="jobs.length!=0 else nodata;">
+    <div class="m-3" *ngFor="let job of jobs; let i=index">
+        <mat-card>
+          <mat-card-content>
+            <div class="" fxLayout="row" fxFlexFill fxLayoutGap="5px" style="display: flex;">
+              <div class="py-2" fxLayout="row" fxLayoutAlign="start">
+                <div @scaleIn
+                  class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                  <ic-icon [icon]="icJob" size="20px"></ic-icon>
+                </div>
+                <div @fadeInRight>
+                  <h2 class="title mb-1">
+                    {{job.JobTitle}}
+                  </h2>
+                  <span class="rounded-full text-secondary font-medium text-xs locationsubcard">
+                    <ic-icon [icon]="iclocationon" class="ltr:-ml-0 rtl:-mr-1 ltr:mr-2 rtl:ml-0" inline="true" size="14px">
+                    </ic-icon>
+                    <span>{{job.Location}}</span>
+                  </span>
+                </div>
+    
+              </div>
+              <span fxFlex></span>
+    
+              <span *ngIf="job.JobCategoryName" class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+                <span>{{job.JobCategoryName}}</span>
+              </span>
+              
+              <div>
+                <div [ngClass]="[status_textClass,status_bgClass]" class="rounded px-2 py-1 font-medium text-xs labelcard"
+                fxLayoutAlign="end">{{job.StatusName}}
+              </div>
+              <div class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover labelcard" fxFlex="none"
+                fxLayout="row" fxLayoutAlign="center center">
+                <ic-icon [icon]="icEdit" size="18px"></ic-icon>
+              </div>
+              <!-- <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange(card,$event)" class="invisible w-0 h-0 text-sm"
+                fxFlex="0 1 0px">
+                <mat-option *ngFor="let label of SubmissionStatusList" [value]="label">
+                  <div [ngClass]="status_bgClass" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>
+                  <span>{{ label.StatusName }}</span>
+                </mat-option>
+              </mat-select> -->
+              </div>
+             
+    
+            </div>
+            <div fxLayout="row" fxFlexFill fxLayoutGap="20px">
+    
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                      <ic-icon [icon]="icCompany" size="20px"></ic-icon>
+                    </div>
+                    <div>
+                      <h4 *ngIf="job.Accounts" class="body-2 m-0 leading-snug text-secondary"> {{ job.Accounts |slice:0:30 }}{{job.Accounts.length>30?'...':''}}</h4>
+                      <h4 *ngIf="!job.Accounts" class="body-2 m-0 leading-snug text-secondary">- Not Disclosed - </h4>
+                      <h5 class="caption text-secondary m-0 leading-snug text-primary">Client / Vendor </h5>
+                    </div>
+                  </div>
+             
+              <span fxFlex></span>
+              <div fxLayoutAlign="start center">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                  <ic-icon [icon]="icDollar" size="18px"></ic-icon>
+                </div>
+                <div>
+                  <h4  class="body-2 m-0 leading-snug text-secondary">
+                      <span *ngIf="job.BillingRate">$ {{job.BillingRate}} /hour</span>
+                      <span *ngIf="!job.BillingRate">-Not Specified-</span>
+                    </h4>
+                  <!-- <h4 *ngIf="!card.SubmittedRate" class="body-2 m-0 leading-snug text-secondary">- Not Disclosed -</h4> -->
+                  <h5 class="caption text-secondary m-0 leading-snug text-primary">Billing Rate</h5>
+                </div>
+              </div>
+              <!-- <div fxLayoutAlign="start center">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                  <ic-icon [icon]="icBook" size="18px"></ic-icon>
+                </div>
+                <div>
+                  <h4 class="body-2 m-0 leading-snug text-secondary">{{candidate.SubmissionsCount}} &nbsp;
+                    <div class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover" fxFlex="none" fxLayout="row"
+                      fxLayoutAlign="center center">
+                    </div>
+                  </h4>
+                  <h5 class="caption text-secondary m-0 leading-snug text-primary">Submissions</h5>
+                </div>
+              </div> -->
+    
+            </div>
+    
+    
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-actions style="margin-bottom: -7px !important; padding: 0px !important">
+            <div fxLayout="row">
+              <div class="pt-2">
+                <h4 class="body-2 ml-3 leading-snug text-secondary italic"> {{job.JobCreatedBy}}
+                 <span class="msg-date">{{job.UpdatedDate}}</span> 
+                </h4>
+                <!-- <h5 *ngIf="!card.IsUpdated" class="caption text-secondary ml-3 leading-snug text-primary italic">Submitted By & On</h5> -->
+                <h5 class="caption text-secondary ml-3 leading-snug text-primary italic">Last Updated By & On</h5>
+              </div>
+              <span fxFlex></span>
+              <!-- <div fxLayout="center center">
+                <a style="top: 15px;" (click)="$event.stopPropagation()"
+                    class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary-light"
+                    mat-icon-button>
+                    <mat-icon [icIcon]="icPhone" size="18px" [matTooltip]="candidate.PrimaryPhoneNumber"></mat-icon>
+                  </a>
+              </div> -->
+              <!-- <div fxLayout="center center" style="margin-right: 5px;">
+                  <a style="top: 15px;" (click)="$event.stopPropagation()" href="mailto:{{candidate.CandidateEmail}}"
+                    class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                     mat-icon-button>
+                    <mat-icon [icIcon]="icMail" size="18px" [matTooltip]="candidate.CandidateEmail"></mat-icon>
+                  </a>
+              </div> -->
+              <div fxLayout="center center">
+                <button style="top: 10px;" class="" color="primary" text-secondary font-medium mat-button>
+                  <mat-icon [icIcon]="icEdit" style="margin-right: 5px;" size="18px" class="editicon"></mat-icon>Edit
+                </button>
+              </div>
+              <div fxLayout="center center">
+                <button  style="top: 10px;" color="primary" text-secondary font-medium mat-button>
+                  <mat-icon [icIcon]="icKeyboard_Arrow_Up" size="18px" class="editicon"></mat-icon>Activity Log
+                </button>
+                <!-- <button *ngIf="collapsed" color="primary" text-secondary font-medium mat-button (click)="expand(card)">
+                  <mat-icon [icIcon]="icKeyboard_Arrow_Down" size="14px" class="editicon"></mat-icon>Activity Log
+                </button> -->
+               
+              </div>
+             
+            </div>
+          </mat-card-actions>
+    
+          <div  class="collapsible mb-0" [@collapse]="collapsed">
+            <div>
+           
+              <mat-divider></mat-divider>
+              <div class="MsgList" id="wallmessages">
+                <div class="MsgItem">
+                    <div class="MsgIn">
+                        <div class="message-head clearfix">
+                            <div class="user-detail">
+    
+                                <div class="msg-date">1 day ago </div>
+                                <div class="msg-by">by Ramesh</div>
+                                <div class="msg-content">Change the staus</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+           
+          </div>
+        </mat-card>
+    
+      </div>
+</div>
+<ng-template #nodata>
+<div class="text-center mt-20 text-secondary"><h3>No data available</h3></div>
+</ng-template>

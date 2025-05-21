@@ -1,0 +1,48 @@
+
+<div fxLayout="row" fxLayoutAlign="start center"  class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Move To Bench</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+<mat-dialog-content fxLayout="column" style="overflow: auto;">
+    <form role="form" [formGroup]="AddToBenchForm">
+        <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px"  fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="100"  appearance="outline">
+                <mat-label>Bench Priority</mat-label>
+                <mat-select [(ngModel)]="BenchPriority" name="benchpriority"
+                    formControlName="benchpriority" required>
+                    <mat-option [value]="'High'">High</mat-option>
+                    <mat-option [value]="'Medium'">Medium</mat-option>
+                    <mat-option [value]="'Low'">Low</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <cv-internal-users-chips [existingAssigness]="existingAssigness" [module]="currentModule" [ctrlName]="defdata.ctrlLabel" (out_selectedAssigness)="GetSelectedAssignees($event)"></cv-internal-users-chips>
+
+        <cv-skills-autocomplete [existingSkills]="SelectedKwywods" (out_selectedSkills)="GetSelectedSkills($event)"></cv-skills-autocomplete> 
+
+        <cv-hashtags-chips [existingTags]="dbHashTags" (out_selectedHashTaga)="GetSelectedHashTags($event)"></cv-hashtags-chips>   
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="100" fxFlex.gt-xs="100" appearance="outline">
+                <mat-label>Candidate Notes</mat-label>
+                <textarea  matInput [(ngModel)]="CandidateNotes" formControlName="Notes"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button  type="button" mat-dialog-close >CANCEL</button>
+        <button [disabled]="AddToBenchForm.invalid || !IsAssignessAvailable" color="primary" mat-raised-button type="submit"
+            (click)="AssignSingleResponse()">ASSIGN</button>
+    </div>
+
+</mat-dialog-actions>

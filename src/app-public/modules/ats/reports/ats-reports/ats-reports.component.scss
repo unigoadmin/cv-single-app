@@ -1,0 +1,38 @@
+mat-panel-title,
+mat-panel-description,
+span {
+  display: block;
+}
+
+ :host::ng-deep.mat-expansion-indicator::after {
+  border-color:#000 !important;
+ }
+
+ .mat-expansion-panel {
+  
+  border: 1px solid #ddd;
+ }
+
+ :host::ng-deep.mat-expansion-panel-body {
+  padding: 15px 24px 20px;
+  border-top: 1px solid #ddd;
+}
+
+:host::ng-deep.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 30px;
+}
+::ng-deep .create .mat-list-item-content {
+    padding: 0px !important;
+}
+::ng-deep .create .mat-list-item-content .mat-list-text{
+    padding: 0px 0.25rem 0px 0px !important;
+}
+::ng-deep .mat-list-option.create:hover, .mat-list-option:focus, .mat-nav-list 
+.mat-list-item:hover, .mat-nav-list .mat-list-item:focus, .mat-action-list 
+.mat-list-item:hover, .mat-action-list .mat-list-item:focus{
+background-color: white !important;
+}
+
+::ng-deep .mat-list-single-selected-option, .mat-list-single-selected-option.create:hover, .mat-list-single-selected-option:focus{
+    background-color: white !important;
+}

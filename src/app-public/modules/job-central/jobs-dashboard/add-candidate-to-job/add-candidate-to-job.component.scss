@@ -1,0 +1,96 @@
+// ::ng-deep cv-add-candidate-to-job mat-checkbox {
+//     margin-top:13px;
+// }
+.card {
+    margin-bottom: 20px;
+}
+
+.submissionTypeCard {
+
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    color: rgba(var(--color-primary-contrast));
+    background-color: rgba(var(--color-primary));
+    margin-right: 10px;
+}
+
+mat-button-toggle {
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: 4px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 14px;
+    font-style: bold;
+}
+
+.mat-button-toggle-disabled {
+    border: 1px solid #c5c0c7;
+    background-color: #e1dde5;
+}
+
+
+
+.mat-button-toggle-checked {
+    border: 1px solid rgba(var(--color-primary), 1);
+    background-color: rgba(var(--color-primary), 1);
+    color: white;
+}
+
+
+mat-dialog-content {
+    background: var(--background-base);
+}
+
+.docsbox {
+    border-radius: 4px;
+    margin: 24px 0;
+    border: 1px solid rgba(0, 0, 0, .2);
+    padding: 10px 10px 0px 10px;
+}
+
+::ng-deep {
+    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+        line-height: 25px;
+    }
+}
+
+::ng-deep .termin mat-icon svg {
+    margin: auto !important;
+}
+
+::ng-deep cv-add-candidate-to-job .mat-horizontal-content-container {
+    background: var(--background-base);
+    padding: 0 !important;
+}
+
+::ng-deep cv-add-candidate-to-job mat-dialog-content {
+    background: var(--background-base);
+}
+
+.child-1,
+.child-2,
+.child-3,
+.child-4 {
+    padding: 15px;
+}
+
+#middlebuttons1 {
+    // padding-left:10px;
+    border-left: 1px solid #e5e5e5;
+}
+
+.dialog-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  }
+  
+  .dialog-actions {
+  height: 40x; /* Adjust this value as per your footer's height */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+  }

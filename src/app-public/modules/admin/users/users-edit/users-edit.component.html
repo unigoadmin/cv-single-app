@@ -1,0 +1,155 @@
+<form (ngSubmit)="saveUser()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div *ngIf="user.UserId">
+     <h2 class="title my-0 leading-snug text-secondary textcgs" >{{ user.FirstName + ' ' +user.LastName }} </h2>
+     <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs"> {{user.Email}}
+     </h3>
+   </div>
+   <div *ngIf="!user.UserId">
+    <h2 class="title my-0 leading-snug text-secondary textcgs" >{{title}} </h2>
+  </div>
+   <div *ngIf="user.UserId" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10" class="pb-1 pt-1">
+    <div style="padding-left: 12px;">
+      <div  class="rounded px-2 font-medium text-xs labelcard text-amber-contrast bg-amber" *ngIf="user.IsActive">
+        Active
+      </div>
+      <div  class="rounded px-2 font-medium text-xs labelcard text-amber-contrast bg-gray" *ngIf="!user.IsActive">
+        Inactive
+      </div>
+    </div>
+  </div>
+   <div fxFlex="auto">
+   </div>
+     <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+       <mat-icon [icIcon]="icClose"></mat-icon>
+     </button>
+   </div>
+  <mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+      <div class="border-l border-r" fxFlex="auto" fxFill>
+        <mat-tab-group class="mt-3" style="height:450px;">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon [icIcon]="icDetails" size="22px"></mat-icon>
+              User Information
+            </ng-template>
+            <form [formGroup]="form">
+              <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+                  <mat-form-field >
+                    <mat-label>First Name</mat-label>
+                    <input cdkFocusInitial formControlName="FirstName" matInput required>
+                    <mat-icon [icIcon]="icPerson" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                  </mat-form-field>
+                  <mat-form-field >
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="LastName" matInput required>
+                    <mat-icon [icIcon]="icPerson" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                  </mat-form-field>
+                <mat-form-field >
+                  <mat-label>E-Mail</mat-label>
+                  <input formControlName="Email" matInput required>
+                  <mat-icon [icIcon]="icEmail" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                </mat-form-field>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                  <mat-form-field  fxFlex="auto">
+                    <mat-label>Country Code</mat-label>
+                    <mat-select formControlName="PhoneCountryExt">
+                      <mat-option *ngFor="let country of countries" [value]="country.iso2">
+                        {{"(+"+country.dialCode+") - " + country.name }}
+                      </mat-option>
+                  </mat-select>
+                  </mat-form-field>
+                <mat-form-field fxFlex="auto">
+                  <mat-label>Phone No</mat-label>
+                  <input formControlName="PhoneNo" matInput required>
+                  <mat-icon [icIcon]="icPhone" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                </mat-form-field>
+                </div>
+              </div>
+              </div>
+            </form>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon [icIcon]="icAdd_Moderator" size="22px"></mat-icon> 
+               Roles
+            </ng-template>
+            <div  class="mt-2"  fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div @fadeInUp class="card" fxFlex="auto">
+                <div class="px-6 py-4" fxLayout="column">
+                  <table class="table w-full">
+                    <tbody>
+                      <tr *ngIf="user.UserType != 0  && loginUser.Company.EmployerRole=='superadmin'">
+                        <td class="border-b pl-5" style="width:200px">
+                          <mat-slide-toggle    
+                          [checked]="user.UserType===2" color="primary"
+                          (change)="onAdminSelect($event.checked)">
+                           Is Admininstrator
+                         </mat-slide-toggle>
+                        </td>
+                        <td>
+                          <p class="mt-0 mb-4 text-secondary">
+                            It grants them administrator privileges and access to the Admin module. Admins can also perform administrator roles in the other modules.
+                          </p>
+                        </td>
+                      </tr>
+                    <tr *ngFor="let roleModule of moduleRoles; let idx = index">
+                      <td class="border-b pl-5" style="width:200px"> {{roleModule.ModuleName}}</td>
+                      <td>
+                        <span fxLayout="row" style="height: 60px; padding-left: 5px; padding-top: 2px;" >
+                            <mat-form-field fxFlex="auto">
+                              <mat-label>Role</mat-label>
+                              <mat-select  [disabled]="user.UserType==2" [ngModelOptions]="{standalone: true}"
+                               [(ngModel)]="roleModule.SelectedRoleId" (selectionChange)="onSelectedRoleChange(roleModule,$event)">
+                                <mat-option *ngFor="let role of roleModule.Roles" [value]="role.RoleId">
+                                   <span>{{role.RoleName}} </span> 
+                                </mat-option>
+                              </mat-select>
+                              </mat-form-field>
+                              <!-- <span  class="pt-3 pl-3"  [matTooltip]="roleModule.SelectedRoleDescription" matTooltipPosition="left" >
+                                <mat-icon [icIcon]="icInfo" class="text-primary"></mat-icon>
+                            </span> -->
+                        </span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon [icIcon]="icEnhanced_Encryption" size="22px"></mat-icon> 
+              Security
+            </ng-template>
+            <div  fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div @fadeInUp class="card" fxFlex="auto">
+                <div class="px-6 py-2" fxLayout="column">
+                  <div fxLayout="column" fxLayoutGap="10" >
+                    <mat-nav-list>
+                      <div class="pl-6 pt-2 pb-2"  mat-list-item>
+                        <mat-slide-toggle [checked]="user.Security?.TwoFactorEnabled==true"  
+                        (change)="onTwoFactorAuthChange($event.checked)" color="primary">Two-factor authentication(2FA)</mat-slide-toggle>
+                        <p class="mt-0 mb-4 text-secondary">
+                          Two-factor authentication(2FA) provides an additional security layer, ensuring reliable protection for this account
+                        </p>
+                      </div>
+                    </mat-nav-list>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button color="primary" mat-button type="submit"  [disabled]="!form.valid">{{btntitle}}</button>
+  </mat-dialog-actions>
+</form>
+

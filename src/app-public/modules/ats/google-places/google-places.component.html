@@ -1,0 +1,14 @@
+<form [formGroup]="ATSGoogePlacesForm">
+  <mat-form-field  *ngIf="InputMode=='Add'" appearance="outline" class="flex-auto">
+    <mat-label>Location (City, State)</mat-label>
+    <input matInput [required]="required" formControlName="location" name="location" type="text" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+      (change)="autocompleteInputChange($event)" [disabled]="disable">
+  </mat-form-field>
+
+  <mat-form-field  *ngIf="InputMode=='Edit'" fxFlex="100" fxFlex.gt-xs="100"  class="flex-auto">
+    <mat-label>Location (City, State)</mat-label>
+    <input matInput [required]="required" type="text" formControlName="location" name="location" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+      (change)="autocompleteInputChange($event)" [disabled]="disable">
+  </mat-form-field>
+
+</form>

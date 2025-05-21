@@ -1,0 +1,77 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">{{title}} </h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+        <div class="border-l border-r border-b" fxFlex="auto">
+
+            <!-- <div class="px-6 py-4" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field class="mt-6" fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-label>Recruiter</mat-label>
+                    <mat-chip-list #chipAssigneesList aria-label="Fruit selection" required>
+                        <mat-chip *ngFor="let keywrd of SelectedAssigness" [selectable]="assigneesselectable"
+                            [removable]="assigneesremovable" (removed)="assigneesremove(keywrd)" [value]="keywrd.value">
+                            {{keywrd.name}}
+                            <mat-icon matChipRemove [icIcon]="icClose" *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="New Assignee..." #AssigneeInput [formControl]="AssigneeCtrl"
+                            [matAutocomplete]="Assigneeauto" [matChipInputFor]="chipAssigneesList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur">
+                    </mat-chip-list>
+                    <mat-autocomplete #Assigneeauto="matAutocomplete" (optionSelected)="Assigneeselected($event)">
+                        <mat-option *ngFor="let assign of filteredAssignees | async" [value]="assign.value">
+                            {{assign.name}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div> -->
+
+            <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+                <mat-form-field class="mt-6" appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                    class="vex-flex-form-field flex-auto">
+                    <mat-label>Users</mat-label>
+                    <input required [formControl]="AssigneeCtrl" [matAutocomplete]="auto" [(ngModel)]="AssigneName"
+                        matInput>
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let assign of filteredOptions | async" [value]="assign.FullName"
+                            [id]="assign.value" (onSelectionChange)="onSelFunc(assign)">
+                            <span class="body-1">{{ assign.FullName }}</span>
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngFor="let validation of validation_msgs.phoneLabelAutocompleteControl">
+                        <div *ngIf="AssigneeCtrl.hasError(validation.type)">
+                            {{validation.message}}
+                        </div>
+                    </mat-error>
+                    <mat-hint>
+                        Select user from dropdown.
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" class="px-6 py-4" fxLayoutGap="5px">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Candidate Notes</mat-label>
+                    <textarea  matInput [(ngModel)]="ApplicantNotes"></textarea>
+                </mat-form-field>
+            </div>
+
+        </div>
+       
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-button type="submit" [disabled]=!AssigneeCtrl.valid
+            (click)="AssignApplicants()">SEND</button>
+    </div>
+
+</mat-dialog-actions>

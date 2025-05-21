@@ -1,0 +1,94 @@
+<div [ngClass.gt-sm]="['mr-6']" #placeHolder class="card" fxLayout="row" fxLayout.lt-md="column" style="width: 50%;">
+    <div class="p-gutter" fxFlex="100" fxFlex.lt-md="auto">
+        <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="flex-start">
+            <div fxFlex="0 1 calc(50% - 16px)" *ngFor="let metadata of reportParametersMetaData.ReportFilters">
+
+                <cv-poc-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='POC'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedPOC)="SelectedPOC($event,metadata)">
+                </cv-poc-autocomplete>
+
+                <cv-poc-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='Recruiter'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedPOC)="SelectedPOC($event,metadata)">
+                </cv-poc-autocomplete>
+
+                <cv-consultant-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='CONSULTANT'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedConsultant)="SelectedPOC($event,metadata)">
+                </cv-consultant-autocomplete>
+
+                <cv-endclient-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='EndClient'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedEndclient)="SelectedPOC($event,metadata)">
+                </cv-endclient-autocomplete>
+
+                <cv-vendor-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='VENDOR'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedVendor)="SelectedPOC($event,metadata)">
+                </cv-vendor-autocomplete>
+
+                <cv-worker-autocomplete *ngIf="metadata.FieldType==='auto' && metadata.FieldDataName==='WORKERS'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedWorker)="SelectedPOC($event,metadata)">
+                </cv-worker-autocomplete>
+
+                <cv-report-only-date *ngIf="metadata.FieldType==='StartDateRange'" [rewuired]="metadata.FieldIsRequired"
+                    [label]="metadata.FieldLabel" [fromdate]="fnstartDate" [todate]="fnendDate"
+                    (daterangeChange)="SelectStartDateRange($event,metadata)">
+                </cv-report-only-date>
+
+                <cv-enddate-range *ngIf="metadata.FieldType==='EndDateRange'" [rewuired]="metadata.FieldIsRequired"
+                    [label]="metadata.FieldLabel" [fromdate]="erstartDate" [todate]="erendDate"
+                    (enddaterangeChange)="SelectEndDateRange($event,metadata)">
+                </cv-enddate-range>
+
+                <cv-select-dropdown *ngIf="metadata.FieldType==='select' || metadata.FieldType==='date'"
+                    [required]="metadata.FieldIsRequired" [label]="metadata.FieldLabel"
+                    [value]="metadata.FieldSelectedValue" [selectList]="metadata.FieldSource"
+                    (selectedData)="SelectedData($event,metadata)"></cv-select-dropdown>
+
+                <cv-date-range *ngIf="metadata.FieldType==='date'" [disabled]="isDisabled" [fromdate]="startDate"
+                    [todate]="endDate" (dateChange)="changeFilterDate($event)"></cv-date-range>
+
+                <cv-sort-report *ngIf="metadata.FieldType==='sort'" [required]="metadata.FieldIsRequired"
+                    [label]="metadata.FieldLabel" [value]="metadata.FieldSelectedValue"
+                    [selectList]="metadata.FieldSource" (selectedData)="SelectedData($event,metadata)"></cv-sort-report>
+
+                <cv-report-hastags *ngIf="metadata.FieldType==='HashTags'" [existingTags]="dbHashTags"
+                    [resetHashTags]="resetHashTags" (out_selectedHashTaga)="GetSelectedHashTags($event,metadata)">
+
+                </cv-report-hastags>
+
+                <cv-report-autocomplete-multiple *ngIf="metadata.FieldType==='Skills'"
+                    [existingSkills]="SelectedKeywords" (out_selectedSkills)="GetSelectedSkills($event,metadata)">
+                </cv-report-autocomplete-multiple>
+
+                <div *ngIf="metadata.FieldType==='LocalTX'">
+                    <span class="ml-6">Local To Texas</span>
+                    <span class="ml-2">
+                        <mat-slide-toggle (click)="$event.stopPropagation()" (change)="LocalDFWStatus($event,metadata)"
+                            color="primary"></mat-slide-toggle>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-button type="button" (click)="clearFilters()">RESET</button>
+            <button (click)="runReportClick()" color="primary" mat-raised-button type="submit"
+                [matTooltip]="buttonName">
+                {{buttonName}}
+            </button>
+        </div>
+
+    </div>
+</div>

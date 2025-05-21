@@ -1,0 +1,48 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <h2 class="headline m-0" fxFlex="auto">Task Summary</h2>
+    <button class="text-secondary" [mat-dialog-close]="selectedTimeSheetEachDay" mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content>
+    <p class="text-muted pull-left mt-4" *ngIf="enableCOntrol==false">
+        <strong class="text-danger">*</strong> Task Summary is mandatory to enter work hours</p>
+    <div class="text-right mb-4">
+        <button mat-raised-button color="primary"id="more_fields" (click)="addTask();" *ngIf="enableCOntrol==false && Data.pageMode==='add'">
+            <mat-icon [icIcon]="icAdd"></mat-icon>&nbsp; Task Summary </button>
+    </div>
+    <div *ngIf="selectedTimeSheetEachDay.TimesheetTaskDetails.length>0">
+        <div *ngFor="let timesheetTaskField of selectedTimeSheetEachDay.TimesheetTaskDetails;let i=index">
+            <div *ngIf="timesheetTaskField.IsOverTime == IsOverTimeTask">
+                <div fxLayout="row">
+                    <div fxFlex="100" fxFlex.gt-xs="60" class="pr-8">
+                        <input required class="form-control" id="taskstddesc" [(ngModel)]="timesheetTaskField.Task" (ngModelChange)="valuechange($event)" placeholder="Task Summary" type="text">
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="10" class="pr-8">
+                        <input class="form-control" id="taskstdhrs" [(ngModel)]="timesheetTaskField.TaskHours" oninput="this.value=this.value.replace(/[^0-9][.][0-5]/g,'');if(this.value>24){this.value=0;};" placeholder="Enter Hours" type="number" min="0" max="24" />
+                    </div>
+                    <div *ngIf="(timesheetTaskField.TimesheetTaskID==-1 || timesheetTaskField.TimesheetTaskID==0) && Data.pageMode==='add'" fxFlex="100" fxFlex.gt-xs="5">
+                      <a class="link-bubble" style="background: #ed0707!important;margin-top: 11px !important;" (click)="RemoveTaskClick(timesheetTaskField)" matTooltip="Remove">
+                        <mat-icon [icIcon]="icMinus"></mat-icon>
+                      </a>
+                  </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedTimeSheetEachDay.TimesheetTaskDetails.length==0">
+        <h4>No Tasks are Added </h4>
+    </div>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close [mat-dialog-close]="false" class="mr-4" matTooltip="Cancel">Cancel</button>
+            <button color="primary" *ngIf="Data.pageMode==='add'" mat-button type="submit" [mat-dialog-close]="selectedTimeSheetEachDay" matTooltip="Submit">Submit</button>
+          
+            
+        </div>
+    </div>
+</mat-dialog-footer>

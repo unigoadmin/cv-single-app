@@ -1,0 +1,27 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { SuperAdminPanelSecurityAuthGuard } from 'src/@shared/guards/superadminpanel.security.guard';
+import { TenantsComponent } from './tenants/tenants.component';
+import {SuperadminConsoleComponent} from './superadmin-console/superadmin-console.component';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: SuperadminConsoleComponent,
+        data: { toolbarShadowEnabled: true, permissions: { role: ['admin'], module: 'Admin' } },
+        canActivate: [SuperAdminPanelSecurityAuthGuard]
+    },
+    {
+        path: 'superadmin-console',
+        component: SuperadminConsoleComponent,
+        data: { toolbarShadowEnabled: true, permissions: { role: ['admin'], module: 'Admin' } },
+        canActivate: [SuperAdminPanelSecurityAuthGuard]
+    },
+    
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class SuperAdminRoutingModule { }

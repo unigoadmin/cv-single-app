@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+      <h2 class="title my-0 leading-snug text-secondary textcgs">Global Settings</h2>
+      <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs">
+      </h3>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    
+    <button class="text-secondary" mat-icon-button type="button" (click)="OnClose()">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+        <div class="border-l border-r" fxFlex="auto" fxFill>
+            <form [formGroup]="form">
+                <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                  <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+                    <mat-form-field>
+                        <mat-label>Category</mat-label> 
+                        <mat-select required placeholder="Category" formControlName="Category" (selectionChange)="selectionChange($event)" name="Category" [(ngModel)]="selectedCategory.Category" 
+                        id="Category" class="example-full-width" [disabled]="mode==='Edit'">
+                            <mat-option *ngFor="let Category of MissingCatergoryList" [value]="Category.value" >
+                                {{Category.label}}
+                              </mat-option>
+                            <!-- <mat-option [value]="'CandidateMaster'">Candidate ID</mat-option>
+                            <mat-option [value]="'JobMaster'">Job ID</mat-option>
+                            <mat-option [value]="'EmployeeMaster'">Employee ID</mat-option>
+                            <mat-option [value]="'PlacementMaster'">Placement ID</mat-option>
+                            <mat-option [value]="'AssignmentMaster'">Assignment ID</mat-option>
+                            <mat-option [value]="'TimesheetMaster'">Timesheet ID</mat-option>
+                            <mat-option [value]="'AccountMaster'">Account ID</mat-option> -->
+                          </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>Prefix</mat-label>
+                      <input formControlName="Prefix" matInput  [(ngModel)]="selectedCategory.Prefix" required>
+                      <mat-icon [icIcon]="icPerson" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                    </mat-form-field>
+                    <mat-form-field >
+                      <mat-label>Series</mat-label>
+                      <input formControlName="series" matInput [(ngModel)]="selectedCategory.Series" required [disabled]="mode==='Edit'"
+                      [readonly]="mode==='Edit'">
+                      <mat-icon [icIcon]="icPerson" class="ltr:mr-3 rtl:ml-3" matPrefix></mat-icon>
+                    </mat-form-field> 
+                  
+                </div>
+                </div>
+              </form>
+        </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="OnClose()" >CANCEL</button>
+    <button color="primary" mat-button type="submit"(click)="SaveChanges()" [disabled]="!form.valid">SAVE CHANGES</button>
+  </mat-dialog-actions>

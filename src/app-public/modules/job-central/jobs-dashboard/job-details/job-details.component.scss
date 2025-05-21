@@ -1,0 +1,90 @@
+
+.mat-button{
+    color: rgba(var(--color-primary-contrast));
+    background-color: rgba(var(--color-primary));
+    //margin-right: 5px;
+  }
+  
+  
+  #middlebuttons1{
+   
+    padding-left:10px;
+    
+    border-left:1px solid  #e5e5e5;
+    
+  }
+  .child-1,.child-2,.child-3,.child-4{
+    padding:15px;
+  }
+  
+  .mat-divider{
+    border-top-width: 2px; 
+  }
+  
+  .certtags {
+    background-color: rgba(var(--color-primary), .1);
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-right: 2px;
+  }
+  
+  .submissionTypeCard{
+  
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    color:rgba(var(--color-primary-contrast));
+    background-color: rgba(var(--color-primary));
+    margin-right: 10px;
+  }
+  
+  .textcgs {
+    text-transform: lowercase;
+  }
+  
+  .textcgs::first-line {
+    text-transform: capitalize;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .row {
+    overflow:scroll;
+      flex-direction: row;
+    }
+  
+    
+  }
+
+  .container{
+    display:inline-flex;
+}
+
+.column-1 {
+  flex-basis: 30%; /* sets initial width to 70% */
+}
+
+.column-2 {
+  flex-basis: 70%; /* sets initial width to 70% */
+}
+.box {
+ /* background-color: rgb(245, 215, 160);*/
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid rgb(116, 113, 113);
+  margin: 1rem;
+  box-shadow: 1px 1px 1px #fafafa;
+}
+  
+// @media only screen and (max-width: 900px) {
+//   .container {
+//       /* it place the items in vertical direction */
+//     flex-direction: column;
+//   }
+
+//   .box {
+//     margin: 0 0 1rem;
+//   }
+// }

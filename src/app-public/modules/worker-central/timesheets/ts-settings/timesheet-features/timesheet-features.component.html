@@ -1,0 +1,111 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card>
+            <!-- <mat-card-title>
+                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                    Timesheet Notify</div>
+            </mat-card-title> -->
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Timesheet's Description</mat-label>
+                        <mat-select required name="tsDescription" [(ngModel)]="timesheetSetting.DescriptionValidation"
+                            id="tsDescription">
+                            <mat-option [value]="0">Not Mandatory
+                            </mat-option>
+                            <mat-option [value]="1">Mandatory
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Task Description</mat-label>
+                        <mat-select required name="SelectTD" [(ngModel)]="timesheetSetting.TaskDescriptionValidation"
+                            id="SelectTD">
+                            <mat-option [value]="0">Not Mandatory
+                            </mat-option>
+                            <mat-option [value]="1">Mandatory
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Upload Document</mat-label>
+                        <mat-select required name="UpDoc" id="UpDoc" [(ngModel)]="timesheetSetting.DocumentValidation">
+                            <mat-option [value]="1">Required
+                            </mat-option>
+                            <mat-option [value]="0">Not Required
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Daily Standard Hours</mat-label>
+                        <input matInput name="stdHours" id="stdHours" type="number"
+                            oninput="this.value=this.value.replace(/[^0-9][.][0-5]/g,'');if(this.value>24){this.value=0;};"
+                            [(ngModel)]="timesheetSetting.StandardHoursMax">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Weekly Timesheet Description Minimum Length</mat-label>
+                        <input matInput name="MinimumCount" id="MinimumCount" type="number"
+                            [(ngModel)]="timesheetSetting.MinWeeklyDescription">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Weekly Timesheet Description Maximum Length</mat-label>
+                        <input matInput name="MaximumCount" id="MaximumCount" type="number"
+                            [(ngModel)]="timesheetSetting.MaxWeeklyDescription">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Timesheet Type</mat-label>
+                        <mat-select required name="timesheettype" id="timesheettype"
+                            [(ngModel)]="timesheetSetting.TimesheetType" [disabled]="true">
+                            <mat-option [value]="1">Weekly</mat-option>
+                            <mat-option [value]="2">Bi Weekly</mat-option>
+                            <mat-option [value]="3">Bi Monthly</mat-option>
+                            <mat-option [value]="4">Monthly</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Timesheet Start Date</mat-label>
+                        <input [matDatepicker]="startdatepickerRef" [disabled]="timesheetSetting.TimesheetStartDate?true:false" required
+                            [(ngModel)]="timesheetSetting.TimesheetStartDate" (dateInput)="onSelectStartdate($event)"
+                            (dateChange)="onSelectStartdate($event)" matInput name="wpstexpiration">
+                        <mat-datepicker-toggle [for]="startdatepickerRef" matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #startdatepickerRef></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Week Start Day</mat-label>
+                        <mat-select required name="weekstartday" id="weekstartday"
+                            [(ngModel)]="timesheetSetting.WeekStartDay" [disabled]="true">
+                            <mat-option [value]="0">Sunday</mat-option>
+                            <mat-option [value]="1">Monday</mat-option>
+                            <mat-option [value]="2">Tuesday</mat-option>
+                            <mat-option [value]="3">Wednesday</mat-option>
+                            <mat-option [value]="4">Thursday</mat-option>
+                            <mat-option [value]="5">Friday</mat-option>
+                            <mat-option [value]="6">Saturday</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" >
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50" style="text-align: right;">
+                        <button [disabled]="loading" style="float: right;" class="mr-4" (click)="saveTimeSheetSettings()" color="primary"
+                        mat-raised-button>Submit
+                        <img *ngIf="loading"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    </button>
+                    </div>
+                   
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Assign Recruiter</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+        <div class="border-l border-r border-b" fxFlex="auto">
+            <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100" appearance="outline">
+                    <mat-label>Assignees</mat-label>
+                    <mat-chip-list #chipAssigneesList aria-label="Fruit selection">
+                        <mat-chip *ngFor="let keywrd of SelectedAssigness" [selectable]="assigneesselectable"
+                            [removable]="assigneesremovable" (removed)="assigneesremove(keywrd)" [value]="keywrd.value">
+                            {{keywrd.name}}
+                            <mat-icon matChipRemove [icIcon]="icClose" *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input #AssigneeInput [formControl]="AssigneeCtrl" [matAutocomplete]="Assigneeauto"
+                            [matChipInputFor]="chipAssigneesList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur">
+                    </mat-chip-list>
+                    <mat-autocomplete #Assigneeauto="matAutocomplete" (optionSelected)="Assigneeselected($event)">
+                        <mat-option *ngFor="let assign of filteredAssignees | async" [value]="assign.value">
+                            {{assign.name}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div *ngIf="def_applicants.model=='single'" class="px-6 py-4" fxLayout="column" style="width: 100%;">
+                <mat-chip-list multiple id="chipList" [selectable]="true">
+                    <mat-chip *ngFor="let chip of hashtags" [selected]="chip.state"
+                        (click)="chip.state=!chip.state;HashTagschangeSelected('s', chip.HashTagId)">
+                        {{chip.HashTagText}}
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="row" class="px-6 py-4" fxLayoutGap="5px">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Applicant Notes</mat-label>
+                    <textarea matInput [(ngModel)]="ApplicantNotes"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+        <button class="mr-2" mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="button" [disabled]="!AssigneeCtrl.valid" (click)="AssignApplicants()">ASSIGN</button>
+        </div>
+    </div>
+    
+</mat-dialog-footer>

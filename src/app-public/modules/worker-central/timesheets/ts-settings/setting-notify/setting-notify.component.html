@@ -1,0 +1,108 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Missing timesheet reminder for previous week</mat-label>
+                        <mat-select required name="SelectPW" id="SelectPW" [(ngModel)]="timesheetNotification.PreviousWeekMissing">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Daily
+                            </mat-option>
+                            <mat-option [value]="7">Weekly (Every Monday)
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Current week timesheet reminder</mat-label>
+                        <mat-select required name="SelectPW1" id="SelectPW1" [(ngModel)]="timesheetNotification.CurrentWeekMissing">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Daily
+                            </mat-option>
+                            <mat-option [value]="7">Weekly (Every Friday)
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Timesheets pending approval reminder to manager</mat-label>
+                        <mat-select required name="SelectPW2" id="SelectPW2" [(ngModel)]="timesheetNotification.ApprovalPending">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Daily
+                            </mat-option>
+                            <mat-option [value]="7">Weekly (Every Monday)
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label> Missing timesheets reminder to manager</mat-label>
+                        <mat-select required name="SelectPW3" id="SelectPW3" [(ngModel)]="timesheetNotification.DirectReports">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Daily
+                            </mat-option>
+                            <mat-option [value]="7">Weekly (Every Tuesday)
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label> Notify manager when timesheets are submitted</mat-label>
+                        <mat-select  name="SelectTimesheetSubmission" id="SelectPW4" [(ngModel)]="timesheetNotification.SubmissionNotification">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Always
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label>Notify worker when timesheets are rejected</mat-label>
+                        <mat-select  name="SelectTimesheetRejected" id="SelectPW5" [(ngModel)]="timesheetNotification.RejectionNotification">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Always
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label> Notify worker when timesheets are approved</mat-label>
+                        <mat-select name="SelectTimesheetApproval" id="SelectPW4" [(ngModel)]="timesheetNotification.ApprovalNotification">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Always
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-label> Notify when chat notes are posted</mat-label>
+                        <mat-select name="SelectTimesheetChatNotes" id="SelectPW5" [(ngModel)]="timesheetNotification.ChatNotification">
+                            <mat-option [value]="0">Never
+                            </mat-option>
+                            <mat-option [value]="1">Always
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" >
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50" style="text-align: right;">
+                        <button [disabled]="loading" style="float: right;" class="mr-4" (click)="saveTimeSheetNotify()" color="primary"
+                        mat-raised-button>Submit
+                        <img *ngIf="loading"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    </button>
+                    </div>
+                   
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="mt-1">
+    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+
+        <div class="mr-2">
+            <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+                style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+        </div>
+        <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+            fxLayoutAlign="start center">
+            <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+            <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                placeholder="Search..." type="search">
+        </div>
+
+
+        <span fxFlex></span>
+
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+            <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+
+        <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4 mr-4" fxFlex="none" mat-icon-button
+            matTooltip="Filter Columns" type="button">
+            <mat-icon [icIcon]="icFilterList"></mat-icon>
+        </button>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="space-between">
+        <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+            <!-- Text Columns -->
+            <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+                <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                    <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{
+                        column.label }}
+                    </th>
+                    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                        <span [matTooltip]="row[column.property]">{{row[column.property]}}</span>
+                    </td>
+                </ng-container>
+            </ng-container>
+
+            <ng-container matColumnDef="AccountLayer">
+                <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Account Name
+                </th>
+                <td *matCellDef="let row" mat-cell>
+                    <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                        <span>{{row['AccountName']}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="AccountType">
+                <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Account Type</th>
+                <td *matCellDef="let row" mat-cell>
+                    <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                        <span *ngIf="row['AccountTypeId']===1"
+                            class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===2"
+                            class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===3"
+                            class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===4"
+                            class="rounded px-2 py-1 font-medium text-xs text-purple bg-purple-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===5"
+                            class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===6"
+                            class="rounded px-2 py-1 font-medium text-xs text-cyan bg-cyan-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===7"
+                            class="rounded px-2 py-1 font-medium text-xs text-teal bg-teal-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                        <span *ngIf="row['AccountTypeId']===8"
+                            class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                            {{row['AccountTypeName']}}
+                        </span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+                class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+        </mat-paginator>
+    </div>
+</div>
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+        class="checkbox-item mat-menu-item">
+        <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+            {{ column.label }}
+        </mat-checkbox>
+    </button>
+</mat-menu>

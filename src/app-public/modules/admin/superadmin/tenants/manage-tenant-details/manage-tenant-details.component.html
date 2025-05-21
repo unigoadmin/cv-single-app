@@ -1,0 +1,81 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <!-- <div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+        <div *ngIf="user.UserId">
+          <h2 class="title my-0 leading-snug text-secondary textcgs">{{ user.FirstName + ' ' +user.LastName }} </h2>
+          <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs"> {{user.Email}}
+          </h3>
+        </div>
+        <div *ngIf="!user.UserId">
+          <h2 class="title my-0 leading-snug text-secondary textcgs">{{title}} </h2>
+        </div>
+        <div *ngIf="user.UserId" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10" class="pb-1 pt-1">
+          <div style="padding-left: 12px;">
+            <div class="rounded px-2 font-medium text-xs labelcard text-amber-contrast bg-amber" *ngIf="user.IsActive">
+              Active
+            </div>
+            <div class="rounded px-2 font-medium text-xs labelcard text-amber-contrast bg-gray" *ngIf="!user.IsActive">
+              Inactive
+            </div>
+          </div>
+        </div>
+        <div fxFlex="auto">
+        </div>
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+          <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+      </div> -->
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Manage Company
+        </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+
+        <button [mat-dialog-close]="'Close'"
+            style="top:3px;--tw-bg-opacity: 1 !important;background-color: rgba(158, 158, 158, var(--tw-bg-opacity)) !important;color: rgba(var(--color-accent-contrast), 1) !important;height: 40px !important;width: 40px !important;"
+            mat-fab type="button">
+            <mat-icon style="bottom: 8px !important;position: relative;" [icIcon]="iconService.icClose"></mat-icon>
+        </button>
+    </div>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm pl-tabs" style="overflow: none;">
+    <mat-tab-group class="mt-4">
+        <mat-tab label="Company Information">
+            <cv-edit-tenant-details [companyId]="CompanyId"></cv-edit-tenant-details>
+        </mat-tab>
+        <mat-tab label="Root User">
+            <cv-edit-root-user [companyId]="CompanyId" [rootUserId]="RootUserId"></cv-edit-root-user>
+        </mat-tab>
+        <mat-tab label="Modules">
+            <mat-divider class="-mx-6 text-border"></mat-divider>
+            <mat-dialog-content fxLayout="column">
+                <table class="table w-full mt-8">
+                    <thead>
+                        <tr>
+                            <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="10">MODULE</td>
+                            <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="10">STATUS</td>
+                        </tr>
+                    </thead>
+                    <tbody class="pt-4">
+                        <tr *ngFor="let item of companyModules">
+                            <td class="py-4 border-b" fxFlex="10">{{item.ModuleName}}</td>
+                            <td class="py-4 border-b " fxFlex="10">
+                                <mat-slide-toggle [checked]="false" [attr.id]="'Module'+item.ModuleId"
+                                    [(ngModel)]="item.IsEnabled" color="primary"></mat-slide-toggle>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div fxLayout="row" class="mt-4">
+                    <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                        <button mat-button type="button" (click)="cancel_modules()"  class="mr-4" matTooltip="Cancel">CANCEL</button>
+                        <button color="primary" (click)="save_modules()" mat-button
+                            type="submit" matTooltip="Submit">SUBMIT</button>
+                    </div>
+                </div>
+                
+            </mat-dialog-content>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+

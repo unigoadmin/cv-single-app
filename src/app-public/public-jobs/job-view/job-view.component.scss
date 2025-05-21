@@ -1,0 +1,49 @@
+.max-w-xs {
+    max-width: 80rem;
+}
+
+.TitleH {
+    font-size: 24px;
+    color: var(--color-primary);
+    margin: 10px 0px 10px;
+    text-transform: capitalize;
+}
+
+/* your-component.component.css */
+.job-description-container {
+    
+    padding: 20px;
+    background-color: #fff;
+    /*overflow-y: auto;*/ /* Add scrollbar when content is too large */
+    /* Set a max height to trigger the scrollbar */
+    position: relative; /* Position relative for absolute positioning */
+  }
+  
+  .job-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  
+  .job-company {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .job-location {
+    color: #777;
+    margin-bottom: 16px;
+  }
+  
+  .job-description {
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 16px;
+  }
+  

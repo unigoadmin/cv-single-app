@@ -1,0 +1,100 @@
+<div *ngIf="IsHeaderVisible" fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Applicant Notes</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row" style="min-height: 500px;max-height:500px; overflow: auto;">
+        <div class="border-l border-r" fxFlex="auto">
+            <div class="MsgList" id="wallmessages" class="ltr:ml-10 rtl:mr-10 mt-2">
+                <div class="MsgItem" *ngFor="let comment of NotesList" class="mt-4">
+                    <div class="MsgIn" fxLayout="row" fxLayoutAlign="start center">
+                        <img src="assets/img/profile.png" class="avatar h-8 w-8 ltr:mr-3 rtl:ml-3">
+                        <div>
+                            <div class="msg-by text-secondary">by {{comment.CreatedByName}}</div>
+                            <div class="msg-date">{{comment.CreatedDate}} </div>
+                        </div>
+                    </div>
+    
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="comment-card">
+    
+                        <div class="msg-content" fxFlex="80">
+    
+                            <div [innerHTML]="formatText(comment.Comment)"></div>
+    
+                            <div *ngIf="comment.IsFile" class="attachment-container">
+                                <a (click)="ViewAttachment(comment);"
+                                    class="vex-mail-compose-attachment mt-2 mb-2 rounded-full border px-4 py-1 flex items-center bg-hover cursor-pointer relative"
+                                    matRipple>
+                                    <ic-icon [icon]="iconService.icPictureAsPdf" class="flex-none text-primary"
+                                        size="18px"></ic-icon>
+                                    <p class="flex-auto ml-4 text-sm">{{comment.FileName}}</p>
+                                </a>
+                                <mat-icon class="ml-4 mt-2 pointer-link" color="primary" matTooltip="Download Attachment"
+                                    (click)="DownloadAttachemnt(comment)">
+                                    cloud_download
+                                </mat-icon>
+                            </div>
+                        </div>
+    
+                        <!-- Icons Area: 20% -->
+                        <div class="icon-container" fxFlex="20" fxLayout="row" fxLayoutAlign="end center">
+                            <button *ngIf="comment.IsDelete == true" (click)="editComment(comment)" mat-icon-button
+                                color="primary" matTooltip="Edit">
+                                <ic-icon [icon]="iconService.icEdit" size="18px"></ic-icon>
+                            </button>
+                            <button *ngIf="comment.IsDelete == true" (click)="deleteComment(comment)" mat-icon-button
+                                color="warn" matTooltip="Delete">
+                                <ic-icon [icon]="iconService.icDelete" size="18px"></ic-icon>
+                            </button>
+                        </div>
+                    </div>
+    
+                </div>
+                <input id="attachR" type="file" (change)="onFileSelected($event)" style="display:none;" #fileUpload />
+                <div class="mt-6" fxLayout="row" fxLayoutAlign="start center">
+                    <img class="avatar w-8 h-8 ltr:mr-3 rtl:ml-3" fxFlex="none" src="assets/img/profile.png">
+                    <mat-form-field appearance="outline" class="vex-dense-form-field vex-flex-form-field" fxFlex="auto">
+    
+                        <textarea id="incomment" [formControl]="commentCtrl" matInput placeholder="Write a comment ..."
+                            (keydown.enter)="handleEnter($event)" class="custom-textarea"></textarea>
+                            <mat-hint>Press Enter to go to the next line.</mat-hint>    
+                        <div *ngIf="isFileUploaded==true" style="width: 50% !important;"
+                            class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center bg-hover transition duration-200 ease-in-out cursor-pointer relative"
+                            matRipple>
+                            <ic-icon [icon]="iconService.icPictureAsPdf" class="flex-none text-primary"
+                                size="18px"></ic-icon>
+                            <p class="flex-auto ml-4 text-sm">{{fileUploadResponse.FileName}}</p>
+                            <button (click)="$event?.stopPropagation();ViewAttachedFile()"
+                                class="flex-none w-8 h-8 leading-none text-primary bg-primary-light" mat-icon-button
+                                type="button">
+                                <mat-icon [icIcon]="iconService.icEye" size="18px" matTooltip="View Attachment"></mat-icon>
+                            </button>
+                            <button (click)="$event?.stopPropagation();deleteFile()"
+                                class="flex-none w-8 h-8 leading-none text-primary bg-primary-light" mat-icon-button
+                                type="button">
+                                <mat-icon [icIcon]="iconService.icClose" size="18px"
+                                    matTooltip="Delete Attachment"></mat-icon>
+                            </button>
+                        </div>
+                        <button (click)="saveComment()" [disabled]="isSubmitting" class="-top-1" color="primary" mat-button
+                            matSuffix type="button">{{btn_title}}
+                            <img *ngIf="isSubmitting" style="display: inherit;"
+                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        </button>
+                        <button *ngIf="isFileUploaded==false" (click)="fileUpload.click()" class="-top-1" color="primary"
+                            mat-button matSuffix type="button"><mat-icon style="display: inline;">attach_file</mat-icon>
+                            <img *ngIf="IsFileLoading" style="display: inherit;"
+                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        </button>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

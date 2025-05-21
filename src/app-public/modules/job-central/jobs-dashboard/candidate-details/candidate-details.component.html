@@ -1,0 +1,270 @@
+<div class="row">
+    <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+      <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">{{SelectedCandidate.FirstName+' '+SelectedCandidate.LastName}}</h2>
+        <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs">{{SelectedCandidate.Title}}
+        </h3>
+      </div>
+  
+      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10" class="pb-1 pt-1">
+        <div style="padding-left: 12px;">
+          <div [ngClass]="[status_textClass,status_bgClass]" class="rounded px-2 py-1 font-medium text-xs labelcard">
+            Draft
+          </div>
+        </div>
+      </div>
+  
+      <span fxFlex></span>
+      <button (click)="OnCloseDetail()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab matTooltip="Back To List"
+        type="button">
+        <mat-icon [icIcon]="icBack"></mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  
+  
+  <div fxLayout="row" style="overflow: scroll;height:auto" class="row">
+  
+    <div class="p-2 card" fxFlex="column" height="100%" style="flex: 50%;flex-direction:row;">
+  
+      <mat-card style="min-width:600px;padding: 8px !important;" height="30%">
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10" class="pb-1 pt-1">
+          <div style="padding-left: 12px;">
+            <span class="rounded-full text-secondary font-medium locationbtn">
+              <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+              </ic-icon>
+              <span *ngIf="SelectedCandidate.Location">{{SelectedCandidate.Location}}</span>
+              <span *ngIf="!SelectedCandidate.Location">- Not Specified -</span>
+            </span>
+  
+            <span class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+              <span>{{SelectedCandidate.WorkStatus}}</span>
+            </span>
+          </div>
+          <div>
+            <p class="font-medium">{{ SelectedCandidate.UpdatedBy }}</p>
+            <p class="text-secondary font-medium text-xs">{{ SelectedCandidate.UpdatedDate }}</p>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end end" class="ml-3 pb-1 pt-2" fxLayoutGap="10">
+          <button mat-button type="button" class="mr-2" (click)="ViewResume()">
+            <ic-icon [icon]="icEye" class="ltr:mr-2 rtl:ml-3" inline="true" size="18px"></ic-icon>
+            <span>View CV</span>
+          </button>
+          <button (click)="downloadResume()" mat-button type="button">
+            <ic-icon [icon]="icDownload" class="ltr:mr-2 rtl:ml-3" inline="true"></ic-icon>
+            <span>Download CV</span>
+          </button>
+  
+        </div>
+      </mat-card>
+      <div *ngIf="SelectedCandidate.ViewResumeInnerPath" fxLayout="row" style="width:690px">
+        <ngx-doc-viewer [url]="SelectedCandidate.ViewResumeInnerPath" viewer="google" style="width:100%;height:80vh;">
+        </ngx-doc-viewer>
+        <!-- <iframe src='https://prod-consultvite.s3.amazonaws.com/Employer/ATS/Candidate_Profiles/c88ac08f-6e59-4bea-9a16-7ced3f587039.docx'
+          width="100%" height="500px" frameborder="0"> </iframe> -->
+      </div>
+      <div *ngIf="!SelectedCandidate.ViewResumeInnerPath" fxLayout="row" fxLayoutAlign="center center"
+        style="width:690px">
+        <h3 class="mt-8 text-secondary">Resume is not available for this candidate</h3>
+      </div>
+    </div>
+  
+    <div class="border-l card" fxFlex="column" height="100%" style="flex-direction:row; flex: 50%;margin-left:2px">
+  
+      <mat-tab-group mat-align-tabs="start" style="min-width:650px">
+        <mat-tab>
+          <ng-template mat-tab-label>
+  
+            <span class="pl-4">
+              <ic-icon [icon]="icInfo" inline="true"></ic-icon> SUMMARY
+            </span>
+          </ng-template>
+  
+          <div fxLayout="row">
+            <div class="child-1 text-secondary" fxFlex="18"><span>Skills:</span></div>
+            <div class="child-2">
+              <div *ngFor="let label of keywordsText" fxFlex="none">
+                <span class="certtags">{{ label }}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div class="child-1 text-secondary" fxFlex="18"><span>Tags:</span></div>
+            <div class="child-2">
+              <div *ngFor="let label of hashtags" fxFlex="none">
+                <span class="certtags">{{ label }}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container " fxLayout="row">
+            <div class="child-1 text-secondary" fxFlex="18"><span>Certifications:</span></div>
+            <div class="child-2">
+              <div *ngFor="let label of CertificationsText" fxFlex="none">
+                <span class="certtags">{{ label }}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Title:</span></div>
+              <div class="child-2" fxFlex="65"><span>{{SelectedCandidate.Title}}</span></div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Exp (Years):</div>
+              <div class="child-3" fxFlex="65"><span>{{SelectedCandidate.ExperienceYears}}</span></div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Education:</span></div>
+              <div class="child-2" fxFlex="65"><span>{{SelectedCandidate.Qualification}}</span></div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Location:</span></div>
+              <div class="child-3" fxFlex="65">
+                <span class="rounded-full text-secondary font-medium locationbtn">
+                  <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+                  </ic-icon>
+                  <span *ngIf="SelectedCandidate.Location">{{SelectedCandidate.Location}}</span>
+                  <span *ngIf="!SelectedCandidate.Location">- Not Disclosed -</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Phone:</span></div>
+              <div class="child-2" fxFlex="65"><span>{{SelectedCandidate.PrimaryPhoneNumber}}</span></div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Email:</span></div>
+              <div class="child-3" fxFlex="65"><span>{{SelectedCandidate.CandidateEmail}}</span></div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+              <div class="child-1 text-secondary" fxFlex="18">LinkedIn:</div>
+              <div class="child-2 " fxFlex="65">
+                <a *ngIf="SelectedCandidate.LinkedIn!=null && SelectedCandidate.LinkedIn!=''" 
+                      target="_blank" href="{{SelectedCandidate.LinkedIn}}"
+                      class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                      mat-icon-button>
+                      <mat-icon svgIcon="linkedin" size="16px"></mat-icon>
+                    </a>
+                    <a *ngIf="!SelectedCandidate.LinkedIn" 
+                      class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                      mat-icon-button>
+                      <mat-icon svgIcon="disable-linkedin" size="16px"></mat-icon>
+                    </a>
+              </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Work Permit:</span></div>
+              <div class="child-2" fxFlex=65>
+                <span class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+                  <span>{{SelectedCandidate.WorkStatus}}</span>
+                </span>
+              </div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Expiration:</div>
+              <div class="child-3" fxFlex="65"><span>{{SelectedCandidate.WorkStatusExpiry | date:'MM/dd/yyyy'}}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Sell Rate:</span></div>
+              <div class="child-2" fxFlex="65">
+                <div *ngIf="SelectedCandidate.SellRate"> $ {{SelectedCandidate.SellRate}}
+                  / {{SelectedCandidate.SellRateType===1?'hour' :SelectedCandidate.SellRateType===2?'Week'
+                  :SelectedCandidate.SellRateType===3?'Month' :SelectedCandidate.SellRateType===4?'Yearly':''}}
+                </div>
+                <div *ngIf="!SelectedCandidate.SellRate"> - Not Disclosed - </div>
+              </div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Availability:</span></div>
+              <div class="child-3" fxFlex="65"><span>{{SelectedCandidate.AvailabilityToStart}}</span></div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-1 text-secondary" fxFlex="35"><span>Source:</span></div>
+              <div class="child-2" fxFlex="65">{{SelectedCandidate.Source}}</div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Priority:</span></div>
+              <div class="child-3" fxFlex="65">
+                <div *ngFor="let label of SelectedCandidate.labels" [ngClass]="[label.textClass, label.bgClass]"
+                  class="rounded mr-1 px-2 py-1 font-medium text-xs" fxFlex="none">
+                  {{ label.text }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35"><span>Added By:</span></div>
+              <div class="child-3" fxFlex="65"><span class="certtags">{{SelectedCandidate.CreatedEmployee}}</span></div>
+            </div>
+            <div fxFlex="50%">
+              <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Added On:</span></div>
+              <div class="child-3" fxFlex="65"><span>{{SelectedCandidate.CreatedDate | date:'MM/dd/yyyy'}}</span></div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div fxLayout="row">
+            <div class="child-1 text-secondary" fxFlex="18"><span>Assignees:</span></div>
+            <div class="child-2">
+              <div *ngFor="let label of AssignToNames" fxFlex="none">
+                <span class="certtags">{{ label }}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+  
+            <span class="pl-4">
+              <ic-icon [icon]="icBook" color="primary" inline="true"></ic-icon> JOBS
+            </span>
+          </ng-template>
+          <div fxLayout="column" fxLayoutGap="10" style="overflow: hidden;background-color:#F5F5F5" class="ml-5">
+           <cv-candidate-jobs [selectedCandidateId]="selectedCandidateId.CandidateID"></cv-candidate-jobs>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+  
+            <span class="pl-4">
+              <ic-icon [icon]="icschedule" inline="true"></ic-icon> NOTES
+            </span>
+          </ng-template>
+          <div fxLayout="column" fxLayoutGap="10" style="overflow: hidden;background-color:#F5F5F5" class="ml-5">
+            <cv-candidate-notes [selectedCandidateId]="selectedCandidateId.CandidateID"></cv-candidate-notes>
+          </div>
+  
+  
+        </mat-tab>
+      </mat-tab-group>
+  
+  
+  
+    </div>
+  
+  
+  </div>

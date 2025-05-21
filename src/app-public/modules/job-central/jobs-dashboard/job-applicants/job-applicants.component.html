@@ -1,0 +1,88 @@
+<div fxLayout="column" style="background-color: #fafafa;" *ngIf="candidates.length!=0 else nodata;">
+    <!-- <div class="m-3" *ngFor="let candidate of candidates; let i=index"> -->
+    <!--  -->
+    <mat-card class="m-3" *ngFor="let candidate of candidates;let i=index"
+      [ngClass]="{'applicantActive':candidate.IsSelected}" (click)="onCardClick(candidate,i)">
+      <mat-card-content>
+        <div class="" fxLayout="row" fxFlexFill fxLayoutGap="5px" style="display: flex;">
+          <div class="py-2" fxLayout="row" fxLayoutAlign="start">
+            <!-- <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+                <ic-icon [icon]="icJob" size="20px"></ic-icon>
+              </div> -->
+            <div @fadeInRight>
+              <a style="cursor: pointer;" (click)="onCnadidateClick(candidate)">
+                <h2 class="title mb-1">
+                  {{candidate.FirstName}} {{candidate.LastName}}
+                </h2>
+              </a>
+            </div>
+          </div>
+          <span fxFlex></span>
+  
+          <span class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+            <span>{{candidate.WorkPermit}}</span>
+          </span>
+  
+          <div>
+            <!-- <div [ngClass]="[status_textClass,status_bgClass]" class="rounded px-2 py-1 font-medium text-xs labelcard"
+              fxLayoutAlign="end">{{candidate.ApplicantStatusName}}
+            </div> -->
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <span *ngIf="candidate['ApplicantStatus']===2 || candidate['ApplicantStatus']===3"
+                class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                {{candidate['ApplicantStatusName']}}
+              </span>
+              <span *ngIf="candidate['ApplicantStatus']===4 || candidate['ApplicantStatus']===5"
+                class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                {{candidate['ApplicantStatusName']}}
+              </span>
+              <span *ngIf="candidate['ApplicantStatus']===6 || candidate['ApplicantStatus']===7 || candidate['ApplicantStatus']===8"
+                class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                {{candidate['ApplicantStatusName']}}
+              </span>
+              <span *ngIf="candidate['ApplicantStatus']===1"
+                class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                {{candidate['ApplicantStatusName']}}
+              </span>
+            </div>
+            <!-- <div class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover labelcard" fxFlex="none"
+                fxLayout="row" fxLayoutAlign="center center">
+                <ic-icon [icon]="icEdit" size="18px"></ic-icon>
+              </div> -->
+          </div>
+  
+        </div>
+        <div fxLayout="row" fxFlexFill fxLayoutGap="20px">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="rounded-full text-secondary font-bold apli-location">
+              <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+              </ic-icon>
+              <span *ngIf="candidate.ApplicantLocation">{{candidate.ApplicantLocation}}</span>
+              <span *ngIf="!candidate.ApplicantLocation">- Not Specified -</span>
+            </span>
+          </div>
+        
+          <span fxFlex></span>
+          <div fxLayoutAlign="start center">
+            <div>
+              <b><span>{{candidate.ActualDate}}</span></b>
+            </div>
+          </div>
+          <div (click)="ViewApplicant(candidate);"
+             class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover labelcard" fxFlex="none" fxLayout="row"
+            fxLayoutAlign="center center">
+            <mat-icon [icIcon]="icPerson" size="22px" color="primary"  matTooltip="View Applicant" ></mat-icon> 
+          </div>
+        </div>
+      </mat-card-content>
+  
+    </mat-card>
+  
+    <!-- </div> -->
+  </div>
+  <ng-template #nodata>
+    <div class="text-center mt-20 text-secondary">
+      <h3>No data available</h3>
+    </div>
+  </ng-template>

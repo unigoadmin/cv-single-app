@@ -1,0 +1,39 @@
+<vex-page-layout>
+    
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+            <h1 class="title mt-0 mb-1">Reports</h1>
+            <vex-breadcrumbs [matIcon]="icReports" [crumbs]="['WorkerCentral',' Reports']"></vex-breadcrumbs>
+          </div>
+        </div>
+      </vex-page-layout-header>
+
+      <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+        <div class="card overflow-auto -mt-16 mb-10">
+        <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+          <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+              WorkerCentral Reports
+            </h2>
+            <span fxFlex></span>
+        </div>
+        <div class="card">
+          <mat-tab-group [selectedIndex]="index">
+            <mat-tab label="Standard Reports">
+              <div class="p-3">
+                <cv-wc-standard-reports></cv-wc-standard-reports>
+              </div>
+            </mat-tab>
+            <mat-tab label="Custom Reports">
+              <div class="p-3">
+                <cv-wc-custom-reports></cv-wc-custom-reports>
+              </div>
+            </mat-tab>
+           
+          </mat-tab-group>
+        </div>
+      </div>
+      </vex-page-layout-content>
+      
+   
+</vex-page-layout>

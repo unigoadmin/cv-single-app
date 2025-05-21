@@ -1,0 +1,21 @@
+
+.title, h3 {
+    font: 400 18px/26px var(--font) !important;
+    letter-spacing: -0.014em;
+}
+::ng-deep .my-fltrtop mat-form-field{
+    margin-bottom: 16px !important;
+    }
+  
+    ::ng-deep .my-fltrtop .mat-form-field-appearance-outline .mat-form-field-wrapper{
+      margin:0 !important;
+    }
+    ::ng-deep .my-fltrtop .mat-form-field-wrapper{
+      padding-bottom:0 !important;
+      background-color: #fff !important;
+      border-radius: 5px !important;
+      color: rgba(var(--color-primary), 1);
+    }
+    ::ng-deep .my-fltrtop .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.7em 0 0.7em 0;
+  }

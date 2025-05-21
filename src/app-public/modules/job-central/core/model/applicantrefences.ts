@@ -1,0 +1,31 @@
+export class ApplicantReferences{
+    ApplicantRefId:number;
+    ApplicantId:number;
+    FirstName:string;
+    LastName:string;
+    Email:string;
+    PhoneNumber:string;
+    Company:string;
+    Designation:string;
+    RefType:string;
+    MappingStatus:boolean;
+    AccountId:number;
+    ContactId:number;
+    Employer:boolean;
+    constructor(){
+    this.ApplicantRefId=0;
+    this.ApplicantId=0;
+    this.FirstName=null;
+    this.LastName=null;
+    this.Email=null;
+    this.PhoneNumber=null;
+    this.Company=null;
+    this.Designation=null;
+    this.RefType=null;
+    this.MappingStatus=false;
+    this.AccountId=0;
+    this.ContactId=0;
+    this.Employer=false;
+    }
+
+}

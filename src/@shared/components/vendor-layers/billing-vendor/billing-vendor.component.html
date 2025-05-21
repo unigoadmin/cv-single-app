@@ -1,0 +1,90 @@
+<div>
+    <form [formGroup]="BillingFromGroup">
+        <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="10" class="subheading-4 text-secondary flex-auto pr-1"
+                style="margin-top: -12px !important;margin-bottom: 12px !important;">
+                <strong><span>Invoicing</span></strong>
+            </div>
+            <section style="margin-top: -12px !important;margin-bottom: 12px !important;" fxFlex="100"
+                fxFlex.gt-xs="50">
+                <mat-checkbox id="detailscheckbill" (change)="CopyDetails($event,'end')"
+                    formControlName="Evdetails">Copy
+                    Details From Above
+                </mat-checkbox>
+            </section>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>First Name</mat-label>
+                <input matInput id="Epofcname" required formControlName="Epofcname"
+                    (keypress)="onNamesInputKeyPress($event)" [(ngModel)]="billingAccount.BillingPOC.FirstName"
+                    name="Epofcname" type="text" autocomplete="new-pocfname">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Last Name</mat-label>
+                <input matInput id="Eoclname" required formControlName="Eoclname"
+                    (keypress)="onNamesInputKeyPress($event)" [(ngModel)]="billingAccount.BillingPOC.LastName"
+                    name="Eoclname" type="text" autocomplete="new-poclname">
+            </mat-form-field>
+
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Email</mat-label>
+                <input matInput id="Epocemail" required formControlName="Epocemail"
+                    [ngModel]="billingAccount.BillingPOC.Email | lowercase" (ngModelChange)="billingAccount.BillingPOC.Email=$event"
+                    name="Epocemail" type="text"
+                    autocomplete="new-pocemail">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Phone</mat-label>
+                <input matInput id="Epocphone" required formControlName="Epocphone" minlength="10" maxlength="14"
+                    [(ngModel)]="billingAccount.BillingPOC.Phonenumber" 
+                    (keypress)="onInputKeyPress($event)"
+                    (change)="PhonenumberFormate('endbilling')" name="Epocphone" type="text"
+                    autocomplete="new-billingphone">
+            </mat-form-field>
+
+        </div>
+        <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="50" class="subheading-4 text-secondary flex-auto pr-1"
+                style="margin-top: -12px !important;margin-bottom: 12px;">
+                <strong><span>Immigration</span></strong>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>First Name</mat-label>
+                <input matInput id="Eimpofcname" required formControlName="Eimpofcname"
+                    (keypress)="onNamesInputKeyPress($event)" [(ngModel)]="billingAccount.ImmigrationPOC.FirstName"
+                    name="Eimpofcname" type="text" autocomplete="new-pocfname">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Last Name</mat-label>
+                <input matInput id="Eimpoclname" required formControlName="Eimpoclname"
+                    (keypress)="onNamesInputKeyPress($event)" [(ngModel)]="billingAccount.ImmigrationPOC.LastName"
+                    name="Eimpoclname" type="text" autocomplete="new-poclname">
+            </mat-form-field>
+
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Email</mat-label>
+                <input matInput id="Emppocemail" required formControlName="Emppocemail"
+                    [ngModel]="billingAccount.ImmigrationPOC.Email | lowercase" (ngModelChange)="billingAccount.ImmigrationPOC.Email=$event"
+                    name="Emppocemail" type="text"
+                    autocomplete="new-pocemail">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                <mat-label>Phone</mat-label>
+                <input matInput id="Eimppocphone" required formControlName="Eimppocphone" minlength="10" maxlength="14"
+                    [(ngModel)]="billingAccount.ImmigrationPOC.Phonenumber" (keypress)="onInputKeyPress($event)"
+                    (change)="PhonenumberFormate('endibilling')" name="Eimppocphone" type="text"
+                    autocomplete="new-billingphone">
+            </mat-form-field>
+
+        </div>
+    </form>
+</div>

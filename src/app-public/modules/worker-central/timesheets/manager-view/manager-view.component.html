@@ -1,0 +1,221 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">View Timesheet
+        </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        
+        <!-- Edit Button (for Pending, Approved, Rejected, Draft) -->
+        <button *ngIf="editableStatuses.includes(timesheetDayInfo.Status) && isEditAccess" [mat-dialog-close]="'Edit'"
+            mat-icon-button type="button" matTooltip="Edit" matTooltipPosition="above">
+            <mat-icon class="text-primary" [icIcon]="iconService.icEdit"></mat-icon>
+        </button>
+
+        <!-- Revise Button (for Submitted) -->
+        <button *ngIf="timesheetDayInfo.Status === timeSheetEnumStatus.Submitted && isEditAccess" [mat-dialog-close]="'Revise'"
+            mat-icon-button type="button" matTooltip="Revise" matTooltipPosition="above">
+            <mat-icon class="text-warning" [icIcon]="iconService.icEdit"></mat-icon>
+        </button>
+
+        <button class="text-secondary" *ngIf="isEditAccess==true"  mat-icon-button type="button" matTooltip="Print" (click)="getTimesheetDetailsForPrint()">
+            <mat-icon class="text-primary" [icIcon]="iconService.icPrint"></mat-icon>
+        </button>
+        
+        <button class="text-secondary" [mat-dialog-close]="'Close'" mat-icon-button type="button">
+            <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+        </button>
+
+    </div>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm" style="overflow: auto;">
+    <div class="card overflow-auto mt-4">
+        <div fxLayout="row" class="fix-dis">
+            <mat-card>
+               
+                <mat-card-content>
+                    <div id="newflex" style="border-radius: 4px;" class="border mb-10" fxLayout="row"
+                        fxLayoutGap="10px">
+                        <div class="body-2 text-secondary" fxLayout="column" fxFlex="25">
+                            <div style="color: #009688;"><strong>Timesheet ID</strong></div>
+                            <div>{{timesheetDayInfo.CompanyTimesheetID}}</div>
+                        </div>
+                        <div class="body-2 text-secondary" fxLayout="column" fxFlex="25">
+                            <div style="color: #009688;"><strong>Employee</strong></div>
+                            <div>{{timesheetDayInfo.Assignment?.EmployeeMaster?.LastName +", " +timesheetDayInfo?.Assignment?.EmployeeMaster?.FirstName}}</div>
+                        </div>
+                        <div class="body-2 text-secondary" fxLayout="column" fxFlex="25">
+                            <div style="color: #009688;"><strong>Assignment</strong></div>
+                            <div>{{timesheetDayInfo.Assignment?.AssignmentName}}</div>
+                        </div>
+                        <div class="body-2 text-secondary" fxLayout="column" fxFlex="25">
+                            <div style="color: #009688;"><strong>Period</strong></div>
+                            <div> {{timesheetDayInfo.timesheetDays[0]?.TimesheetDay|date:'MM/dd/yyyy'}} - {{timesheetDayInfo.timesheetDays[timesheetDayInfo.timesheetDays.length-1]?.TimesheetDay|date:'MM/dd/yyyy'}}</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="card overflow-auto mt-4">
+        <mat-card>
+            <mat-card-title fxLayout="row" fxLayoutAlign="space-between center" class="subheading-2 font-medium pb-1 pt-1">
+                <div>
+                    Status :
+                    <small>
+                        <span *ngIf="timesheetDayInfo.Status===2"
+                            class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">{{timesheetDayInfo.StatusName}}</span>
+                        <span *ngIf="timesheetDayInfo.Status===3"
+                            class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">{{timesheetDayInfo.StatusName}}</span>
+                        <span *ngIf="timesheetDayInfo.Status===4"
+                            class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">{{timesheetDayInfo.StatusName}}</span>
+                        <span *ngIf="timesheetDayInfo.Status===5"
+                            class="rounded px-2 py-1 font-medium text-xs text-yellow bg-yellow-light">{{timesheetDayInfo.StatusName}}</span>
+                        <span *ngIf="timesheetDayInfo.Status===6"
+                            class="rounded px-2 py-1 font-medium text-xs text-purple bg-purple-light">{{timesheetDayInfo.StatusName}}</span>
+                    </small>
+                </div>
+            
+                <button color="primary" class="mr-4" mat-raised-button type="submit" matTooltip="Approve" (click)="ViewNotes(timesheetDayInfo);">Notes ({{timesheetDayInfo.NotesCount}})</button>
+                
+            </mat-card-title>
+            
+            <mat-card-content>
+                <form role="form" class="form-horizontal" autocomplete="off" [formGroup]="timesheetForm" novalidate>
+                <table class="border table w-full mb-5">
+                    <thead>
+                        <tr style="text-align: center;background-color: #00968812 !important;">
+                            <th class="border-b border-l"
+                                style="font-size: 14px !important;width: 10rem !important;color: #009688;padding-bottom: 16px !important; padding-left: 10px !important;padding-top: 14px !important;">
+                                Day</th>
+                            <th class="border-b border-l" style="font-size: 14px !important;width: 10rem !important;color: #009688;" *ngFor="let timesheetTemp of timesheetDayInfo.timesheetDays| slice:0:15" >{{timesheetTemp.TimesheetDay| date:'MM/dd'}}
+                                <br> {{timesheetTemp.TimesheetDay| date:'EEE'}} 
+                            </th>
+                            <th class="border-b border-l" style="padding:10px !important;width: 10rem !important;font-size: 14px !important;color: #009688;">Total Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="s-thead">
+                            <th class="border-b border-l"
+                                style="font-size: 14px !important;color: #009688;background-color: #00968812 !important;">
+                                <strong>Standard Hours</strong>
+                            </th>
+                            <td class="border-b border-l font-medium" style="text-align: center !important;" *ngFor="let timesheetEachDayField of timesheetDayInfo.timesheetDays| slice:0:15;let index = index">
+                                  <span  class="discribeShow">
+                                     <label>{{timesheetEachDayField.StdHours}}</label>
+                                  </span>
+                              </td>
+                              <td class="border-b border-l font-medium" style="text-align: center !important;">
+                                <span class="discribeShow tpad"> {{timesheetDayInfo.StdHours}} </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th class="border-b border-l"
+                                style="font-size: 14px !important;color: #009688;background-color: #00968812 !important;">
+                                <strong>Overtime Hours</strong>
+                            </th>
+                            <td class="border-b border-l font-medium" style="text-align: center;" *ngFor="let timesheetEachDayField of timesheetDayInfo.timesheetDays| slice:0:15;let index = index">
+                                  <span class="discribeShow">
+                                      <label>{{timesheetEachDayField.OTHours}}</label>
+                                  </span>
+                              </td>
+                            <td class="border-b border-l font-medium" style="text-align: center;">
+                                <span class="discribeShow tpad"> {{timesheetDayInfo.OTHours}} </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="border-b border-l"
+                                style="font-size: 14px !important;padding-bottom: 16px !important; padding-left: 10px !important;padding-top: 14px !important;color: #009688;background: #00968812 !important;">
+                                <strong>Total Hours</strong>
+                            </th>
+                            <td class="border-b border-l" style="text-align: center;" *ngFor="let timesheetEachDayField of timesheetDayInfo.timesheetDays| slice:0:15;let index = index">
+                                <span class="discribeShow tpad" style="font-weight: 300 !important;">
+                                    {{timesheetEachDayField.TotalHours}}
+                                </span>
+                            </td>
+                            <td class="border-b border-l " style="text-align: center;">
+                                <span class="discribeShow tpad" style="font-weight: 300 !important;">
+                                    {{timesheetDayInfo.TotalStdOTHours}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="card overflow-auto mt-4 mb-10">
+        <div fxLayout="row" class="fix-dis">
+            <form [formGroup]="descFormgroup">
+            <mat-card>
+               
+                <mat-card-content>
+                    <div class="mb-5" fxLayout="row">
+                        <button mat-raised-button color="primary" (click)='xpandStatus=xpandStatus?false:true'>
+                            Work Summary</button>
+                    </div>
+                    <mat-expansion-panel [(expanded)]="xpandStatus" class="des-text">
+                          <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" style="bottom: 20px !important;margin-top: 20px !important;">
+                         <textarea  matInput id="summary" rows="5" [readonly]="true" [required]="isDescriptionRequired"  mdAutosizeMaxRows="5"
+                          formControlName="TimesheetDescription" [maxlength]="MaxTaskDescription" type="text" name="Summary" [(ngModel)]="timesheetDayInfo.Description" style="width: 100%;"></textarea>
+                        </mat-form-field>
+                        <span class="char" style="position: absolute;bottom: -1px;right: 10px;" *ngIf="timesheetDayInfo?.Description && timesheetDayInfo.Description.length<=MinTaskDescription"><em>{{ MinTaskDescription - timesheetDayInfo.Description.length }} Characters Left (Minimum {{MinTaskDescription}} Characters)</em></span>
+                    </mat-expansion-panel>
+                    <div fxLayout="row">
+                        <table mat-table [dataSource]="dataSource" fxFlex="100" fxFlex.gt-xs="100">
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef> # </th>
+                                <td mat-cell class="text-secondary font-medium textcgs"
+                                    *matCellDef="let element;let i=index"> {{i+1}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef> Name of the
+                                    Document
+                                </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.DownloadableFileName}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef> Actions </th>
+                                <td mat-cell class="text-secondary font-medium textcgs"
+                                    *matCellDef="let element;let i=index">
+                                    <a *ngIf="element.TimesheetDocID!=0"  style="cursor: pointer;" (click)="GetTimesheetDocId(element)" class="text-primary" style="margin-right: 15px;"  mat-icon-button>
+                                        <mat-icon [icIcon]="iconService.icvieweye"></mat-icon>
+                                    </a>
+                                    <a *ngIf="element.TimesheetDocID!=0" style="cursor: pointer;" (click)="DownloadTimesheetDoc(element)" class="text-primary" style="margin-right: 15px;"  mat-icon-button>
+                                        <mat-icon [icIcon]="iconService.icDownload"></mat-icon>
+                                    </a>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"></tr>
+                        </table>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </form>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" *ngIf="enableCOntrol==false" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            
+            <button mat-stroked-button type="button" [mat-dialog-close]="'Cancel'" style="background-color: #f5f5f5 !important;" class="mr-4" matTooltip="Cancel">CANCEL</button>
+
+            <button *ngIf="timesheetDayInfo.Status===4 && isApproveAccess==true" color="primary" class="mr-4" mat-raised-button type="submit" matTooltip="Approve" (click)="onSubmittedTimeSheet(2);">APPROVE</button>
+            <button *ngIf="timesheetDayInfo.Status===2" color="primary" class="mr-4" style="background-color: #f5fbfa !important;" mat-stroked-button type="submit" matTooltip="Invoice" (click)="onSubmittedTimeSheet(6);">INVOICE</button>
+            <button *ngIf="(timesheetDayInfo.Status===4 || timesheetDayInfo.Status===2) && isRejectAccess==true" color="accent" style="background-color: #ffebf0 !important;" class="mr-4" mat-stroked-button type="submit" matTooltip="Reject" (click)="openDialogWithTemplateRef(timesheetDayInfo);">REJECT</button>
+        </div>
+    </div>
+</mat-dialog-footer>
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+        <button *ngIf="isEditAccess==true"  mat-menu-item [mat-dialog-close]="'Edit'">
+            <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="iconService.icEdit"></mat-icon>
+            Edit
+          </button>
+</mat-menu>
+

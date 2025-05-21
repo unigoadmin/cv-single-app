@@ -1,0 +1,98 @@
+<vex-page-layout>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+      <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+              <h1 class="title mt-0 mb-1">DocVault</h1>
+              <vex-breadcrumbs [crumbs]="['DocVault','Documents']"></vex-breadcrumbs>
+          </div>
+      </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+      <div class="card overflow-auto -mt-16">
+        <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+          <!-- <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                Documents
+          </h2> -->
+          <div class="mr-2">
+            <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px" style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+          </div>
+            <div class="bg-card rounded-full border px-4"
+                 fxFlex="400px"
+                 fxFlex.lt-md="auto"
+                 fxHide.xs
+                 fxLayout="row"
+                 fxLayoutAlign="start center">
+              <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+              <input [formControl]="searchCtrl"
+                     class="px-4 py-3 bordsearchCtrler-0 outline-none w-full bg-transparent"
+                     placeholder="Search documents"
+                     type="search">
+            </div>
+            <div  class="bg-card  border  ml-5" style="width: 190px;">
+              <button mat-button [matMenuTriggerFor]="categoryMenu" fxFlex="auto" color="primary">
+                {{selectedCategory}} <mat-icon>expand_more</mat-icon>
+              </button>
+            </div>
+
+            <div  class="bg-card  border  ml-5" style="width: 190px;">
+              <button mat-button [matMenuTriggerFor]="DoccategoryMenu" fxFlex="auto" color="primary">
+                {{selectedDocCategory}} <mat-icon>expand_more</mat-icon>
+              </button>
+            </div>
+            <span fxFlex></span>
+    
+            <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+              <mat-icon [icIcon]="icSearch"></mat-icon>
+            </button>
+            <button 
+                    (click)="addDocument()"
+                    class="ml-4"
+                    color="primary"
+                    fxFlex="none"
+                    mat-mini-fab
+                    matTooltip="Add Document"
+                    type="button">
+              <ic-icon [icon]="icAdd" inline="true" size="22px" ></ic-icon>
+            </button>
+          </div>
+          <div class="card h-full overflow-hidden flex-auto mb-5">
+            <cv-documents-data-table 
+                                  (downloadDocument)="downloadDocument($event)"
+                                  (viewDocument)="viewDocument($event)"
+                                  (shareDocument)="shareDocument($event)"
+                                  (deleteDocument)="deleteDocument($event)"
+                                  [columns]="tableColumns"
+                                  [data]="tableData"
+                                  [searchStr]="searchStr$ | async"
+                                  ></cv-documents-data-table>
+                                 
+          </div>
+      </div>
+  </vex-page-layout-content>
+  <mat-menu #categoryMenu="matMenu">
+    <button mat-menu-item (click)="filterCategory('All')">
+      <span>All Documents</span>
+    </button>
+    <button mat-menu-item (click)="filterCategory('My')">
+      <span>My Documents</span>
+    </button>
+    <button mat-menu-item (click)="filterCategory('Shared')">
+      <span>Shared Documents</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #DoccategoryMenu="matMenu">
+    <button mat-menu-item (click)="filterDocCategory('All')">
+      <span>All Categories</span>
+    </button>
+    <button mat-menu-item (click)="filterDocCategory('HR')">
+      <span>HR</span>
+    </button>
+    <button mat-menu-item (click)="filterDocCategory('Training')">
+      <span>Training</span>
+    </button>
+  </mat-menu>
+  
+
+
+

@@ -1,0 +1,165 @@
+<div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="32px" fxLayoutAlign="start" class="p-10">
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="candidatePanelOpenState = true" (closed)="candidatePanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icPerson" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Candidates
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of candidatesReport;let i=index">
+              <span (click)="openReport(report,'TalentCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Candidates Report','TalentCentral','1']"
+                    class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                    style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="interviewPanelOpenState = true" (closed)="interviewPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icschedule" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Interviews
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of interviewsReport;let i=index">
+              <span (click)="openReport(report,'TalentCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Interviews Report','TalentCentral','1']" 
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                style="font-size: 12px;" >{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+  </div>
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="jobsPanelOpenState = true" (closed)="jobsPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icLayers" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Jobs
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option>
+              <a class="text-dark body-1 no-underline hover:text-primary trans-ease-out disabledLink"><span
+                  style="font-size: 12px;">Jobs Report</span></a>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="confirmPanelOpenState = true" (closed)="confirmPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icConfirmation" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Confirmations
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of confirmationsReport;let i=index">
+              <span (click)="openReport(report,'TalentCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Confirmations Report','TalentCentral','1']" class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                      style="font-size: 12px;" >{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+  </div>
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="submissionPanelOpenState = true" (closed)="submissionPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icBook" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Submissions
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+
+            <mat-list-option *ngFor="let report of submissionsReport;let i=index">
+              <span (click)="openReport(report,'TalentCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Submissions Report','TalentCentral','1']" class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                      style="font-size: 12px;" >{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+
+  </div>
+</div>

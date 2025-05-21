@@ -1,0 +1,123 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Admin</h1>
+                <vex-breadcrumbs [crumbs]="['Admin','Company']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none"
+                    fxHide.xs>
+                    Company
+                </h2>
+                <span fxFlex></span>
+                <button class="ml-4 pt-1" color="primary" fxFlex="none" mat-mini-fab matTooltip="Edit Company"
+                    type="button" (click)="openCompany(company)" type="button">
+                    <ic-icon [icon]="icEdit"></ic-icon>
+                </button>
+            </div>
+            <div class="card" fxLayout="column" fxLayout.gt-sm="row">
+                <div class="p-6" fxFlex="none">
+                    <h2 class="title mt-0 mb-4">Logo</h2>
+                    <div class="image_container">
+                        <img mat-card-image [attr.src]="companyLogo" *ngIf="companyLogo">
+                        <!-- <img  mat-card-image [attr.src]="defaultLogo" *ngIf="!companyLogo"> -->
+                    </div>
+                </div>
+                <div class="border-l" fxFlex="auto">
+                    <div class="pl-6 pb-3 pt-3">
+                        <h2 class="title mt-0 mb-4">Details</h2>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="25"><span>Name:</span></div>
+                            <div class="child-2" fxFlex="75"><span>{{company.Name}}</span></div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="25" id="middlebuttons1"><span>Website:</span>
+                            </div>
+                            <div class="child-3" fxFlex="75"><span>{{company.Website}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="25"><span>Email:</span></div>
+                            <div class="child-2" fxFlex="75"><span>{{company.Email}}</span></div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="25" id="middlebuttons1"><span>Phone:</span>
+                            </div>
+                            <div class="child-3" fxFlex="75"><span>{{company.Phone | phoneformat}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="25"><span>Address 1:</span></div>
+                            <div class="child-2" fxFlex="75"><span>{{company.Address1}}</span></div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-2 text-secondary" fxFlex="25" id="middlebuttons1"><span>Address 2:</span>
+                            </div>
+                            <div class="child-3" fxFlex="75"><span>{{company.Address2}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="38"><span>City:</span></div>
+                            <div class="child-2" fxFlex="65"><span>{{company.City}}</span></div>
+                        </div>
+                        <div fxFlex="25%">
+                            <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"><span>State:</span>
+                            </div>
+                            <div class="child-3" fxFlex="55"><span>{{company.State}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>ZipCode:</span>
+                            </div>
+                            <div class="child-3" fxFlex="65"><span>{{company.ZipCode}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="38"><span>Date Format:</span></div>
+                            <div class="child-2" fxFlex="65"><span>{{company.Display_DateFormat}}</span></div>
+                        </div>
+                        <div fxFlex="25%">
+                            <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1"><span>Time
+                                    Format:</span></div>
+                            <div class="child-2" fxFlex="55"><span>{{company.Display_TimeFormat}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1"><span>Timezone:</span>
+                            </div>
+                            <div class="child-3" fxFlex="65"><span>{{company.TimeZoneName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-10  pt-4  border-b">
+                        <div fxFlex="100%">
+                            <p> <span style="width:100px ;"><span class="text-secondary">Description</span> </span>
+                                {{company.Description}} </p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>

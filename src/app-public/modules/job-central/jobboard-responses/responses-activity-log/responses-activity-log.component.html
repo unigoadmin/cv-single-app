@@ -1,0 +1,47 @@
+<mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav 
+      class="mat-sidenav-fixed" 
+      #activitylog 
+      mode="over" 
+      hasBackdrop="false" 
+      position="end" 
+      [opened]="isSidenavOpen">
+      
+      <div fxLayout="column" style="overflow: auto !important;">
+        <div class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none" style="margin-top:60px">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+          <span fxFlex></span>
+          <a 
+            (click)="onClose()"
+            class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+            mat-icon-button>
+            <mat-icon size="18px">close</mat-icon>
+          </a>
+        </div>
+        <mat-divider></mat-divider>
+        
+        <!-- Display Activity Logs -->
+        <div class="MsgList" id="wallmessages" *ngIf="activityLogs?.length > 0; else noLogs">
+          <div class="MsgItem" *ngFor="let logitem of activityLogs">
+            <div class="MsgIn">
+              <div class="message-head clearfix">
+                <div class="user-detail">
+                  <div class="msg-date">{{ logitem.CreatedDate | date: 'short' }}</div>
+                  <div class="msg-by">by {{ logitem.CreatedBy }}</div>
+                  <div class="msg-content" [innerHtml]="logitem.Action"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- No Logs Template -->
+        <ng-template #noLogs>
+          <div class="p-4 text-center">
+            <p>No activity logs found.</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+  

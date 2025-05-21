@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+    <mat-form-field class="example-chip-list" appearance="outline" fxFlex="100">
+        <mat-label>HashTags</mat-label>
+        <mat-chip-list #HschipList aria-label="Hashtag selection">
+            <mat-chip *ngFor="let keywrd of selectedHashTagChips" [removable]="removable" (removed)="remove(keywrd)">
+                {{ keywrd.value }}
+                <mat-icon matChipRemove [icIcon]="icClose" *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Select Hashtag..." #fruitInput [formControl]="HashTagCtrl"
+                [matAutocomplete]="HashtagAuto" [matChipInputFor]="HschipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+        </mat-chip-list>
+        <mat-autocomplete #HashtagAuto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let item of filteredHashTags | async" [value]="item.HashTagId">
+                {{ item.HashTagText }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</div>

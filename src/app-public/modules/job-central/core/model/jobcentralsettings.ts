@@ -1,0 +1,34 @@
+export class JobCentralSettings{
+    JCSettings_id:number;
+    CompanyId:number;
+    MaxRecruiterProfiles:number;
+    InboxSource:number;
+    IsReviewNotification:boolean;
+    IsApplicantAssignedNotification:boolean;
+    IsApplicantSharedNotification:boolean;
+    IsNotesNotification:boolean;
+    IsStatusChangeNotification:boolean;
+    IsMoveToTechcreen:boolean;
+    IsMoveToMarketing:boolean;
+    CreatedBy:string;
+    CreatedDate:Date;
+    UpdatedBy:string;
+    UpdatedDate:Date;
+    constructor(){
+        this.JCSettings_id=0;
+        this.CompanyId=0;
+        this.MaxRecruiterProfiles=0;
+        this.InboxSource=0;
+        this.IsReviewNotification=false;
+        this.IsApplicantAssignedNotification=false;
+        this.IsApplicantSharedNotification=false;
+        this.IsNotesNotification=false;
+        this.IsStatusChangeNotification = false;
+        this.IsMoveToTechcreen=false;
+        this.IsMoveToMarketing=false;
+        this.CreatedBy=null;
+        this.CreatedDate=null;
+        this.UpdatedBy=null;
+        this.UpdatedDate=null;
+    }
+}

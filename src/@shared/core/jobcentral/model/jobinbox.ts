@@ -1,0 +1,23 @@
+export class JobInbox{
+    JobInboxId:number;
+    JobCode:string;
+    Title:string;
+    JobDescription:string;
+    JobLocation:string;
+    NoOfOpenings:string;
+    MinExperience:number;
+    MaxExperience:number;
+    MinBillRate:number;
+    MaxBillRate:number;
+    BillType:number;
+    PostedOnDate:Date;
+    ClosingDate:Date;
+    ContactEmail:string;
+    ContactPhone:string;
+    ContactPersonName:string;
+    ParsingJson:string;
+    IsIgnore:boolean;
+    CreatedDate:Date;
+    CompanyId:number;
+    Organization:string;
+}

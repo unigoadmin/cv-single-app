@@ -1,0 +1,167 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto"> Edit Assignment</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="confirm" fxLayout="column" style="overflow: auto;">
+    <form [formGroup]="thirdFormGroup">
+        <div class="card overflow-auto mt-4">
+            <div fxLayout="row">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                Worker Information</div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>ID</mat-label>
+                                    <input matInput [disabled]="true" id="EmpCompanyId" [(ngModel)]="EmpCompanyId"
+                                        formControlName="EmpCompanyId" name="EmpCompanyId" type="text">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput [disabled]="true" id="empFirstName" [(ngModel)]="empFirstName"
+                                        formControlName="empFirstName" name="empFirstName" type="text">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput [disabled]="true" formControlName="empLastName" id="empLastName"
+                                        [(ngModel)]="empLastName" name="empLastName" type="text">
+                                </mat-form-field>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card overflow-auto"
+            style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+            <div fxLayout="row" class="fix-dis">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                Assignment Information</div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>ID</mat-label>
+                                    <input matInput name="name" formControlName="AssignmentId" id="AssignmentId"
+                                        [(ngModel)]="Assignment.CompanyAssignmentId">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="Name" required id="Name" name="name"
+                                        [ngModel]="Assignment.AssignmentName | titlecase"
+                                        (ngModelChange)="Assignment.AssignmentName=$event">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>Type</mat-label>
+                                    <mat-select name="AssignmentType" required formControlName="AssignmentType"
+                                        id="AssignmentType" [(ngModel)]="Assignment.AssignmentType">
+                                        <mat-option [value]="'C2C'">C2C</mat-option>
+                                        <mat-option [value]="'1099'">1099</mat-option>
+                                        <mat-option [value]="'W2'">W2</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>Classification</mat-label>
+                                    <mat-select name="Classification" required formControlName="Classification"
+                                        id="Classification" [(ngModel)]="Assignment.AsmtClassification">
+                                        <mat-option [value]="'Billable'">Billable</mat-option>
+                                        <mat-option [value]="'Non-Billable'">Non-Billable</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="jbexaStart" required formControlName="asmStartDate"
+                                        [(ngModel)]="Assignment.StartDate" (dateChange)="changestartDate($event)" name="astartdate" id="aStartDate">
+                                    <mat-datepicker-toggle matSuffix [for]="jbexaStart"></mat-datepicker-toggle>
+                                    <mat-datepicker #jbexaStart></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="jbexaEnd" required formControlName="asmEndDate"
+                                        [(ngModel)]="Assignment.EndDate" (dateChange)="changeendDate($event)" name="aenddate" placeholder="End Date"
+                                        id="EandDate">
+                                    <mat-datepicker-toggle matSuffix [for]="jbexaEnd"></mat-datepicker-toggle>
+                                    <mat-datepicker #jbexaEnd></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px">
+
+                                <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <cv-google-place style="display:contents;" (setAddress)="getAssignAddress($event)"
+                                        (inputAddress)="inputAssignEmployeeAddress($event)" disable="false"
+                                        selectedAddress="{{Assignment.WLAddress1}}" adressType="address"
+                                        InputMode="Edit-WC"></cv-google-place>
+                                </div>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" >
+                                    <mat-label>Apt, Suite, Unit, Building, Floor, etc.</mat-label>
+                                    <input matInput name="name" formControlName="WLAddress2" id="WLAddress2"
+                                        [(ngModel)]="Assignment.WLAddress2">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+                                    <mat-label>City</mat-label>
+                                    <input matInput name="name" required formControlName="WLCity" id="WLCity"
+                                        [(ngModel)]="Assignment.WLCity">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+                                    <mat-label>State</mat-label>
+                                    <input matInput name="name" required formControlName="WLState" id="WLState"
+                                        [(ngModel)]="Assignment.WLState">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="33">
+                                    <mat-label>Zip Code</mat-label>
+                                    <input matInput name="name" (keypress)="onInputKeyPress($event)" maxlength="5"
+                                        required formControlName="WLZipCode" id="WLZipCode"
+                                        [(ngModel)]="Assignment.WLZipCode">
+                                </mat-form-field>
+
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <section style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                                    <mat-checkbox id="checkbill" formControlName="TimeSheet" id="TimeSheet"
+                                        [(ngModel)]="Assignment.TimeSheet">Enable Timesheet
+                                    </mat-checkbox>
+                                </section>
+                                <section style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                                    <mat-checkbox id="checkbill" formControlName="RemoteAssignment"
+                                        id="RemoteAssignment" [(ngModel)]="Assignment.RemoteAssignment">Remote
+                                        Assignment</mat-checkbox>
+                                </section>
+                                <section style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                                    <mat-checkbox id="checkbill" formControlName="AmendmentRequired"
+                                        id="AmendmentRequired" [(ngModel)]="Assignment.AmendmentRequired">Amendment
+                                        Required</mat-checkbox>
+                                </section>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+            <button color="primary" [disabled]="!thirdFormGroup.valid" (click)="saveAssignment()" mat-button
+                type="submit" matTooltip="Submit">SUBMIT</button>
+
+        </div>
+    </div>
+</mat-dialog-footer>

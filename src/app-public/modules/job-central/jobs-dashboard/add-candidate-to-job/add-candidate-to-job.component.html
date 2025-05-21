@@ -1,0 +1,290 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Search Applicant</h2>
+    <button class="text-secondary" mat-icon-button type="button" (click)="ViewClose()">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+    <mat-horizontal-stepper class="mt-4 mb-4" linear #stepper>
+        <mat-step>
+            <form>
+                <ng-template matStepLabel>Search Applicant</ng-template>
+                <div class="card overflow-auto"
+                    style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+                    <mat-card>
+                        <mat-card-content>
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="70" appearance="outline">
+                                    <mat-label>Search for Applicant by Name, Email</mat-label>
+                                    <input [(ngModel)]="employeeSearch" [formControl]="searchCtrl" required
+                                        cdkFocusInitial matInput name="title">
+                                </mat-form-field>
+                                <div fxFlex="100" fxFlex.gt-xs="30">
+                                    <button [disabled]="!employeeSearch" color="primary" mat-raised-button
+                                        style="top: 17px;" (click)="GetSearchedApplicants()" class="mr-2">
+                                        <img *ngIf="isLoading" style="position: absolute;right: 0px;top: 10px;"
+                                            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+                                        <ic-icon [icIcon]="icSearch" style="position: absolute;vertical-align: middle !important;
+                                        margin-top: 6px;
+                                        margin-left: -17px;
+                                        padding: 2px;" size="20px"></ic-icon> <span
+                                            style="margin-left:10px;">Search</span>
+                                    </button>
+                                    <button color="primary" mat-raised-button type="button" (click)="onResetClick()"
+                                        style="top: 17px">RESET</button>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="card overflow-auto mt-4 mb-4"
+                    style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+                    <mat-card>
+                        <mat-card-content>
+                            <div class="card overflow-auto -mt-16 mb-10">
+                                <table @stagger mat-table class="w-full" [dataSource]="dataSource" matSort>
+
+                                    <ng-container matColumnDef="Source">
+                                        <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef> Source
+                                        </th>
+                                        <td mat-cell class="text-secondary font-medium textcgs"
+                                            *matCellDef="let element"> {{element.ApplicantSource}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="JobTitle">
+                                        <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef> Job Title
+                                        </th>
+                                        <td mat-cell class="text-secondary font-medium textcgs"
+                                            *matCellDef="let element"> {{element.JobTitle}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="FirstName">
+                                        <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef> First Name
+                                        </th>
+                                        <td mat-cell class="text-secondary font-medium textcgs"
+                                            *matCellDef="let element"> {{element.FirstName}}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="LastName">
+                                        <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef> Last Name
+                                        </th>
+                                        <td mat-cell class="text-secondary font-medium textcgs"
+                                            *matCellDef="let element"> {{element.LastName}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ApplicantLocation">
+                                        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>Applicant
+                                            Location
+                                        </th>
+                                        <td *matCellDef="let element" class="w-8 min-w-8 pr-0" mat-cell>
+                                            <span class="rounded-full text-secondary font-medium locationbtn">
+                                                <ic-icon [icon]="iclocationon"
+                                                    class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true"
+                                                    size="14px"></ic-icon>
+                                                <span>{{element.ApplicantLocation}}</span>
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="WorkPermit">
+                                        <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef> Work
+                                            Permit </th>
+                                        <td mat-cell class="text-secondary font-medium textcgs"
+                                            *matCellDef="let element">
+                                            {{element.WorkPermit}}
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr class="hover:bg-hover trans-ease-out cursor-pointer" mat-row
+                                        *matRowDef="let row; columns: displayedColumns;"
+                                        (click)="NextClick(stepper,row)"></tr>
+                                </table>
+                                <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize"
+                                    class="sticky left-0"></mat-paginator>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="TerminateEmployeeFormGroup" style="min-height: 600px;">
+            <ng-template matStepLabel>Applicant Information</ng-template>
+            <div class="card" style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+                <mat-divider></mat-divider>
+                <mat-card style="padding:0px !important">
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="18"><span>Job Title:</span></div>
+                            <div class="child-2" fxFlex="82"><span>{{selectedCandidates.JobTitle}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="18" id="middlebuttons1">Source:</div>
+                            <div class="child-3" fxFlex="82"><span>{{selectedCandidates.ApplicantSource}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="18" id="middlebuttons1">Status:</div>
+                            <div class="child-3" fxFlex="82"><span>{{selectedCandidates.ApplicantStatusName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="18"><span>First Name:</span></div>
+                            <div class="child-2" fxFlex="82"><span>{{selectedCandidates.FirstName}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="18" id="middlebuttons1">Last Name:</div>
+                            <div class="child-3" fxFlex="82"><span>{{selectedCandidates.LastName}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="18" id="middlebuttons1">Work Permit:</div>
+                            <div class="child-3" fxFlex="82"><span>{{selectedCandidates.WorkPermit}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="18"><span>Email:</span>
+                            </div>
+                            <div class="child-3" fxFlex="82"><span>{{selectedCandidates.Email}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" id="middlebuttons1" fxFlex="18"><span>Phone:</span>
+                            </div>
+                            <div class="child-2" fxFlex="82"><span>{{selectedCandidates.Phno}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" id="middlebuttons1" fxFlex="18"><span>Location:</span>
+                            </div>
+                            <div class="child-3" fxFlex="82">
+                                <span class="rounded-full text-secondary font-medium locationbtn">
+                                    <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2"
+                                        inline="true" size="14px">
+                                    </ic-icon>
+                                    <span>{{selectedCandidates.ApplicantLocation}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="18"><span>DOB:</span></div>
+                            <div class="child-2" fxFlex="82"><span>{{selectedCandidates.DOB}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="30" id="middlebuttons1">Last 4 Digit of SSN:
+                            </div>
+                            <div class="child-3" fxFlex="70"><span>{{selectedCandidates.SSN}}</span></div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" id="middlebuttons1" fxFlex="18"><span>LinkedIn:</span>
+                            </div>
+                            <div class="child-2" fxFlex="82"><span>{{selectedCandidates.LinkedIn}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="30"><span>Availability to join the
+                                    Project:</span></div>
+                            <div class="child-2" fxFlex=70>
+                                <span>{{selectedCandidates.AvailabilityToJoin}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" id="middlebuttons1" fxFlex="25">
+                                <span>EmploymentType:</span></div>
+                            <div class="child-2" fxFlex=75>
+                                <span class="rounded-full text-secondary font-medium text-xs submissionTypeCard">
+                                    <span>{{selectedCandidates.EmploymentType}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-1 text-secondary" fxFlex="18" id="middlebuttons1"><span>Pay Rate:</span>
+                            </div>
+                            <div class="child-2" fxFlex="82">
+                                <span>{{selectedCandidates.PayRate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="100%">
+                            <div class="child-1 text-secondary" fxFlex="5"><span>Skills:</span></div>
+                            <div class="child-2" fxFlex="95">
+                                <div *ngFor="let label of SelectedKwywods" fxFlex="none">
+                                    <span class="certtags">{{ label }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="100%">
+                            <div class="child-1 text-secondary" fxFlex="5"><span>HashTags:</span></div>
+                            <div class="child-2" fxFlex="95">
+                                <div *ngFor="let label of selectedHashTagChips" fxFlex="none">
+                                    <span class="certtags">{{ label }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div *ngIf="selectedCandidates.EmploymentType==='C2C' && inputsrc=='Requsition'">
+                <cv-candidate-sub-vendor *ngIf="selectedCandidates.EmploymentType==='C2C'"
+                    [canSubvendorAccount]="cansubVClientAccount"
+                    (out_candsubvendor)="GetCandSubVendorData($event)"
+                    (formValidityChanged)="onChildFormValidityChanged($event)">
+                </cv-candidate-sub-vendor>
+            </div>
+
+            <div *ngIf="inputsrc=='Requsition'" class="card" style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+                <mat-card style="padding-top:4px !important">
+                    <form role="form" [formGroup]="subinfoForm">
+                        <mat-card-title>
+                            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                Submission Information</div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div fxLayout="row" fxFlex="50%" fxLayoutGap="16px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>Submission Rate ($/hr)</mat-label>
+                                    <input type="number" id="BillRate" name="BillRate" formControlName="SubmissionRate"
+                                        [(ngModel)]="SubmittedRate" matInput required>
+                                </mat-form-field>
+                            </div>
+                        </mat-card-content>
+                    </form>
+                </mat-card>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+    <div class="mt-4">
+        <button color="primary" mat-button type="button" (click)="stepper.previous()">Back</button>
+        <button *ngIf="inputsrc=='Job'" color="primary" mat-raised-button (click)="ApplicantJobMaping()">
+            <img *ngIf="isLoading" style="position: absolute;right: 0px;top: 10px;"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            Map Applicant
+        </button>
+        <button *ngIf="inputsrc=='Requsition'" color="primary" mat-raised-button (click)="SubmitApplicant()"
+              [disabled]="!(subinfoForm.valid) || !subinfoForm.dirty">
+            <img *ngIf="isLoading" style="position: absolute;right: 0px;top: 10px;"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            Submit Applicant
+        </button>
+    </div>
+
+</mat-dialog-actions>

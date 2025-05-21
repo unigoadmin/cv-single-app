@@ -1,0 +1,36 @@
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <h2 class="headline m-0" fxFlex="auto">{{ title }}</h2>
+    <button class="text-secondary" (click)="cancel()" mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <table class="table w-full mt-8">
+      <thead>
+      <tr>
+        <td class="body-2 text-secondary" fxFlex="20"></td>
+        <td class="body-2 text-secondary" fxFlex="80">MODULE</td>
+        <!-- <td class="body-2 text-secondary">DESCRIPTION</td> -->
+       
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let module of companyModules">
+          <td class="py-4 border-b text-center" fxFlex="20">
+              <mat-slide-toggle [checked]="false"  [attr.id]="'Module'+module.ModuleId" [(ngModel)]="module.Status" color="primary"></mat-slide-toggle>
+         </td>
+          <td class="py-4 border-b" fxFlex="80">{{module.ModuleName}}</td>
+          <!-- <td class="py-4 border-b">{{module.ModuleDescription}}</td> -->
+        </tr>
+
+     
+      </tbody>
+    </table>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button  type="button" (click)="cancel()">CANCEL</button>
+    <button color="primary" (click)="save()" mat-button type="submit">SAVE CHANGES</button>
+  </mat-dialog-actions>
+
+

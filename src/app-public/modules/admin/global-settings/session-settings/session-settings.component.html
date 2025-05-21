@@ -1,0 +1,52 @@
+<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+
+    <div class="mr-2">
+        <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+            style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+    </div>
+    <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+        fxLayoutAlign="start center">
+        <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+        <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..." type="search">
+    </div>
+
+    <span fxFlex></span>
+</div>
+
+<div fxLayout="column" fxLayoutGap="20px" class="mt-4 ml-4">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-label fxFlex="200px">Idle Time Out (seconds):</mat-label>
+        <mat-form-field fxFlex="300px" appearance="outline">
+            <input matInput type="number" [(ngModel)]="sessionSettingsModel.IdleTimeout" placeholder="Enter seconds">
+        </mat-form-field>
+    </div>
+    <p style="color: gray; margin-left: 220px; font-size: 12px;">
+        The duration (in seconds) before an inactive session is considered idle.
+    </p>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-label fxFlex="200px">Session Time Out (seconds):</mat-label>
+        <mat-form-field fxFlex="300px" appearance="outline">
+            <input matInput type="number" [(ngModel)]="sessionSettingsModel.SessionTimeout" placeholder="Enter seconds">
+        </mat-form-field>
+    </div>
+    <p style="color: gray; margin-left: 220px; font-size: 12px;">
+        The total duration (in seconds) after which the session will expire.
+    </p>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-label fxFlex="200px">Keep Alive Interval (seconds):</mat-label>
+        <mat-form-field fxFlex="300px" appearance="outline">
+            <input matInput type="number" [(ngModel)]="sessionSettingsModel.KeepAliveInterval" placeholder="Enter seconds">
+        </mat-form-field>
+    </div>
+    <p style="color: gray; margin-left: 220px; font-size: 12px;">
+        The interval (in seconds) at which the session remains active by sending keep-alive signals.
+    </p>
+
+    <div fxLayoutAlign="end" class="mt-4">
+        <button mat-flat-button color="primary" (click)="UpdateSessionSettings()">Update</button>
+    </div>
+</div>
+

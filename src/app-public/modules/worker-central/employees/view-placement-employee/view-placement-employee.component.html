@@ -1,0 +1,185 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">View Worker
+        </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        <button [matMenuTriggerFor]="settingsMenu" style="margin-right: 6px;bottom: 5px;" color="primary"
+            mat-raised-button type="button">Actions
+            <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+        </button>
+        
+        <button [mat-dialog-close]="'Close'"
+            style="top:3px;--tw-bg-opacity: 1 !important;background-color: rgba(158, 158, 158, var(--tw-bg-opacity)) !important;color: rgba(var(--color-accent-contrast), 1) !important;height: 40px !important;width: 40px !important;"
+            mat-fab type="button">
+            <mat-icon style="bottom: 8px !important;position: relative;" [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm pl-tabs" style="overflow: auto;">
+    <mat-tab-group class="mt-4">
+        <mat-tab label="Worker Information">
+            <cv-common-employee-view [EmployeeID]="Data"></cv-common-employee-view>
+        </mat-tab>
+        <mat-tab label="Assignment Information">
+            <mat-card class="mb-4" style="padding-bottom:0px !important;"
+                *ngFor="let Assignment of Employee.AssignmentMasters;let i=index">
+               
+                <mat-card-title fxLayoutAlign="start center" class="subheading-2 font-medium pb-1 pt-1">
+                    <div fxFlex="50%" fxLayoutAlign="start center">
+                        Assignment Information
+                    </div>
+                    <div fxFlex="50%" fxLayoutAlign="end center">
+                        <span *ngIf="Assignment.Status>0"
+                            class="rounded px-2 font-medium text-xs text-green bg-green-light" fxFlex="none">
+                            Active
+                        </span>
+                        <span *ngIf="Assignment.Status==0"
+                            class="rounded px-2 font-medium text-xs text-red bg-red-light" fxFlex="none">
+                            Inactive
+                        </span>
+                    </div>
+
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35"><span>ID:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{Assignment.CompanyAssignmentId}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{Assignment.AssignmentName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="33"><span>Type:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <div style="width: 50px;" fxLayoutAlign="center center" fxLayoutGap="4px">
+                                    <span class="rounded-full text-secondary font-medium text-xs categorybtn">{{Assignment.AssignmentType}}</span>
+                                 </div>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Classification:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span class="pb-0 pt-0"
+                                    class="rounded-full text-secondary font-medium text-xs categorybtn">{{Assignment.AsmtClassification}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35"><span>Start Date:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{Assignment.StartDate|date:'MM/dd/yyyy'}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">End Date:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{Assignment.EndDate|date:'MM/dd/yyyy'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="100%">
+                            <div class="child-1 text-secondary mt-1" fxFlex="16"><span>Address:</span></div>
+                            <div class="child-2 ml-2" fxFlex="84">
+                                <span class="rounded-full text-secondary font-medium locationbtn">
+                                    <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2"
+                                        inline="true" size="14px">
+                                    </ic-icon>
+                                    <span>{{getFormattedAddress(Assignment)}}</span>
+                                    <!-- <span>{{Assignment.WLAddress1}},{{Assignment.WLAddress2}}, {{Assignment.WLCity}},
+                                        {{Assignment.WLState}}, {{Assignment.WLZipCode}}</span> -->
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="34%">
+                            <div class="child-1 text-secondary" fxFlex="53"><span>Timesheet:</span></div>
+                            <div class="child-2" fxFlex="45">
+                                <span *ngIf="Assignment.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                    Enabled
+                                </span>
+                                <span *ngIf="!Assignment.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-black bg-gray-light">
+                                    Not Enabled
+                                </span>
+                               
+                            </div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="55" id="middlebuttons1">Remote Assignment:</div>
+                            <div class="child-3" fxFlex="45">
+                                <span *ngIf="Assignment.RemoteAssignment" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                   YES
+                                </span>
+                                <span *ngIf="!Assignment.RemoteAssignment" class="rounded px-2 py-1 font-medium text-xs text-black bg-gray-light">
+                                   NO
+                                </span>
+                               
+                            </div>
+                        </div>
+                        <div fxFlex="33%">
+                            <div class="child-3 text-secondary" fxFlex="55" id="middlebuttons1">Amendment Required:
+                            </div>
+                            <div class="child-3" fxFlex="45">
+                                <span *ngIf="Assignment.AmendmentRequired" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                    YES
+                                 </span>
+                                 <span *ngIf="!Assignment.AmendmentRequired" class="rounded px-2 py-1 font-medium text-xs text-black bg-gray-light">
+                                    NO
+                                 </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-card-content>
+            </mat-card>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+    <button *ngxPermissionsOnly="['ACTION_WORKERS_MODIFY']" mat-menu-item [mat-dialog-close]="'Edit'">
+        <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="icEdit"></mat-icon>
+        <span>Edit</span>
+    </button>
+    <div *ngIf="Employee.Status==1">
+        <button *ngxPermissionsOnly="['ACTION_WORKERS_MODIFY']" mat-menu-item [mat-dialog-close]="'Delete'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icDelete" size="16px"></mat-icon>
+            <span>Terminate</span>
+        </button>
+    </div>
+
+    <div *ngIf="Employee.WebsiteUser==null && Employee.IsCVAccess==false">
+        <button *ngxPermissionsOnly="['ACTION_CREATE_CONSULTANT']" mat-menu-item [mat-dialog-close]="'CreateUser'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icAdd" size="16px"></mat-icon>
+            <span>Create CV User Account</span>
+        </button>
+    </div>
+
+    <div *ngIf="Employee.WebsiteUser==null && Employee.IsCVAccess==true">
+        <button *ngxPermissionsOnly="['ACTION_CREATE_CONSULTANT']" mat-menu-item [mat-dialog-close]="'LinkUser'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icAdd" size="16px"></mat-icon>
+            <span>Activate CV User Account</span>
+        </button>
+    </div>
+
+</mat-menu>

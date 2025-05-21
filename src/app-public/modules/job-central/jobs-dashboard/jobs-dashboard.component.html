@@ -1,0 +1,56 @@
+<vex-page-layout>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav class="mat-sidenav-fixed" #quickpanel mode="over" hasBackdrop="true" position="end"
+      style="max-width:700px;">
+    </mat-sidenav>
+
+
+    <mat-sidenav-content>
+      <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+            <h1 class="title mt-0 mb-1">Jobs</h1>
+            <vex-breadcrumbs [crumbs]="['Job Central','Jobs']"></vex-breadcrumbs>
+          </div>
+
+
+        </div>
+      </vex-page-layout-header>
+
+      <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+        <div *ngIf="isJobsTable" class="card overflow-auto -mt-16 mb-10">
+          <div class="card">
+            <mat-tab-group [selectedIndex]="index" (selectedTabChange)="onTabChanged($event)">
+              <mat-tab label="Active Jobs">
+                <div class="p-3" *ngIf="isJobsTable">
+                  <cv-jod-data-table *ngIf="isActiveJobs" [JobStatus]=3 [valueChange]="dataChange"
+                    (addJobClick)="onAddJobClick()" (viewJob)="onViewJobChange($event)"
+                    (viewRequisition)="onViewRequisition($event)">loading...</cv-jod-data-table>
+                </div>
+              </mat-tab>
+              <mat-tab label="InActive Jobs">
+                <div class="p-3">
+                  <cv-jod-data-table *ngIf="isInactvieJobs" [JobStatus]=5 [valueChange]="dataChange"
+                    (addJobClick)="onAddJobClick()" (viewJob)="onViewJobChange($event)"
+                    (viewRequisition)="onViewRequisition($event)">loading...</cv-jod-data-table>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+
+        <div *ngIf="IsJobDetail" class="card overflow-auto -mt-16">
+          <cv-my-active-applicants *ngIf="IsJobDetail" [ViewType]="'Active'" [SrcJobId]="selectedJobId"
+            [SelectedJob]="selectedJob" (backClick)="onBackClick()"></cv-my-active-applicants>
+        </div>
+        <div *ngIf="IsRequistionDetail" class="card overflow-auto -mt-16">
+          <cv-requisitions-responses></cv-requisitions-responses>
+        </div>
+        <!-- <div *ngIf="IscandidateDetail===true" class="card overflow-auto -mt-16">
+          <cv-candidate-details [selectedCandidateId]="candidate"
+            (closeCandidate)="onCloseClick($event)"></cv-candidate-details>
+        </div> -->
+      </vex-page-layout-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</vex-page-layout>

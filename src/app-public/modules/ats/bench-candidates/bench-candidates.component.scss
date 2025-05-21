@@ -1,0 +1,54 @@
+// .mat-button-toggle-group {
+//     height: 30px;
+//     align-items: center;
+//     padding: 5px;
+//     border: 1px solid rgb(var(--color-primary));
+    
+//   }
+
+//   .mat-button-toggle-checked{
+//     background-color: rgba(var(--color-primary), .1);
+//   }
+
+//   .mat-button-toggle:hover {
+//     background-color: rgba(var(--color-primary), .1);
+//     }
+
+    // .locationbtn{
+    //   height: 30px;
+    //   align-items: center;
+    //   text-align:center;
+    //   padding: 2px;
+    //   margin-top: 10px;
+    //   padding-left: 8px;
+    //   padding-right: 8px;
+    //   background-color: #ebebee;
+    // }
+
+  .textcgs {
+    text-transform: lowercase;
+  }
+  
+  .textcgs::first-line {
+    text-transform: capitalize;
+  }
+
+  .mat-sidenav{
+    background-color:#F5F5F5;
+    }
+
+    .profileImage {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #512DA8;
+      font-size: 8px;
+      color: #fff;
+      text-align: center;
+      line-height: 150px;
+      margin: 20px 0;
+    } 
+
+
+
+ 

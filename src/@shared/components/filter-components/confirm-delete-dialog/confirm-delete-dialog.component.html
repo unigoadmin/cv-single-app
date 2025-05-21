@@ -1,0 +1,23 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+      <h2 class="title my-0 leading-snug text-secondary textcgs">{{title}}</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6  text-border"></mat-divider>
+    <mat-dialog-content fxLayout="column">
+      <div class="mt-4" fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px" >
+        <span [innerHtml]="message"></span>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">CANCEL</button>
+      <button mat-button  color="primary" mat-dialog-close type="button" (click)="onConfirm()">YES</button>
+    </mat-dialog-actions>
+  
+  

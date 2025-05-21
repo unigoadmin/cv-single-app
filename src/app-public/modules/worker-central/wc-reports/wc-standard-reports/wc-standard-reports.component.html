@@ -1,0 +1,202 @@
+<div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="32px" fxLayoutAlign="start" class="p-10">
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="placementPanelOpenState = true" (closed)="placementPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icPerson" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Placements
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of placementsReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Placements Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="WorkerPanelOpenState = true" (closed)="WorkerPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icschedule" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Workers
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of workersReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Workers Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+  </div>
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="assignmentsPanelOpenState = true" (closed)="assignmentsPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icLayers" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Assignments
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of assignmentsReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Assignments Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="timesheetPanelOpenState = true" (closed)="timesheetPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icConfirmation" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Timesheets
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of timesheetsReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','Timesheets Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+  </div>
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="WorkPermitExpiryPanelOpenState = true"
+          (closed)="WorkPermitExpiryPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icLayers" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Work Permit Expiry
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of workPermitExpiryReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','WorkPermit Expiry Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="I94ExpiryPanelOpenState = true" (closed)="I94ExpiryPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="icLayers" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    I94 Expiry
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of i94ExpiryReport;let i=index">
+              <span (click)="openReport(report,'WorkerCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+              <!-- <a [routerLink]="['submissions',report.ReportTypeId,report.ReportId,report.IsDefault===true?'1':'0','I94 Expiry Report','WorkerCentral','2']"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out"><span
+                  style="font-size: 12px;">{{report.ReportName}}</span></a> -->
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Add Interview</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;padding-top: 10px;">
+    <form role="form" [formGroup]="AddInterviewForm">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Interview Round</mat-label>
+                    <mat-select required placeholder="Interview Round" name="InterviewRound" id="InterviewRound"
+                        formControlName="IntvTitle" [(ngModel)]="SelectedInterview.InterviewRound">
+                        <mat-option *ngFor="let item of interviewRoundsList"
+                            [value]="item.InterviewRoundId">{{item.Name}}
+                        </mat-option>
+                        <!-- <mat-option value="First Round">First Round</mat-option>
+                        <mat-option value="Second Round">Second Round</mat-option>
+                        <mat-option value="Third Round">Third Round</mat-option>
+                        <mat-option value="Final Round">Final Round</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+              
+            </div>
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Interview Type</mat-label>
+                    <mat-select required placeholder="Interview Type" name="Medium" id="Medium"
+                        formControlName="InterviewType" [(ngModel)]="SelectedInterview.InterviewType">
+                        <mat-option *ngFor="let item of interviewTypesList"
+                            [value]="item.InterviewTypeId">{{item.Name}}
+                        </mat-option>
+                        <!-- <mat-option value="Telephonic">Telephonic</mat-option>
+                        <mat-option value="Video">Video</mat-option>
+                        <mat-option value="Face To Face">Face To Face</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Interview Date & Time</mat-label>
+                    <input matInput required [ngxMatDatetimePicker]="picker" formControlName="selectedDateTime"
+                        id="selectedDateTime" name="selectedDateTime" [(ngModel)]="selectedDateTime" [min]="minDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker [enableMeridian]="true" [showSeconds]="false"></ngx-mat-datetime-picker>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field appearance="outline" class="flex-auto">
+                    <mat-label>Interview Duration</mat-label>
+                    <mat-select required name="InterviewDuration" id="InterviewDuration"
+                        formControlName="InterviewDuration" [(ngModel)]="SelectedInterview.InterviewDuration">
+                        <mat-option value="30 Mins">30 Mins</mat-option>
+                        <mat-option value="45 Mins">45 Mins</mat-option>
+                        <mat-option value="1 Hour">1 Hour</mat-option>
+                        <mat-option value="1 Hour 30 Mins">1 Hour 30 Mins</mat-option>
+                        <mat-option value="2 Hours">2 Hours</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field appearance="outline" class="flex-auto">
+                    <mat-label>Interview TimeZone</mat-label>
+                    <mat-select required name="InterviewTimeZone" id="InterviewTimeZone"
+                        formControlName="InterviewTimeZone" [(ngModel)]="SelectedInterview.InterviewTimeZone">
+                        <mat-option value="PST">PST - Pacific Standard Time</mat-option>
+                        <mat-option value="MST">MST - Mountain Standard Time</mat-option>
+                        <mat-option value="CST">CST - Central Standard Time</mat-option>
+                        <mat-option value="EST">EST - Eastern Standard Time</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="flex-auto">
+                    <mat-label>Notes</mat-label>
+                    <input formControlName="ScheduleComments" [(ngModel)]="SelectedInterview.ScheduleComments" matInput>
+                </mat-form-field>
+            </div>
+
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-button type="submit"
+        [disabled]="IsLoading || !(AddInterviewForm.valid)" (click)="save()">ADD</button>
+    </div>
+
+</mat-dialog-actions>

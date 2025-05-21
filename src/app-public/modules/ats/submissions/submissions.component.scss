@@ -1,0 +1,76 @@
+
+
+.textcgs {
+  text-transform: lowercase;
+}
+
+.textcgs::first-line {
+  text-transform: capitalize;
+}
+
+.mat-sidenav{
+  background-color:#F5F5F5;
+  }
+
+
+  /*All Messages styles list*/
+
+.MsgItem {
+  margin: 10px 10px 0px 30px;
+  position: relative;
+}
+
+.MsgItem .MsgIn {
+  padding: 10px 0px 0px;
+  position: relative;
+}
+
+.MsgItem:before {
+  background: rgba(38, 39, 60, 0.2);
+  border-radius: 2px;
+  bottom: -25px;
+  content: "";
+  height: 100%;
+  left: -15px;
+  position: absolute;
+  width: 1px;
+}
+
+.MsgItem:after {
+  background: white;
+  border: 2px solid rgba(38, 39, 60, 0.2);
+  border-radius: 50%;
+  content: "";
+  height: 15px;
+  left: -22px;
+  position: absolute;
+  top: 12px;
+  width: 15px;
+}
+
+.MsgItem:last-child:before {
+  display: none;
+}
+
+.msg-date {
+  font-size: 10px;
+  line-height: 20px;
+  color: rgba(var(--color-primary), 1);
+}
+
+.msg-by {
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.msg-content {
+  text-transform: capitalize;
+  font-weight: 400;
+}
+
+.msg-content:before,
+.msg-content:after {
+  font-size: 18px;
+}
+
+  

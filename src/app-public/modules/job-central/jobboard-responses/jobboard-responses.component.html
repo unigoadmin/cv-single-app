@@ -1,0 +1,102 @@
+<vex-page-layout>
+
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+      <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+        <div>
+          <h1 class="title mt-0 mb-1">Applicants</h1>
+          <vex-breadcrumbs [crumbs]="['JobCentral','Applicants']"></vex-breadcrumbs>
+        </div>
+      </div>
+    </vex-page-layout-header>
+  
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+      <div class="card overflow-auto -mt-16 mb-10">
+       
+        <div class="card">
+          <mat-tab-group #tabGroup [(selectedIndex)]="index" (selectedTabChange)="handleMatTabChange($event)">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Active Applicants
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent style="overflow:hidden !important">
+                  <cv-my-active-applicants *ngIf="IsLoaded==true" [ViewType]="'Active'"></cv-my-active-applicants>
+                </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                LinkedIn Responses <span class="item-badge bg-green text-green-contrast">{{UnreadsCounts.UnreadLinkedIn}}</span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                 <cv-responses-data-table [InboxSourceKey]="'LinkedIn'" [InputSrc]="'LinkedIn'" *ngIf="IsLinkedLoaded==true"></cv-responses-data-table>
+                </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Dice Responses <span class="item-badge bg-green text-green-contrast">{{UnreadsCounts.UnreadDice}}</span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                <cv-responses-data-table [InboxSourceKey]="'Dice'" [InputSrc]="'Dice'" *ngIf="IsDiceLoaded==true"></cv-responses-data-table>
+              </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Monster Responses <span class="item-badge bg-green text-green-contrast">{{UnreadsCounts.UnreadMonster}}</span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                  <cv-responses-data-table [InboxSourceKey]="'Monster'" [InputSrc]="'Monster'" *ngIf="IsMonsterLoaded==true"></cv-responses-data-table>
+                </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Job Posts <span class="item-badge bg-green text-green-contrast">{{UnreadsCounts.JobPosting}}</span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                  <cv-responses-data-table [InboxSourceKey]="'JobPosting'" [InputSrc]="'JobPosting'" *ngIf="IsJobPostingLoaded==true"></cv-responses-data-table>
+                </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Ignored Responses 
+              </ng-template>
+                <div class="p-3">
+                  <ng-template matTabContent>
+                  <cv-ignored-responses  *ngIf="IsIgnoredLoaded==true"></cv-ignored-responses>
+                </ng-template>
+                </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Under Tech Screen<span class="item-badge bg-green text-green-contrast"></span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                  <cv-responses-data-table [InboxSourceKey]="null" [InputSrc]="'TechScreen'" [IsUnderTechScreen]="true" *ngIf="IsTechScreenLoaded==true"></cv-responses-data-table>
+                </ng-template>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Marketing<span class="item-badge bg-green text-green-contrast"></span>
+              </ng-template>
+              <div class="p-3">
+                <ng-template matTabContent>
+                  <cv-responses-data-table [InboxSourceKey]="null" [InputSrc]="'Marketing'" [IsMarketing]="true" *ngIf="IsMarketingLoaded==true"></cv-responses-data-table>
+                </ng-template>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </vex-page-layout-content>
+  
+  </vex-page-layout>

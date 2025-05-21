@@ -1,0 +1,301 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2  class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Add Placement</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm" fxLayout="column" style="overflow: auto;">
+    <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="center">
+            <mat-button-toggle-group style="margin:20px" [(ngModel)]="SelectedType">
+                <mat-button-toggle (click)="OnRequirementChange(2)" [value]="2">
+                    <button style="pointer-events:none;">
+                        Direct / Internal
+                    </button>
+                </mat-button-toggle>
+                <mat-button-toggle (click)="OnRequirementChange(3)" color="accent" [value]="3">Contract / C2C
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+    <form [formGroup]="confirmationFormGroup">
+        <div class="card overflow-auto">
+            <div fxLayout="row">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                Job Information</div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>Job Title</mat-label>
+                                    <input cdkFocusInitial formControlName="JobTitle" matInput required id="JobTitle"
+                                        name="JobTitle" [ngModel]="confirmationJob.JobTitle | titlecase"
+                                        (ngModelChange)="confirmationJob.JobTitle=$event">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>Job Duration</mat-label>
+                                    <input formControlName="DurationInMonths" matInput type="number"
+                                        min="0" max="24" name="DurationInMonths"
+                                        [(ngModel)]="confirmationJob.DurationInMonths">
+                                </mat-form-field>
+                            </div>
+                            
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                                    <mat-label>Job Description</mat-label>
+                                    <textarea name="description" formControlName="description"
+                                        [(ngModel)]="confirmationJob.JobDescription" matInput></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                                    <mat-label>Expected Start Date</mat-label>
+                                    <input [matDatepicker]="startdatepickerRef" formControlName="wpstexpiration"
+                                        required [(ngModel)]="confirmation.StartDate" matInput name="wpstexpiration">
+                                    <mat-datepicker-toggle [for]="startdatepickerRef" matSuffix></mat-datepicker-toggle>
+                                    <mat-datepicker #startdatepickerRef></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                                    <mat-label>Expected End Date</mat-label>
+                                    <input [matDatepicker]="enddatepickerRef" formControlName="wpenexpiration"
+                                        [(ngModel)]="confirmation.EndDate" matInput name="wpenexpiration">
+                                    <mat-datepicker-toggle [for]="enddatepickerRef" matSuffix></mat-datepicker-toggle>
+                                    <mat-datepicker #enddatepickerRef></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <mat-label>Bill Rate ($/Hr)</mat-label>
+                                    <input required cdkFocusInitial formControlName="rate" matInput name="rate"
+                                        [(ngModel)]="confirmation.BillRate">
+                                </mat-form-field>
+                                
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div class="card overflow-auto" class="mt-4">
+            <div fxLayout="row">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                    <mat-card>
+                        <mat-card-title>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div class="subheading-2 font-medium pb-1 pt-1" fxFlex="auto">Candidate Information (*)</div>
+                               
+                                <button *ngIf="CandidateLoaded==false" (click)="SearchCandidate()" class="ltr:ml-4 rtl:mr-4" color="primary" fxFlex="none" fxHide.xs mat-raised-button
+                                    type="button">
+                                    <ic-icon [icon]="iconService.icSearch" class="ltr:mr-2 rtl:ml-2 ltr:-ml-1 rtl:-mr-1" inline="true" size="20px"></ic-icon>
+                                    <span>Search Candidate</span>
+                                </button>
+                               
+                                <button *ngIf="CandidateLoaded==false" (click)="AddNewCandidate()" class="ltr:ml-4 rtl:mr-4" color="primary" fxFlex="none" fxHide.xs mat-raised-button
+                                    type="button">
+                                    <ic-icon [icon]="iconService.icAdd" class="ltr:mr-2 rtl:ml-2 ltr:-ml-1 rtl:-mr-1" inline="true" size="20px"></ic-icon>
+                                    <span>New Candidate</span>
+                                </button>
+
+                                <button *ngIf="CandidateLoaded==true" (click)="ResetCandidate()" class="ltr:ml-4 rtl:mr-4" color="primary" fxFlex="none" fxHide.xs mat-raised-button
+                                type="button">
+                                <ic-icon [icon]="iconService.icClearAll" class="ltr:mr-2 rtl:ml-2 ltr:-ml-1 rtl:-mr-1" inline="true" size="20px"></ic-icon>
+                                <span>Reset</span>
+                            </button>
+
+                            </div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <div fxLayout="column" *ngIf="CandidateLoaded==true">
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                        <mat-label>First Name</mat-label>
+                                        <input required cdkFocusInitial formControlName="canfname" matInput name="canfname"
+                                            [ngModel]="confirmationCandidate.FirstName | titlecase"
+                                            (ngModelChange)="confirmationCandidate.FirstName=$event" TrimInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                        <mat-label>Last Name</mat-label>
+                                        <input required cdkFocusInitial formControlName="canlname" matInput name="canlname"
+                                            [ngModel]="confirmationCandidate.LastName | titlecase"
+                                            (ngModelChange)="confirmationCandidate.LastName=$event" TrimInput>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                        <mat-label>Email</mat-label>
+                                        <input [attr.disabled]="IsEmailDisabled" required cdkFocusInitial formControlName="Email" matInput name="Email" 
+                                            [ngModel]="confirmationCandidate.Email | lowercase" TrimInput (ngModelChange)="confirmationCandidate.Email=$event"
+                                            (blur)="onEmailChanged($event)">
+                                    </mat-form-field>
+    
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                        <mat-label>Phone</mat-label>
+                                        <input required cdkFocusInitial formControlName="PrimaryPhoneNumber" matInput
+                                            (keypress)="onInputKeyPress($event)" (change)="PhonenumberFormate('cand')"
+                                            name="PrimaryPhoneNumber"
+                                            [(ngModel)]="confirmationCandidate.PrimaryPhoneNumber">
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline">
+                                        <mat-label>Work Permit</mat-label>
+                                        <mat-select required name="WorkStatus" formControlName="WorkStatus"
+                                            [(ngModel)]="confirmationCandidate.WorkStatus" id="WorkStatus">
+                                            <mat-option *ngFor="let work of workStatusFields" [value]="work.value">
+                                                {{work.label}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="100" fxFlex.gt-xs="50" appearance="outline" class="flex-auto">
+                                        <mat-label>Work Permit Expiration</mat-label>
+                                        <input required formControlName="wpexpiration" [matDatepicker]="workdatepickerRef"
+                                            matInput name="wpexpiration"
+                                            [(ngModel)]="confirmationCandidate.WorkStatusExpiry">
+                                        <mat-datepicker-toggle [for]="workdatepickerRef" matSuffix></mat-datepicker-toggle>
+                                        <mat-datepicker #workdatepickerRef></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                        <mat-label>Employment Type</mat-label>
+                                        <mat-select required formControlName="EmploymentType"
+                                          [(ngModel)]="confirmationCandidate.EmploymentType"
+                                          (selectionChange)="CandidateselectionChange($event)" placeholder="Employment Type"
+                                          name="empType" id="empType">
+                                          <mat-option [value]="'C2C'">C2C</mat-option>
+                                          <mat-option [value]="'W2'">W2</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+    
+                                </div>
+    
+                                <div class="card overflow-auto" class="mt-4">
+                                    <cv-candidate-account *ngIf="employmentC2CType===true" 
+                                    [canSubvendorAccount]="cansubVClientAccount"
+                                    [canReferralVendorAccount]="canrefClientAccount"
+                                    (out_candsubvendor)="GetCandSubVendorData($event)"
+                                    (out_candRefvendor)="GetCandRefVendorData($event)"
+                                    (SubvendorformValidityChanged)="OnCanSubVendorFormValidity($event)"
+                                    (RefVendorformValidityChanged)="OnCanRefVendorFormValidity($event)">
+                                    </cv-candidate-account>   
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="directinternaltType===true" class="card overflow-auto" class="mt-4">
+        <cv-end-client-internal [endclientinternalAccount]="endClientAccount"
+            (out_endclientinternalAccount)="GetEndClientInternalData($event)"
+            (formValidityChanged)="OnEndClientInternalFormValidity($event)">
+        </cv-end-client-internal>
+    </div>
+    <div *ngIf="contractC2CType===true" class="card overflow-auto" class="mt-4">
+        <mat-card>
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 14px !important;">
+                            <span class="subheading-2 font-medium pb-1 pt-1">Vendor Information</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <div *ngIf="contractC2CType===true" class="mt-4">
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-end-client-c2c [endclientc2cAccount]="endClientAccount"
+                                (out_endclientc2cAccount)="GetEndClientInternalData($event)"
+                                (formValidityChanged)="OnEndClientInternalFormValidity($event)">
+                            </cv-end-client-c2c>
+                        </div>
+                    </div>
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-prime-vendor [primevendorAccount]="primeVClientAccount"
+                                (out_primevendorAccount)="GetPrimeVendorData($event)"
+                                (formValidityChanged)="OnPrimeVendorFormValidity($event)">
+                            </cv-prime-vendor>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4" *ngIf="isManagedServiceProvider===true && contractC2CType===true">
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-msp-vendor *ngIf="isManagedServiceProvider===true && contractC2CType===true" [mspClientAccount]="mspClientAccount" (out_mspClientAccount)="GetMSPVendorData($event)"
+                                (formValidityChanged)="OnMSPFormValidity($event)" (out_removeMSPAccount)="onRemoveClick($event)">
+                            </cv-msp-vendor>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4" *ngIf="isImplementationPartner===true && contractC2CType===true">
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-ip-vendor [ipClientAccount]="ipClientAccount" (out_ipClientAccount)="GetIPVendorData($event)"
+                                (formValidityChanged)="OnIPFormValidity($event)" (out_removeipAccount)="onRemoveClick($event)">
+                            </cv-ip-vendor>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4" *ngIf="isSubPrimeVendor===true && contractC2CType===true">
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-sub-prime-vendor [subPVClientAccount]="subPVClientAccount" (out_subPVClientAccount)="GetSubpvVendorData($event)"
+                                (formValidityChanged)="OnSubpvFormValidity($event)" (out_removesubPVAccount)="onRemoveClick($event)" >
+                            </cv-sub-prime-vendor>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4" *ngIf="isReffralVendor===true && contractC2CType===true">
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="100">
+                            <cv-referal-vendor [refClientAccount]="refClientAccount" (out_refClientAccount)="GetRefVendorData($event)"
+                                (formValidityChanged)="OnRefFormValidity($event)" (out_removeReferalAccount)="onRemoveClick($event)">
+                            </cv-referal-vendor>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" class="mt-2 mb-2" *ngIf="contractC2CType===true">
+                    <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                        <button [matMenuTriggerFor]="addSubmitMenu" color="primary" mat-raised-button type="button">Add
+                            Layer
+                        </button>
+                        <mat-menu #addSubmitMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+                            <button mat-menu-item *ngFor="let third of thirdTypeList"
+                                (click)="addLayerSelection(third);">
+                                <mat-icon [icIcon]="iconService.icPerson"></mat-icon>
+                                <span matTooltip="{{third.label}}">{{third.label}}</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel" (click)="findInvalidControls()">CANCEL</button>
+            <button color="primary" mat-raised-button type="submit" matTooltip="Submit" (click)="submitConfirmation()"
+                [disabled]="isLoading || !(confirmationFormGroup.valid && primevendorFormValid && mspFormValid && ipFormValid && subpvFormValid && referalFormValid && endclientFormValid && cansubvendorFormValid && canreferalvendorFormValid)">
+                <img *ngIf="isLoading" style="display: inherit;"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                SUBMIT
+                </button>
+        </div>
+    </div>
+</mat-dialog-footer>

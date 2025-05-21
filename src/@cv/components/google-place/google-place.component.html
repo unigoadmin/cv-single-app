@@ -1,0 +1,27 @@
+<mat-form-field *ngIf="InputMode=='Add'" appearance="outline" style="display: block;" fxLayout="row" fxFlex="100"
+  fxFlex.gt-xs="100" class="flex-auto" >
+  <mat-label>Location (City / State)</mat-label>
+  <input matInput type="text" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+    (change)="autocompleteInputChange($event)" [disabled]="disable" [required]="required">
+</mat-form-field>
+
+<mat-form-field *ngIf="InputMode=='Edit'" fxLayout="row" style="display: block;" fxFlex="100" fxFlex.gt-xs="100"
+  class="flex-auto">
+  <mat-label>Location (City / State)</mat-label>
+  <input matInput type="text" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+    (change)="autocompleteInputChange($event)" [disabled]="disable" [required]="required">
+</mat-form-field>
+
+<mat-form-field *ngIf="InputMode=='Add-WC'" appearance="outline" style="display: block;" fxLayout="row" fxFlex="100"
+  fxFlex.gt-xs="100" class="flex-auto">
+  <mat-label>Address</mat-label>
+  <input matInput required type="text" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+    (change)="autocompleteInputChange($event)" [disabled]="disable" [required]="required">
+</mat-form-field>
+
+<mat-form-field *ngIf="InputMode=='Edit-WC'" fxLayout="row" style="display: block;" fxFlex="100" fxFlex.gt-xs="100"
+  class="flex-auto">
+  <mat-label>Address</mat-label>
+  <input matInput required type="text" placeholder="Address" [(ngModel)]="autocompleteInput" #addresstext
+    (change)="autocompleteInputChange($event)" [disabled]="disable" [required]="required">
+</mat-form-field>

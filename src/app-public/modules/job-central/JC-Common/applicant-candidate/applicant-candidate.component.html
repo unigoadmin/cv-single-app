@@ -1,0 +1,237 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">{{title}}
+    </h2>
+    <span fxFlex></span>
+    <button class="text-secondary" mat-icon-button type="button" (click)="viewClose()">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<div *ngIf="currentApplicant.AttachedFilePath" id="progressBar"><mat-progress-bar
+        mode="indeterminate"></mat-progress-bar></div>
+<mat-dialog-content class="confirm pl-tabs" fxLayout="column" style="overflow: auto;">
+    <div class="row" fxLayout="row" style="overflow:auto">
+        <div class="column-1 box">
+            <div fxLayout="row" fxLayoutAlign="start center" class="ml-2 pb-1 pt-1" fxLayoutGap="10">
+                <span fxFlex></span>
+                <input id="attachR" type="file" (change)="onChange($event)" style="display:none;" #fileInput />
+                <a color="primary" mat-icon-button color="primary" (click)="fileInput.click()"
+                    class="btnnewlog"><strong>
+                        <mat-icon style="margin-bottom: -6px;" matTooltip="Upload New Resume"
+                            [icIcon]="iconService.icfileupload">
+                        </mat-icon>
+                    </strong></a>
+                <button mat-icon-button color="primary" (click)="downloadResume()">
+                    <mat-icon matTooltip="Download Resume">cloud_download</mat-icon>
+                </button>
+            </div>
+            <div *ngIf="currentApplicant.AttachedFilePath" fxLayout="row" style="max-height: 200vh;">
+                <ngx-doc-viewer [url]="currentApplicant.AttachedFilePath" googleCheckContentLoaded="true"
+                    googleCheckInterval=3000 googleMaxChecks=5 viewer="google" (loaded)="contentLoaded()"
+                    style="width:100%;height: 160vh;" disableContent="none">
+                </ngx-doc-viewer>
+            </div>
+            <div *ngIf="!currentApplicant.AttachedFilePath" fxLayout="row" fxLayoutAlign="center center">
+                <h3 class="mt-8 text-secondary">Resume is not available for this candidate</h3>
+            </div>
+        </div>
+        <div class="column-2 box">
+            <mat-tab-group mat-align-tabs="start" (selectedTabChange)="onTabChanged($event)">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="pl-4">
+                            <ic-icon [icon]="iconService.icInfo" inline="true"></ic-icon> Applicant Details
+                        </span>
+                    </ng-template>
+                    <form [formGroup]="addForm" class="mt-4">
+                        <div @fadeInUp class="overflow-auto">
+
+                            <cv-skills-autocomplete [existingSkills]="SelectedKwywods"
+                                (out_selectedSkills)="GetSelectedSkills($event)"></cv-skills-autocomplete>
+
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="0">
+                                <mat-form-field class="example-chip-list" fxFlex="100">
+                                    <mat-label>HashTags</mat-label>
+                                    <mat-chip-list multiple id="chipList" [selectable]="true">
+                                        <mat-chip *ngFor="let chip of hashtags" [selected]="chip.state"
+                                            (click)="chip.state=!chip.state;HashTagschangeSelected('s', chip.HashTagId)">
+                                            {{chip.HashTagText}}
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="10px"
+                                fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                                    <mat-label>Job Title</mat-label>
+                                    <input [(ngModel)]="currentApplicant.JobTitle" formControlName="jobtitle" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>First Name</mat-label>
+                                    <input [ngModel]="currentApplicant.FirstName|titlecase" formControlName="firstName"
+                                        matInput required name="fname"
+                                        (ngModelChange)="currentApplicant.FirstName=$event">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Last Name</mat-label>
+                                    <input [ngModel]="currentApplicant.LastName|titlecase" formControlName="lastName"
+                                        matInput required name="lname"
+                                        (ngModelChange)="currentApplicant.LastName=$event">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Email</mat-label>
+                                    <input [ngModel]="currentApplicant.Email|lowercase" formControlName="email" matInput
+                                        required name="email" (ngModelChange)="currentApplicant.Email=$event">
+
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input required [ngModel]="currentApplicant.Phno | phoneformat"
+                                        (ngModelChange)="currentApplicant.Phno=$event" formControlName="phone" matInput
+                                        name="lname">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>DOB:(MM/DD)</mat-label>
+                                    <input [(ngModel)]="currentApplicant.DOB"
+                                        [ngModel]="currentApplicant.DOB | date:'MM/dd'" formControlName="DOB" matInput
+                                        name="lname">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Last 4 Digit of SSN</mat-label>
+                                    <input [(ngModel)]="currentApplicant.SSN" formControlName="SSN" matInput
+                                        name="lname">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                                    <cv-google-place style="display:contents;" (setAddress)="getAssignAddress($event)"
+                                        (inputAddress)="inputAssignAddress($event)"
+                                        selectedAddress="{{currentApplicant.ApplicantLocation}}" adressType="(cities)"
+                                        InputMode="Edit" [required]="true">
+                                    </cv-google-place>
+                                </div>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>LinkedIn</mat-label>
+                                    <input [(ngModel)]="currentApplicant.LinkedIn" formControlName="LinkedIn" matInput
+                                        required name="lname">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                                    <mat-label>Availability to join the Project</mat-label>
+                                    <mat-select name="Availability_To" id="Availability_To"
+                                        formControlName="AvailabilityToJoin"
+                                        [(ngModel)]="currentApplicant.AvailabilityToJoin">
+                                        <mat-option value="Immediately">Immediately</mat-option>
+                                        <mat-option value="2 Weeks from confirmation">2 Weeks from
+                                            confirmation</mat-option>
+                                        <mat-option value="1 Month from confirmation">1 Month from
+                                            confirmation</mat-option>
+                                        <mat-option value="6 weeks from confirmation"> 6 weeks from confirmation
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Work Experience</mat-label>
+                                    <input [(ngModel)]="benchCandidates.ExperienceYears" formControlName="wexperience"
+                                        matInput name="wexperience">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Work Permit</mat-label>
+                                    <mat-select required formControlName="wpermit" name="WorkStatus"
+                                        [(ngModel)]="benchCandidates.WorkStatus" id="WorkStatus">
+                                        <mat-option *ngFor="let work of workStatuFields"
+                                            [value]="work.value">{{work.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Pay Rate</mat-label>
+                                    <input type="number" [(ngModel)]="currentApplicant.PayRate"
+                                        formControlName="PayRate" matInput min="0" max="1000"
+                                        oninput="validity.valid||(value='');">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Employment Type</mat-label>
+                                    <mat-select name="workCategory" required formControlName="workCategory"
+                                        id="workCategory" [(ngModel)]="currentApplicant.EmploymentType"
+                                        (selectionChange)="onEmploymentTypeChange($event)">
+                                        <mat-option [value]="'C2C'">C2C</mat-option>
+                                        <mat-option [value]="'W2'">W2</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                                    <mat-label>Technical Skills Rating</mat-label>
+                                    <cv-half-star-rating [RatingType]="'TECH'"
+                                        [Techrating]="currentApplicant.TechnicalSkillRating"
+                                        (out_TechRating)="GetTechRating($event)"></cv-half-star-rating>
+                                    <input hidden [(ngModel)]="currentApplicant.TechnicalSkillRating"
+                                        formControlName="SkillRating" matInput>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                                    <mat-label>Communication Skills Rating</mat-label>
+                                    <cv-comm-star-rating [RatingType]="'COMM'"
+                                        [Commrating]="currentApplicant.CommunicationSkillRating"
+                                        (out_CommRating)="GetCommRating($event)"></cv-comm-star-rating>
+                                    <input hidden [(ngModel)]="currentApplicant.CommunicationSkillRating"
+                                        formControlName="CommRating" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div *ngIf="currentApplicant.EmploymentType==='C2C'">
+                                <cv-candidate-sub-vendor *ngIf="currentApplicant.EmploymentType==='C2C'"
+                                    [canSubvendorAccount]="cansubVClientAccount"
+                                    (out_candsubvendor)="GetCandSubVendorData($event)"
+                                    (formValidityChanged)="onChildFormValidityChanged($event)">
+                                </cv-candidate-sub-vendor>
+                            </div>
+
+
+                        </div>
+                    </form>
+
+                    <mat-divider></mat-divider>
+                    <cv-job-applicant-references [IsMandatory]="appReferences_Mandatory"
+                        [IsReadonly]="appReferences_Readonly" [reference1]="reference1" [reference2]="reference2"
+                        (out_Reference1)="UpdateReference1($event)" (out_Reference2)="UpdateReference2($event)"
+                        (reference1_formValidityChanged)="OnReference1FormValidity($event)"
+                        (reference2_formValidityChanged)="OnReference2FormValidity($event)">
+                    </cv-job-applicant-references>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="pl-4">
+                            <ic-icon [icon]="iconService.icnote" inline="true"></ic-icon> Applicant Notes
+                        </span>
+                    </ng-template>
+                    <div>
+                        <cv-applicant-notes *ngIf="isnotes===true" [applicantId]="currentApplicant.ResponseId">
+                        </cv-applicant-notes>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button class="mr-2" mat-button type="button" (click)="clearFields()">RESET</button>
+            <button color="primary"
+                [disabled]="!IsLocation || !c2cFormValid || !reference1FormValid || !reference2FormValid || addForm.invalid || (!addForm.dirty && !IsPageDirty )"
+                mat-raised-button type="button" (click)="UpdateApplicant()">SAVE</button>
+        </div>
+    </div>
+</mat-dialog-footer>

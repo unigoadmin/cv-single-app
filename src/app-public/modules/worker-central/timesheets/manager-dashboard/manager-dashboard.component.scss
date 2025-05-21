@@ -1,0 +1,115 @@
+/*All Messages styles list*/
+
+.MsgItem {
+    margin: 10px 10px 0px 30px;
+    position: relative;
+  }
+  
+  .MsgItem .MsgIn {
+    padding: 10px 0px 0px;
+    position: relative;
+  }
+  
+  .MsgItem:before {
+    background: rgba(38, 39, 60, 0.2);
+    border-radius: 2px;
+    bottom: -25px;
+    content: "";
+    height: 100%;
+    left: -15px;
+    position: absolute;
+    width: 1px;
+  }
+  
+  .MsgItem:after {
+    background: white;
+    border: 2px solid rgba(38, 39, 60, 0.2);
+    border-radius: 50%;
+    content: "";
+    height: 15px;
+    left: -22px;
+    position: absolute;
+    top: 12px;
+    width: 15px;
+  }
+  
+  .MsgItem:last-child:before {
+    display: none;
+  }
+  
+  .msg-date {
+    font-size: 10px;
+    line-height: 20px;
+    color: rgba(var(--color-primary), 1);
+  }
+  
+  .msg-by {
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  
+  .msg-content {
+    font-weight: 400;
+  }
+  
+  .msg-content:before,
+  .msg-content:after {
+    font-size: 18px;
+  }
+
+  ::ng-deep .my-fltrtop mat-form-field{
+  margin-bottom: 16px !important;
+  }
+
+  ::ng-deep .my-fltrtop .mat-form-field-appearance-outline .mat-form-field-wrapper{
+    margin:0 !important;
+  }
+  ::ng-deep .my-fltrtop .mat-form-field-wrapper{
+    padding-bottom:0 !important;
+    background-color: #fff !important;
+    border-radius: 5px !important;
+    color: rgba(var(--color-primary), 1);
+  }
+  ::ng-deep .my-fltrtop .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.7em 0 0.7em 0;
+}
+.progress-bar {
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  visibility: hidden;
+  z-index: 99999;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  
+}
+
+::ng-deep .mat-datepicker-toggle {
+  color: rgba(var(--color-primary), 1) !important;
+ }
+
+ ::ng-deep .mat-date-range-input{
+  color: rgba(var(--color-primary), 1) !important;
+  /*font-weight: bold;*/
+ }
+
+ .paginator-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.paginator-text {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  padding-left: 20px;
+}
+

@@ -1,0 +1,238 @@
+<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+  <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+    <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
+      Job<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+  </h2>
+  <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
+    <span>
+      <button *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']" [matMenuTriggerFor]="addSubmitMenu" class="mr-2"
+        color="primary" mat-raised-button type="button">Map
+        Applicants</button>
+    </span>
+
+    <mat-menu #addSubmitMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+      <button mat-menu-item (click)="OnCnadidateClick()">
+        <mat-icon [icIcon]="iconService.icPersonAdd"></mat-icon>
+        <span>New Applicant</span>
+      </button>
+
+      <button mat-menu-item (click)="OnExistingCnadidateClick()">
+        <mat-icon [icIcon]="iconService.icDoneAll"></mat-icon>
+        <span>Existing Applicant</span>
+      </button>
+    </mat-menu>
+
+  </div>
+  <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+    fxLayoutAlign="start center">
+    <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+    <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+      placeholder="Search by JobId,JobTitle and JobSource" type="search">
+  </div>
+
+  <span fxFlex></span>
+
+  <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+    <mat-icon [icIcon]="iconService.icSearch"></mat-icon>
+  </button>
+
+  <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button matTooltip="Filter Columns"
+    type="button">
+    <mat-icon [icIcon]="iconService.icFilterList"></mat-icon>
+  </button>
+
+  <button *ngxPermissionsOnly="['ACTION_JC_ADD_JOB']" (click)="onAddClick()" class="ml-4" color="primary" fxFlex="none"
+    mat-mini-fab matTooltip="Add Job" type="button">
+    <mat-icon [icIcon]="iconService.icAdd"></mat-icon>
+  </button>
+
+</div>
+<div fxLayout="column" fxLayoutAlign="space-between" style="overflow: auto;">
+  <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="checkbox">
+      <th *matHeaderCellDef mat-header-cell>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" class="w-4" mat-cell>
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null" (click)="$event.stopPropagation()"
+          [checked]="selection.isSelected(row)" color="primary">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th *matHeaderCellDef mat-header-cell></th>
+      <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+        <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+      </td>
+    </ng-container>
+
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+      <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+          <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:25 }}</span>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <!--Location--bg-primary-light-->
+    <ng-container matColumnDef="Location">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Location</th>
+      <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+        <span *ngIf="row.Location!=null && row.Location!=''"
+          class="rounded-full text-secondary font-medium locationbtn">
+          <ic-icon [icon]="iconService.iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true"
+            size="14px"></ic-icon>
+          <span>{{row['Location']}}</span>
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="JobCategoryName">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>CATEGORY</th>
+      <td *matCellDef="let row" mat-cell>
+        <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+          <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+            <span>{{row['JobCategoryName']}}</span>
+          </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MappedRequisitions">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Requistions</th>
+      <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+        <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+          <button style="line-height: 30px;" [disabled]="row['MappedRequisitions']==0"
+            class="text-primary mt-1 bg-primary-light" mat-stroked-button type="button"
+            (click)="ViewRequisitions(row)">{{row['MappedRequisitions']}}</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MappedApplicants">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Applicants</th>
+      <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+        <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+          <button style="line-height: 30px;" [disabled]="row['MappedApplicants']==0"
+            class="text-primary mt-1 bg-primary-light" mat-stroked-button type="button"
+            (click)="ViewCandidates(row)">{{row['MappedApplicants']}}</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="PublishedJobUrl">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+      <td *matCellDef="let row" mat-cell>
+        <a *ngIf="row['PublishedJobUrl']!=null && row['PublishedJobUrl']!=''" (click)="$event.stopPropagation()"
+          target="_blank" href="{{row['PublishedJobUrl']}}"
+          class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+          mat-icon-button>
+          <mat-icon [icIcon]="iconService.icAssigment" size="16px" matTooltip="{{row['PublishedJobUrl']}}"></mat-icon>
+        </a>
+        <!-- <a *ngIf="!row['PublishedJobUrl']" (click)="$event.stopPropagation()"
+          class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+          mat-icon-button>
+          <mat-icon svgIcon="disable-linkedin" size="16px"></mat-icon>
+        </a> -->
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Notes">
+      <th *matHeaderCellDef class="uppercase th-text-bold text-center " mat-header-cell>Notes</th>
+      <td *matCellDef="let row" mat-cell>
+        <div class="flex">
+          <a (click)="$event.stopPropagation();ViewNotes(row);"
+            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+            mat-icon-button>
+            <mat-icon [icIcon]="iconService.icComment" size="18px" matTooltip="Applicant Notes">
+            </mat-icon>
+            <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+          </a>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>Actions</th>
+      <td *matCellDef="let row" mat-cell>
+        <div class="flex">
+          <span>
+            <button (click)="$event.stopPropagation();" class="mr-2" [matMenuTriggerData]="{ job: row }"
+              [matMenuTriggerFor]="actionsMenu" color="primary" mat-raised-button type="button">Actions
+              <ic-icon [icon]="iconService.icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+            </button>
+          </span>
+
+        </div>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr (click)="updateJob(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+      class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+  </table>
+
+  <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize" class="sticky left-0" (page)="pageChanged($event)">
+  </mat-paginator>
+</div>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+
+<mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+  <ng-template let-job="job" matMenuContent>
+
+    <button *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']" (click)="MapExistingApplicant(job)" mat-menu-item>
+      <mat-icon class="text-secondary" color="primary" [icIcon]="iconService.icPersonAdd" size="18px"
+        [matTooltip]="'Assign Recruiter'">
+      </mat-icon><span>Map Existing Applicant</span>
+    </button>
+
+
+    <button *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']" (click)="MapNewApplicant(job)" mat-menu-item>
+      <mat-icon class="text-secondary" color="primary" [icIcon]="iconService.icPersonAdd" size="18px"
+        [matTooltip]="'Assign Recruiter'">
+      </mat-icon><span>Map New Applicant</span>
+    </button>
+
+    <span *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']">
+      <button (click)="MapRequisition(job)" mat-menu-item>
+        <mat-icon class="text-secondary" color="primary" [icIcon]="iconService.icPersonAdd" size="18px"
+          [matTooltip]="'Map Requisition'">
+        </mat-icon><span>Map Requisition</span>
+      </button>
+    </span>
+
+    <span *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']">
+      <button *ngIf="JobStatus==3" (click)="PublishJob(job)" mat-menu-item>
+        <mat-icon class="text-secondary" color="primary" [icIcon]="iconService.icPublish" size="18px"
+          [matTooltip]="'Publish'">
+        </mat-icon><span>Publish</span>
+      </button>
+    </span>
+
+    <span *ngxPermissionsOnly="['ACTION_JC_EDIT_JOB']">
+      <button *ngIf="JobStatus==3" (click)="InactiveJob(job)" mat-menu-item>
+        <mat-icon class="text-secondary" color="primary" [icIcon]="iconService.icratereview" size="18px"
+          [matTooltip]="'Inactive'">
+        </mat-icon><span>Inactive</span>
+      </button>
+    </span>
+
+
+  </ng-template>
+</mat-menu>

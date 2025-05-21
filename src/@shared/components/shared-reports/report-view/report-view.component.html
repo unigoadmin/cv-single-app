@@ -1,0 +1,72 @@
+<vex-page-layout>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav class="mat-sidenav-fixed" #quickpanel mode="over" hasBackdrop="true" position="end"
+      style="max-width:700px;">
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+            <h1 class="title mt-0 mb-1">{{reportTypeName}}</h1>
+
+            <vex-breadcrumbs [crumbs]="[moduleName,reportTypeName]"></vex-breadcrumbs>
+          </div>
+        </div>
+      </vex-page-layout-header>
+
+      <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+        <div class="card overflow-auto -mt-16 mb-10">
+          <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+            <div class="" fxLayoutGap="16px" fxFlex="75" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+              fxLayoutAlign="start center">
+              <div #processMenuOriginRef class="ltr:ml-2 rtl:mr-2">
+                <button (click)="openProcessMenu(processMenuOriginRef,'Apply Filters')" color="primary"
+                  mat-stroked-button
+                  class="mat-focus-indicator mat-stroked-button mat-button-base mat-primary bg-primary-light"
+                  type="button">
+                  <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="14px" width="14px" style="color: #757a7f;margin-top: 8px;
+                font-size: 17px;"></mat-icon>
+                  FILTERS
+                  <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+                </button>
+
+              </div>
+            </div>
+            <span fxFlex></span>
+            <div #processOriginRef class="ltr:ml-2 rtl:mr-2">
+              <button *ngIf="isDefault" (click)="SubmitCustomize()"
+                class="mr-4 mat-focus-indicator mat-stroked-button mat-button-base mat-primary bg-primary-light"
+                color="primary" fxFlex="none" mat-stroked-button matTooltip="Customize Report" type="button">Customize
+                Report
+              </button>
+            </div>
+            <button [matMenuTriggerFor]="addSubmitMenu" color="primary" mat-raised-button type="button">Export
+            </button>
+            <mat-menu #addSubmitMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+              <button mat-menu-item (click)="GeneratedPDFfile()">
+                <em style="font-size: 18px;margin-right: 6px;margin-top: -2px;" class="fa fa-file-pdf fa-2x"></em>
+                <span>Export to pdf</span>
+              </button>
+
+              <button (click)="ExportToExcel()" mat-menu-item>
+                <em style="font-size: 18px;margin-right: 6px;margin-top: -2px;" class="fa fa-file-excel fa-2x"></em>
+                <span>Export to Excel</span>
+              </button>
+            </mat-menu>
+            <button (click)="OnCloseDetail()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab
+              matTooltip="Back To Reports" type="button">
+              <mat-icon [icIcon]="icBack"></mat-icon>
+            </button>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="space-between">
+
+            <div fxLayout="column" fxLayoutAlign="space-between" id="PDFdata" #PDFdata>
+              <cv-report-table  [datasource]="dataSource" [columns]="columns"></cv-report-table>
+            </div>
+          </div>
+        </div>
+      </vex-page-layout-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</vex-page-layout>

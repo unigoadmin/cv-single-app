@@ -1,0 +1,308 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+  <div>
+    <h2 class="title my-0 leading-snug text-secondary textcgs">{{ employerRole.RoleName }} </h2>
+    <h3 class="caption text-secondary m-0 leading-snug text-primary font-medium textcgs"> {{employerRole.ModuleName}}
+    </h3>
+  </div>
+  <div fxFlex="auto">
+  </div>
+  <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-dialog-content fxLayout="column">
+
+  <div fxLayout="column" fxLayout.gt-sm="row" *ngIf="!isEditMode">
+    <div class="border-l border-r" fxFlex="auto">
+      <mat-tab-group class="mt-3" style="height:460px;" [(selectedIndex)]="index">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icDetails" size="22px"></mat-icon>
+            Role Details
+          </ng-template>
+          <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+            <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+              <table class="table w-full">
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3  text-secondary" fxFlex="23">
+                      Role Name 
+                    </td>
+                    <td class="py-3 ">
+                       {{employerRole.RoleName}}
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3  text-secondary" fxFlex="23">
+                      Description 
+                    </td>
+                    <td class="py-3 ">
+                       {{employerRole.RoleDescription}}
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3  text-secondary"  fxFlex="23">
+                      Module Name 
+                    </td>
+                    <td class="py-3">
+                       {{employerRole.ModuleName}}
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3  text-secondary"  fxFlex="23">
+                      User Type 
+                    </td>
+                    <td class="py-3">
+                      <span *ngIf="employerRole.UserType==3">Internal User</span>
+                      <span *ngIf="employerRole.UserType==2">Consultant User</span>
+                   </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icSecurity" size="22px"></mat-icon>
+            Permissions
+          </ng-template>
+          <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+            <div @fadeInUp class="card" fxFlex="auto">
+              <div class="px-6 py-4" fxLayout="column">
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                    <button mat-icon-button disabled></button>
+                    <span *ngIf="node.level==1" style="width: 100%">
+                      <mat-checkbox [checked]="checklistSelection.isSelected(node)" color="primary" disabled
+                      (change)="todoLeafItemSelectionToggle(node)" class="checklist-leaf-node" style="border-bottom: 1px solid #ddd;
+                        padding-bottom: 5px;
+                        width: 100%;">{{node.item}} </mat-checkbox>
+                    </span>
+                    <span *ngIf="node.level!=1" style="width: 100%">
+                      <mat-radio-button  name="{{getParentItem(node)}}" [value]="node.item" [checked]="node.checked" 
+                      (change)="OnRadioBbuttonChange($event,node)" class="checklist-leaf-node" disabled
+                      style="border-bottom: 1px solid #ddd;padding-bottom: 5px;width: 100%;">
+                        {{node.item}}
+                      </mat-radio-button>
+                    </span>
+                   
+                    
+                  </mat-tree-node>
+
+                  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+                      <mat-icon *ngIf="treeControl.isExpanded(node) === true" [icIcon]="icExpand_More"></mat-icon>
+                      <mat-icon *ngIf="treeControl.isExpanded(node) === false" [icIcon]="icChevron_Right"></mat-icon>
+                    </button>
+                    <mat-checkbox
+                      [checked]="descendantsPartiallySelected(node) || descendantsAllSelected(node) || checklistSelection.isSelected(node)"
+                      (change)="todoItemSelectionToggle(node)" color="primary" class="checklist-node border-b" disabled
+                      style="border-bottom: 1px solid #ddd;
+                        padding-bottom: 5px;
+                        width: 100%;">{{node.item}}</mat-checkbox>
+                  </mat-tree-node>
+                </mat-tree>
+               
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icSupervisor_Account" size="22px"></mat-icon>
+            Users
+          </ng-template>
+          <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+            <div @fadeInUp class="card" fxFlex="auto">
+              <div class="px-6 py-4" fxLayout="column">
+                <table class="table w-full">
+                  <thead>
+                    <tr class="border-b">
+                      <td class="body-2 text-secondary"  fxFlex="33">FIRST NAME</td>
+                      <td class="body-2 text-secondary"  fxFlex="33">LAST NAME</td>
+                      <td class="body-2 text-secondary"  fxFlex="33">E-MAIL</td>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of role.Users;">
+                      <td class="py-3 border-b "  fxFlex="33">
+                        {{user.FirstName}}
+                      </td>
+                      <td class="py-3 border-b"  fxFlex="33">
+                        {{user.LastName}}
+                      </td>
+                      <td class="py-3 border-b"  fxFlex="33">
+                        {{user.Email}}
+                      </td>
+                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+
+  <div fxLayout="column" fxLayout.gt-sm="row" *ngIf="isEditMode">
+    <div class="border-l border-r" fxFlex="auto">
+      <mat-tab-group class="mt-3" style="height:460px;" [(selectedIndex)]="index">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icDetails" size="22px"></mat-icon>
+            Role Details
+          </ng-template>
+          <form [formGroup]="form">
+            <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div class="px-6 py-4" fxLayout="column" style="width: 100%;">
+
+                <mat-form-field class="mt-6">
+                  <mat-label>Name</mat-label>
+                  <input cdkFocusInitial formControlName="RoleName" matInput>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Description</mat-label>
+                  <textarea formControlName="RoleDescription" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Module</mat-label>
+                  <mat-select formControlName="ModuleId">
+                    <mat-option *ngFor="let module of companyModules" [value]="module.ModuleId">
+                      {{module.ModuleName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icSecurity" size="22px"></mat-icon>
+            Permissions
+          </ng-template>
+          <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+            <div @fadeInUp class="card" fxFlex="auto">
+              <div class="px-6 py-4" fxLayout="column">
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                    <button mat-icon-button disabled></button>
+                    <span *ngIf="node.level==1" style="width: 100%">
+                      <mat-checkbox [checked]="checklistSelection.isSelected(node)" color="primary" 
+                      (change)="todoLeafItemSelectionToggle(node)" class="checklist-leaf-node" 
+                      style="border-bottom: 1px solid #ddd;padding-bottom: 5px;width: 100%;">{{node.item}}</mat-checkbox>
+                      
+                    </span>
+                    <span *ngIf="node.level!=1" style="width: 100%">
+                      <mat-radio-button  name="{{getParentItem(node)}}" [value]="node.item" [checked]="node.checked" 
+                      (change)="OnRadioBbuttonChange($event,node)" class="checklist-node border-b example-radio-button" 
+                      style="border-bottom: 1px solid #ddd;padding-bottom: 5px;width: 100%;">
+                        {{node.item}} 
+                      </mat-radio-button>
+                    </span>
+                  </mat-tree-node>
+
+                  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+                      <mat-icon *ngIf="treeControl.isExpanded(node) === true" [icIcon]="icExpand_More"></mat-icon>
+                      <mat-icon *ngIf="treeControl.isExpanded(node) === false" [icIcon]="icChevron_Right"></mat-icon>
+                    </button>
+                    <mat-checkbox
+                      [checked]="descendantsPartiallySelected(node) || descendantsAllSelected(node) || checklistSelection.isSelected(node)"
+                      (change)="todoItemSelectionToggle(node)" color="primary" class="checklist-node border-b" style="border-bottom: 1px solid #ddd;
+                        padding-bottom: 5px;
+                        width: 100%;">{{node.item}}</mat-checkbox> 
+                  </mat-tree-node>
+                </mat-tree>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon [icIcon]="icSupervisor_Account" size="22px"></mat-icon>
+            Users
+          </ng-template>
+          <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+            <div @fadeInUp class="card" fxFlex="auto">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="0px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="auto">
+                  <mat-label>User Name</mat-label>
+                  <input type="text" placeholder="Select User" aria-label="User Name" matInput [matAutocomplete]="auto"
+                    [(ngModel)]="selectedUser" [ngModelOptions]="{standalone: true}">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{option.FullName}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <button
+                  class="text-secondary uppercase font-medium bg-primary text-primary-contrast rounded-none ltr:rounded-br rtl:rounded-bl"
+                  mat-button style="height:52px;" type="button" (click)="addUser()">
+                  <ic-icon [icIcon]="icPerson_Add" [inline]="true" class="mr-1" size="15px"></ic-icon>
+                  <span>ADD</span>
+                </button>
+              </div>
+              <div class="px-6 py-1" fxLayout="column">
+                <table class="table w-full">
+                  <thead>
+                    <tr class="border-b">
+                      <td class="body-2 text-secondary" fxFlex="30">FIRST NAME</td>
+                      <td class="body-2 text-secondary" fxFlex="30">LAST NAME</td>
+                      <td class="body-2 text-secondary" fxFlex="30">E-MAIL</td>
+                      <td fxFlex="10">Action</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of role.Users;">
+                      <td class="py-3 border-b " fxFlex="30">
+                        {{user.FirstName}}
+                      </td>
+                      <td class="py-3 border-b" fxFlex="30">
+                        {{user.LastName}}
+                      </td>
+                      <td class="py-3 border-b" fxFlex="30">
+                        {{user.Email}}
+                      </td>
+                      <td class="py-3 border-b" fxFlex="10">
+                    
+                      <a (click)="removeUser(user)" [disabled]="user.UserType == 1 || user.UserType == 2"
+                        class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                        mat-icon-button>
+                        <mat-icon [icIcon]="icDelete" size="18px"></mat-icon>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">CANCEL</button>
+  <button color="primary" mat-button type="submit" *ngIf="isEditMode" (click)="saveRole()">SAVE CHANGES</button>
+</mat-dialog-actions>
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+  <button mat-menu-item (click)="isEditMode = true" *ngIf="!isEditMode" [disabled]="role.IsDisabled">
+    <mat-icon [icIcon]="icEdit"></mat-icon>
+    <span>Edit</span>
+  </button>
+  <button mat-menu-item (click)="isEditMode = false" *ngIf="isEditMode">
+    <mat-icon [icIcon]="icRemove_Red_Eye"></mat-icon>
+    <span>View</span>
+  </button>
+</mat-menu>

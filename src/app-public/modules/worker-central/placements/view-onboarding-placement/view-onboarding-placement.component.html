@@ -1,0 +1,2083 @@
+<div fxLayout="row" fxLayoutAlign="start center"  class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">View Placement
+    </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        <button [matMenuTriggerFor]="settingsMenu" style="margin-right: 6px;bottom: 5px;" color="primary" mat-raised-button
+            type="button">Actions
+            <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+        </button>
+<button [mat-dialog-close]="'Close'" style="top:3px;--tw-bg-opacity: 1 !important;background-color: rgba(158, 158, 158, var(--tw-bg-opacity)) !important;color: rgba(var(--color-accent-contrast), 1) !important;height: 40px !important;width: 40px !important;" mat-fab type="button">
+    <mat-icon style="bottom: 8px !important;position: relative;" [icIcon]="icClose"></mat-icon>
+  </button>
+    </div>
+</div>
+<mat-progress-bar style="width: 100% !important;margin-left: -1.5rem !important;" *ngIf="isPageload===true"
+    mode="indeterminate"></mat-progress-bar>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm pl-tabs" fxLayout="column" style="overflow: auto;">
+    <div *ngIf="placementOnBoarding.Status==1 || placementOnBoarding.Status==3">
+        <mat-card style="padding-bottom: 0 !important;" class="mt-4">
+            <mat-card-title class="subheading-2 font-medium pb-1 pt-1">
+                Job Information
+            </mat-card-title>
+            <mat-card-content>
+                <mat-divider></mat-divider>
+                <div class="flex-container" fxLayout="row">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>Title:</span></div>
+                        <div class="child-2" fxFlex="65"><span>{{placementOnBoarding.JobTitle}}</span></div>
+                    </div>
+
+                </div>
+                <mat-divider></mat-divider>
+                <div class="flex-container" fxLayout="row">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>Start Date:</span></div>
+                        <div class="child-2" fxFlex="65">
+                            <span>{{placementOnBoarding.StartDate|date:'MM/dd/yyyy'}}</span>
+                        </div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">End Date:</div>
+                        <div class="child-3" fxFlex="65">
+                            <span>{{placementOnBoarding.EndDate|date:'MM/dd/yyyy'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="flex-container" fxLayout="row">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>Placement Category:</span></div>
+                        <div class="child-2" fxFlex="65">
+                            <span class="pb-0 pt-0" *ngIf="placementOnBoarding.JobCategory==2"
+                                class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                <span>Direct / Internal</span>
+                            </span>
+                            <span class="pb-0 pt-0" *ngIf="placementOnBoarding.JobCategory==3"
+                                class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                <span>Contract / C2C</span>
+                            </span>
+                            <!-- <span>{{placementOnBoarding.JobCategory}}</span> -->
+                        </div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Placement Type:</div>
+                        <div class="child-3" fxFlex="65">
+                            <div style="width: 50px;" fxLayoutAlign="center center" fxLayoutGap="4px" class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                <span>{{placementOnBoarding.PlacementType}}</span>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="flex-container" fxLayout="row">
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35">Placement Status:</div>
+                        <div class="child-3" fxFlex="65">
+                            <span *ngIf="placementOnBoarding.StatusName==='Pending Review'" class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                                {{placementOnBoarding.StatusName}}
+                            </span>
+                            <span *ngIf="placementOnBoarding.StatusName==='Onboarded'" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                {{placementOnBoarding.StatusName}}
+                            </span> 
+                            <span *ngIf="placementOnBoarding.StatusName=='Rejected'" class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                                {{placementOnBoarding.StatusName}}
+                            </span>
+                            <span *ngIf="placementOnBoarding.StatusName=='Ended'" class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                {{placementOnBoarding.StatusName}}
+                            </span>
+                        </div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>Placement
+                                POC:</span></div>
+                        <div class="child-2" fxFlex="65"><span
+                                class="certtags">{{placementOnBoarding.PlacementPOCName}}</span></div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="flex-container" fxLayout="row">
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35">End Client:</div>
+                        <div class="child-3" fxFlex="65"><span class="certtags">{{endClientAccount.AccountName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="mt-4" style="padding-bottom: 0 !important;">
+            <mat-card-title>
+                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                    Candidate Information</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span></div>
+                        <div class="child-2" fxFlex="65"><span>{{placementOnBoarding.Employee.FirstName}}</span></div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last Name:</div>
+                        <div class="child-3" fxFlex="65">
+                            <span>{{placementOnBoarding.Employee.LastName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                        <div class="child-2" fxFlex="65"><span>{{placementOnBoarding.Employee.Email}}</span></div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone:</div>
+                        <div class="child-3" fxFlex="65">
+                            <span>{{placementOnBoarding.Employee.PrimaryPhoneNumber}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex="50%">
+                        <div class="child-1 text-secondary" fxFlex="35"><span>Work Permit:</span></div>
+                        <div class="child-2" fxFlex="65"><span>{{placementOnBoarding.Employee.WorkStatus}}</span></div>
+                    </div>
+                    <div fxFlex="50%">
+                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Work Permit Expiration:
+                        </div>
+                        <div class="child-3" fxFlex="65">
+                            <span>{{placementOnBoarding.Employee.WorkStatusExpiry |date:'MM/dd/yyyy'}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="isC2CEmployer===true" class="mt-4" style="padding-bottom: 0 !important;">
+            <mat-card-title>
+                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                    Sub Vendor Information</div>
+            </mat-card-title>
+            <Mat-card-content>
+                <div *ngIf="isCandidateSubVendor===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Sub Vendor</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.AccountName}}</span>
+                                <span *ngIf="candSubVendorClientAccount.Employer===true" class="ml-4">
+                                    <span class="pb-0 pt-0"
+                                    class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                    Employer
+                                </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>
+                                    C2C Bill Rate($/Hr):</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.BillRate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="isCandidateReferalVendor===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Referral Vendor</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{candRefVendorClientAccount.AccountName}}</span></div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>
+                                    Referral Rate($/Hr):</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candRefVendorClientAccount.BillRate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </Mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="contractC2CType===true" class="mt-4" style="padding-bottom: 0 !important;">
+            <mat-card-title>
+                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                    Vendor Information</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div *ngIf="contractC2CType===true && isPrimeVendor===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Prime Vendor</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{primeVClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{primeVClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{primeVClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{primeVClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{primeVClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="isManagedServiceProvider===true && contractC2CType===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Managed Service Provider(MSP)</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{mspClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{mspClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{mspClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{mspClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{mspClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="isImplementationPartner===true && contractC2CType===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Implementation Partner(IP)</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{ipClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{ipClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{ipClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{ipClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{ipClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="isSubPrimeVendor===true && contractC2CType===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Sub Prime Vendor</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{subPVClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{subPVClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{subPVClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{subPVClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{subPVClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="isReffralVendor===true && contractC2CType===true">
+                    <div class="mt-2 mb-4">
+                        <h3 style="font-size: 14px !important;">Refferal Vendor</h3>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{refClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{refClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{refClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{refClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{refClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="directinternaltType===true" class="mt-4" style="padding-bottom: 0 !important;">
+            <mat-card-title>
+                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                    End Client Information</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div >
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                            <div class="child-3" fxFlex="65"><span>{{endClientAccount.AccountName}}</span></div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{endClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                    Name:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{endClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="flex-container" fxLayout="row">
+                        <div fxFlex="50%">
+                            <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                            <div class="child-3" fxFlex="65">
+                                <span>{{endClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="50%">
+                            <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                    Phone:</span></div>
+                            <div class="child-2" fxFlex="65">
+                                <span>{{endClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <div *ngIf="placementOnBoarding.Status==2 || placementOnBoarding.Status==4">
+        <mat-tab-group class="mt-4">
+            <mat-tab label="Placement Information">
+                <mat-card style="padding-bottom: 0 !important;">
+                    <mat-card-title class="subheading-2 font-medium pb-1 pt-1">
+                        Job Information
+                    </mat-card-title>
+                    <mat-card-content>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>Title:</span></div>
+                                <div class="child-2" fxFlex="65"><span>{{placementOnBoarding.JobTitle}}</span></div>
+                            </div>
+
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>Start Date:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>{{placementOnBoarding.StartDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">End Date:</div>
+                                <div class="child-3" fxFlex="65">
+                                    <span>{{placementOnBoarding.EndDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>Placement Category:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span class="pb-0 pt-0" *ngIf="placementOnBoarding.JobCategory==2"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        <span>Direct / Internal</span>
+                                    </span>
+                                    <span class="pb-0 pt-0" *ngIf="placementOnBoarding.JobCategory==3"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        <span>Contract / C2C</span>
+                                    </span>
+                                    <!-- <span>{{placementOnBoarding.JobCategory}}</span> -->
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Placement Type:
+                                </div>
+                                <div class="child-3" fxFlex="65">
+                                    <span class="pb-0 pt-0"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">{{placementOnBoarding.PlacementType}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35">Placement Status:</div>
+                                <div class="child-3" fxFlex="65">
+                                    <span *ngIf="placementOnBoarding.StatusName==='Pending Review'" class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                                        {{placementOnBoarding.StatusName}}
+                                    </span>
+                                    <span *ngIf="placementOnBoarding.StatusName==='Onboarded'" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                        {{placementOnBoarding.StatusName}}
+                                    </span> 
+                                    <span *ngIf="placementOnBoarding.StatusName=='Rejected'" class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                                        {{placementOnBoarding.StatusName}}
+                                    </span>
+                                    <span *ngIf="placementOnBoarding.StatusName=='Ended'" class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                        {{placementOnBoarding.StatusName}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>Placement
+                                        POC:</span></div>
+                                <div class="child-2" fxFlex="65"><span
+                                        class="certtags">{{placementOnBoarding.PlacementPOCName}}</span></div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35">End Client:</div>
+                                <div class="child-3" fxFlex="65"><span
+                                        class="certtags">{{endClientAccount.AccountName}}</span></div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="contractC2CType===true" class="mt-4" style="padding-bottom: 0 !important;">
+                    <mat-card-title>
+                        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                            Vendor Information</div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div *ngIf="contractC2CType===true && isPrimeVendor===true">
+                            <div class="mt-2 mb-4">
+                                <h3 style="font-size: 14px !important;">Prime Vendor</h3>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{primeVClientAccount.AccountName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{primeVClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{primeVClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{primeVClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{primeVClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container pl-invoice" fxLayout="row"
+                                *ngIf="primeVClientAccount.Isbilling===true">
+                                <div fxFlex="100%">
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Invoice</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First
+                                                    Name:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{primeVClientAccount.BillingPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{primeVClientAccount.BillingPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35">
+                                                <span>Email:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{primeVClientAccount.BillingPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{primeVClientAccount.BillingPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Immigration</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{primeVClientAccount.ImmigrationPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:
+                                            </div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{primeVClientAccount.ImmigrationPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{primeVClientAccount.ImmigrationPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{primeVClientAccount.ImmigrationPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isManagedServiceProvider===true && contractC2CType===true">
+                            <div class="mt-2 mb-4">
+                                <h3 style="font-size: 14px !important;">Managed Service Provider(MSP)</h3>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{mspClientAccount.AccountName}}</span></div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{mspClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{mspClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{mspClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{mspClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container pl-invoice" fxLayout="row"
+                                *ngIf="mspClientAccount.Isbilling===true">
+                                <div fxFlex="100%">
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Invoice</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First
+                                                    Name:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{mspClientAccount.BillingPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{mspClientAccount.BillingPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35">
+                                                <span>Email:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{mspClientAccount.BillingPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{mspClientAccount.BillingPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Immigration</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{mspClientAccount.ImmigrationPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:
+                                            </div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{mspClientAccount.ImmigrationPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{mspClientAccount.ImmigrationPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{mspClientAccount.ImmigrationPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isImplementationPartner===true && contractC2CType===true">
+                            <div class="mt-2 mb-4">
+                                <h3 style="font-size: 14px !important;">Implementation Partner(IP)</h3>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{ipClientAccount.AccountName}}</span></div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{ipClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{ipClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{ipClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{ipClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container pl-invoice" fxLayout="row"
+                                *ngIf="ipClientAccount.Isbilling===true">
+                                <div fxFlex="100%">
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Invoice</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First
+                                                    Name:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{ipClientAccount.BillingPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{ipClientAccount.BillingPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35">
+                                                <span>Email:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{ipClientAccount.BillingPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{ipClientAccount.BillingPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Immigration</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{ipClientAccount.ImmigrationPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:
+                                            </div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{ipClientAccount.ImmigrationPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{ipClientAccount.ImmigrationPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{ipClientAccount.ImmigrationPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isSubPrimeVendor===true && contractC2CType===true">
+                            <div class="mt-2 mb-4">
+                                <h3 style="font-size: 14px !important;">Sub Prime Vendor</h3>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{subPVClientAccount.AccountName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{subPVClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{subPVClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{subPVClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{subPVClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container pl-invoice" fxLayout="row"
+                                *ngIf="subPVClientAccount.Isbilling===true">
+                                <div fxFlex="100%">
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Invoice</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First
+                                                    Name:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{subPVClientAccount.BillingPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{subPVClientAccount.BillingPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35">
+                                                <span>Email:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{subPVClientAccount.BillingPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{subPVClientAccount.BillingPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Immigration</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{subPVClientAccount.ImmigrationPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:
+                                            </div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{subPVClientAccount.ImmigrationPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{subPVClientAccount.ImmigrationPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{subPVClientAccount.ImmigrationPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isReffralVendor===true && contractC2CType===true">
+                            <div class="mt-2 mb-4">
+                                <h3 style="font-size: 14px !important;">Refferal Vendor</h3>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{refClientAccount.AccountName}}</span></div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{refClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{refClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{refClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{refClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container pl-invoice" fxLayout="row"
+                                *ngIf="refClientAccount.Isbilling===true">
+                                <div fxFlex="100%">
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Invoice</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First
+                                                    Name:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{refClientAccount.BillingPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{refClientAccount.BillingPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35">
+                                                <span>Email:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{refClientAccount.BillingPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{refClientAccount.BillingPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="mt-2 mb-4 ml-2">
+                                        <h3 style="font-size: 16px !important;">Immigration</h3>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span>
+                                            </div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{refClientAccount.ImmigrationPOC.FirstName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last
+                                                Name:
+                                            </div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{refClientAccount.ImmigrationPOC.LastName}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="flex-container" fxLayout="row">
+                                        <div fxFlex="50%">
+                                            <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                            <div class="child-2" fxFlex="65">
+                                                <span>{{refClientAccount.ImmigrationPOC.Email}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="50%">
+                                            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone
+                                                Number:</div>
+                                            <div class="child-3" fxFlex="65">
+                                                <span>{{refClientAccount.ImmigrationPOC.Phonenumber}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="directinternaltType===true" class="mt-4" style="padding-bottom: 0 !important;">
+                    <mat-card-title>
+                        <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                            End Client Information</div>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div >
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                    <div class="child-3" fxFlex="65"><span>{{endClientAccount.AccountName}}</span></div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{endClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                            Name:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{endClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="50%">
+                                    <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                    <div class="child-3" fxFlex="65">
+                                        <span>{{endClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="50%">
+                                    <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                            Phone:</span></div>
+                                    <div class="child-2" fxFlex="65">
+                                        <span>{{endClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <div class="card overflow-auto mt-4 mb-4">
+                    <div fxLayout="row" class="fix-dis">
+                        <mat-card>
+                            <mat-card-title>
+                                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                    Billing and Invoicing Information</div>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <mat-divider></mat-divider>
+                                <div class="flex-container" fxLayout="row">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>Bill Rate ($/Hr):</span>
+                                        </div>
+                                        <div class="child-2" fxFlex="65">
+                                            <span>{{placementOnBoarding.BillRate}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Invoicing
+                                            Cycle:</div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span class="certtags">
+                                                 {{enumInvoiceCycle[placementOnBoarding.InvoiceCycle] }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div class="flex-container" fxLayout="row">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>Payment Terms:</span>
+                                        </div>
+                                        <div class="child-2" fxFlex="65">
+                                            <span class="certtags">
+                                                {{enumInvoiceTerms[placementOnBoarding.PaymentTerms] }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Invoicing
+                                            Email:</div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span>{{placementOnBoarding.InvoicingEmail}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="card overflow-auto mt-4 mb-4">
+                    <div fxLayout="row" class="fix-dis">
+                        <mat-card>
+                            <mat-card-title>
+                                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                    Attachments</div>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <div fxLayout="row">
+                                    <table mat-table [dataSource]="dataSource" fxFlex="100" fxFlex.gt-xs="100">
+                                        <ng-container matColumnDef="position">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> # </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element;let i=index"> {{i+1}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="name">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Name of the
+                                                Document
+                                            </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element"> {{element.DownloadableFileName}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="type">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Document Type </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element">
+                                                <span *ngIf="element.DocumentType===1">MSA</span>
+                                                <span *ngIf="element.DocumentType===2">PO</span>
+                                                <span *ngIf="element.DocumentType===3">SOW</span>
+                                                <span *ngIf="element.DocumentType===4">COI</span>
+                                                <span *ngIf="element.DocumentType===5">Misc</span>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="actions">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Actions </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element;let i=index">
+                                                <span class="text-primary" style="margin-right: 15px;"
+                                                    (click)="ViewDocViewer(element,'Placement Documment')">
+                                                    <mat-icon [icIcon]="icvieweye"></mat-icon>
+                                                </span>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Worker Information">
+                <mat-card style="padding-bottom: 0 !important;">
+                    <mat-card-title class="subheading-2 font-medium pb-1 pt-1">
+                        Worker Information
+                    </mat-card-title>
+                    <mat-card-content>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45"><span>Worker ID:</span></div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.ComapnyEmployeeID}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Employment Type:
+                                </div>
+                                <div class="child-3" fxFlex="55">
+                                    <span class="pb-0 pt-0"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        {{placementOnBoarding.Employee.EmploymentType}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1"><span>Worker Type:</span></div>
+                                <div class="child-2" fxFlex="55">
+                                    <span class="pb-0 pt-0"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        {{placementOnBoarding.Employee.EmployeeType}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45">First Name:</div>
+                                <div class="child-2" fxFlex="55"><span>{{placementOnBoarding.Employee.FirstName}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1"><span>Middle Name:</span></div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.MiddleName}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Last Name:</div>
+                                <div class="child-3" fxFlex="55"><span>{{placementOnBoarding.Employee.LastName}}</span>
+                                </div>
+                            </div>
+                        </div>       
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45">Email:</div>
+                                <div class="child-2" fxFlex="55"><span>{{placementOnBoarding.Employee.Email}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Phone Number:</div>
+                                <div class="child-3" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.PrimaryPhoneNumber}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"></div>
+                                <div class="child-3" fxFlex="55">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%" >
+                                <div class="child-1 text-secondary" fxFlex="45">DOB:</div>
+                                <div class="child-2" fxFlex="55"><span>{{placementOnBoarding.Employee.DOB
+                                        |date:'MM/dd/yyyy' }}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Gender:</div>
+                                <div class="child-2" fxFlex="55"><span>{{placementOnBoarding.Employee.Gender}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Martial Status:
+                                </div>
+                                <div class="child-3" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.MaritalStatus}}</span>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                         
+                            <div fxFlex="100%" >
+                                <div class="child-3 text-secondary mt-1" fxFlex="14" >Location:</div>
+                                <div class="child-3 ml-1" fxFlex="83" >
+                                   
+                                    <span class="rounded-full text-secondary font-medium locationbtn">
+                                        <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2"
+                                            inline="true" size="14px">
+                                        </ic-icon>
+                                        <span>{{formattedAddress}}</span>
+                                        <!-- <span>{{placementOnBoarding.Employee.Address1}},
+                                            {{placementOnBoarding.Employee.City}},
+                                            {{placementOnBoarding.Employee.State}},
+                                            {{placementOnBoarding.Employee.ZipCode}}</span> -->
+                                    </span> 
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45">Work Permit:</div>
+                                <div class="child-2" fxFlex="65">
+                                    <span class="rounded-full text-secondary font-medium text-xs categorybtn">{{placementOnBoarding.Employee.WorkStatus}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Work Permit Exp:
+                                </div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.WorkStatusExpiry|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Work Permit Eff:</div>
+                                <div class="child-3" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.WorkStatusEffective|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div  *ngIf="isC2CEmployer===false" class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45">Emp Start Date:
+                                </div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.EmpStartDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Department:</div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.Department}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"><span>Designation:</span></div>
+                                <div class="child-3" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.Designation}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div  *ngIf="isC2CEmployer===false" class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45" ><span>I-94 Number:</span></div>
+                                <div class="child-2" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.I94Number}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">I-94 ExpiryDate:</div>
+                                <div class="child-3" fxFlex="55">
+                                    <span>{{placementOnBoarding.Employee.I94ExpiryDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"></div>
+                                <div class="child-3" fxFlex="55">
+                                  
+                                </div>
+                            </div>
+                           
+                        </div>        
+                        <mat-divider></mat-divider>
+                        <div  *ngIf="isC2CEmployer===false" class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="45">Health Insurance:</div>
+                                <div class="child-2" fxFlex="55">
+                                    <span *ngIf="placementOnBoarding.Employee.HealthInsuranceEnrolled" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                       Active
+                                    </span>
+                                    <span *ngIf="!placementOnBoarding.Employee.HealthInsuranceEnrolled"  class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                        Inactive
+                                     </span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1"><span>CV Website Access:</span>
+                                </div>
+                                <div class="child-3" fxFlex="55">
+                                    <span *ngIf="placementOnBoarding.Employee.CreateUserAccount" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                      Active
+                                    </span>
+                                    <span *ngIf="!placementOnBoarding.Employee.CreateUserAccount" class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light" >
+                                      Inactive
+                                    </span>
+                                </div>
+                              
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Assignment Status:</div>
+                                <div class="child-3" fxFlex="55">
+                                    <span *ngIf="placementOnBoarding.Employee.AssignmentStatus!=0" class="pb-0 pt-0"
+                                    class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                    <span *ngIf="placementOnBoarding.Employee.AssignmentStatus==1">On Project</span>
+                                    <span *ngIf="placementOnBoarding.Employee.AssignmentStatus==2">On Bench</span>
+                                    <span *ngIf="placementOnBoarding.Employee.AssignmentStatus==3">On Training</span>
+                                    <span *ngIf="placementOnBoarding.Employee.AssignmentStatus==4">NA</span>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="isC2CEmployer===false">
+                            <div class="child-1" class="subheading-2 font-medium pb-1 pt-1">
+                                Reporting Details
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="flex-container" fxLayout="row">
+                                <div fxFlex="25%">
+                                    <div class="child-1 text-secondary" fxFlex="45">HR:</div>
+                                    <div class="child-2" fxFlex="55">
+                                        <span *ngIf="placementOnBoarding.Employee.HRManager_Name"
+                                            class="certtags">{{placementOnBoarding.Employee.HRManager_Name}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="25%">
+                                    <div class="child-3 text-secondary" fxFlex="45" id="middlebuttons1">Training:</div>
+                                    <div class="child-3" fxFlex="55">
+                                        <span *ngIf="placementOnBoarding.Employee.TrainingManager_Name"
+                                            class="certtags">{{placementOnBoarding.Employee.TrainingManager_Name}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="25%">
+                                    <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Finance:</div>
+                                    <div class="child-3" fxFlex="55">
+                                        <span *ngIf="placementOnBoarding.Employee.FinanceManager_Name"
+                                            class="certtags">{{placementOnBoarding.Employee.FinanceManager_Name}}</span>
+                                    </div>
+                                </div>
+                                <div fxFlex="25%">
+                                    <div class="child-1 text-secondary" fxFlex="45" id="middlebuttons1">Immigration:</div>
+                                    <div class="child-2" fxFlex="55">
+                                        <span *ngIf="placementOnBoarding.Employee.ImmigrationManager_Name"
+                                            class="certtags">{{placementOnBoarding.Employee.ImmigrationManager_Name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                        </div>
+                        <div *ngIf="isC2CEmployer===true">
+                            <mat-card *ngIf="isC2CEmployer===true" class="mt-4" style="padding-bottom: 0 !important;">
+                                <mat-card-title>
+                                    <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                        Sub Vendor Information</div>
+                                </mat-card-title>
+                                <Mat-card-content>
+                                    <div *ngIf="isCandidateSubVendor===true">
+                                        <div class="mt-2 mb-4">
+                                            <h3 style="font-size: 14px !important;">Sub Vendor</h3>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                                <div class="child-3" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.AccountName}}</span>
+                                                    <span *ngIf="candSubVendorClientAccount.Employer===true" class="ml-4">
+                                                        <span class="pb-0 pt-0"
+                                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                                        Employer
+                                                    </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>
+                                                        C2C Bill Rate($/Hr):</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.BillRate}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                                <div class="child-3" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                                        Name:</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                                <div class="child-3" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                                        Phone:</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candSubVendorClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </div>
+                                    <div *ngIf="isCandidateReferalVendor===true">
+                                        <div class="mt-2 mb-4">
+                                            <h3 style="font-size: 14px !important;">Referral Vendor</h3>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">Company Name:</div>
+                                                <div class="child-3" fxFlex="65"><span>{{candRefVendorClientAccount.AccountName}}</span></div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>
+                                                        Referal Rate($/Hr):</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candRefVendorClientAccount.BillRate}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">POC First Name:</div>
+                                                <div class="child-3" fxFlex="65">
+                                                    <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].FirstName}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC Last
+                                                        Name:</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].LastName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="flex-container" fxLayout="row">
+                                            <div fxFlex="50%">
+                                                <div class="child-3 text-secondary" fxFlex="35">POC Email:</div>
+                                                <div class="child-3" fxFlex="65">
+                                                    <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].Email}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%">
+                                                <div class="child-1 text-secondary" fxFlex="35" id="middlebuttons1"><span>POC
+                                                        Phone:</span></div>
+                                                <div class="child-2" fxFlex="65">
+                                                    <span>{{candRefVendorClientAccount.PlacementAcctContactInfo[0].Phonenumber}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </div>
+                                </Mat-card-content>
+                            </mat-card> 
+                        </div>
+                        
+                        
+                        
+                    </mat-card-content>
+                </mat-card>
+                <div class="card overflow-auto mt-4 mb-4">
+                    <div fxLayout="row" class="fix-dis">
+                        <mat-card>
+                            <mat-card-title>
+                                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                    Attachments</div>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <div fxLayout="row">
+                                    <table mat-table [dataSource]="empdataSource" fxFlex="100" fxFlex.gt-xs="100">
+                                        <ng-container matColumnDef="position">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> # </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element;let i=index"> {{i+1}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="name">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Name of the
+                                                Document
+                                            </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element"> {{element.DownloadableFileName}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="type">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Document Type </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element">
+                                                <span *ngIf="element.DocumentType===1">Offer Letter</span>
+                                                <span *ngIf="element.DocumentType===2">Work Authorization</span>
+                                                <span *ngIf="element.DocumentType===3">eVerify</span>
+                                                <span *ngIf="element.DocumentType===4">I-9</span>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="actions">
+                                            <th mat-header-cell class="uppercase" *matHeaderCellDef> Actions </th>
+                                            <td mat-cell class="text-secondary font-medium textcgs"
+                                                *matCellDef="let element;let i=index">
+                                                <span class="text-primary" style="margin-right: 15px;"
+                                                    (click)="ViewDocViewer(element,'Employee Documment')">
+                                                    <mat-icon [icIcon]="icvieweye"></mat-icon>
+                                                </span>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"></tr>
+                                    </table>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Assignment Information">
+                <mat-card class="mb-4">
+                    <mat-card-title fxLayoutAlign="start center" class="subheading-2 font-medium pb-1 pt-1">
+                        <div fxFlex="50%" fxLayoutAlign="start center">
+                            Assignment Information
+                        </div>
+                        <div  fxFlex="50%" fxLayoutAlign="end center">
+                           <span *ngIf="placementOnBoarding.Assignment.Status>0" class="rounded px-2 font-medium text-xs text-green bg-green-light" fxFlex="none">
+                            Active
+                           </span>
+                           <span *ngIf="placementOnBoarding.Assignment.Status==0" class="rounded px-2 font-medium text-xs text-red bg-red-light" fxFlex="none">
+                            Inactive
+                           </span>
+                        </div>
+                       
+                    </mat-card-title>
+                    <mat-card-content>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>ID:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>{{placementOnBoarding.Assignment.CompanyAssignmentId}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Name:</div>
+                                <div class="child-3" fxFlex="65">
+                                    <span>{{placementOnBoarding.Assignment.AssignmentName}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>Type:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span class="pb-0 pt-0"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        {{placementOnBoarding.Assignment.AssignmentType}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Classification:
+                                </div>
+                                <div class="child-3" fxFlex="65">
+                                    <span class="pb-0 pt-0"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        {{placementOnBoarding.Assignment.AsmtClassification}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="50%">
+                                <div class="child-1 text-secondary" fxFlex="35"><span>Start Date:</span></div>
+                                <div class="child-2" fxFlex="65">
+                                    <span>{{placementOnBoarding.Assignment.StartDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div fxFlex="50%">
+                                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">End Date:</div>
+                                <div class="child-3" fxFlex="65">
+                                    <span>{{placementOnBoarding.Assignment.EndDate|date:'MM/dd/yyyy'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="100%">
+                                <div class="child-1 text-secondary mt-3 " fxFlex="17"><span>Location:</span></div>
+                                <div class="child-2 ml-1" fxFlex="83" >
+                                    
+                                            <span class="rounded-full text-secondary font-medium locationbtn">
+                                                <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+                                                </ic-icon>
+                                                <span>{{formattedAssignemntAddress}}</span>
+                                                <!-- <span> {{placementOnBoarding.Assignment.WLAddress1}},
+                                                    {{placementOnBoarding.Assignment.WLCity}},
+                                                    {{placementOnBoarding.Assignment.WLState}},
+                                                    {{placementOnBoarding.Assignment.WLZipCode}}</span> -->
+                                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="flex-container" fxLayout="row">
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="53">Timesheet:
+                                </div>
+                                <div class="child-3" fxFlex="47">
+                                    <span *ngIf="placementOnBoarding.Assignment.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                        Enabled
+                                    </span>
+                                    <span *ngIf="!placementOnBoarding.Assignment.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-black bg-gray-light">
+                                        Not Enabled
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-1 text-secondary" fxFlex="55" id="middlebuttons1"><span>Remote Assignment:</span></div>
+                                <div class="child-2" fxFlex="45">
+                                    <span *ngIf="placementOnBoarding.Assignment.RemoteAssignment"
+                                        class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                        YES
+                                    </span>
+                                    <span *ngIf="!placementOnBoarding.Assignment.RemoteAssignment"
+                                        class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                        NO
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxFlex="33%">
+                                <div class="child-3 text-secondary" fxFlex="55" id="middlebuttons1">Amendment Required:
+                                </div>
+                                <div class="child-3" fxFlex="45">
+                                    <span *ngIf="placementOnBoarding.Assignment.AmendmentRequired"
+                                        class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                        YES
+                                    </span>
+                                    <span *ngIf="!placementOnBoarding.Assignment.AmendmentRequired"
+                                        class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                        NO
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" [mat-dialog-close]="'Cancel'" class="mr-4" matTooltip="Cancel">CANCEL</button>
+        </div>
+    </div>
+</mat-dialog-footer>
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+    <span *ngxPermissionsOnly="['ACTION_PLACEMENTS_MODIFY']">
+        <button mat-menu-item *ngIf="placementOnBoarding.StatusName==='Pending Review'" [mat-dialog-close]="'EditPlacement'">
+            <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="icEdit"></mat-icon>
+            <span>Edit</span>
+          </button>
+    </span>
+    <span *ngxPermissionsOnly="['ACTION_PLACEMENTS_ADD']">
+        <button mat-menu-item *ngIf="placementOnBoarding.StatusName==='Pending Review'"  [mat-dialog-close]="'Onboard'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icInput" size="16px"></mat-icon>
+            <span>Onboard</span>
+          </button>
+    </span>
+    <span *ngxPermissionsOnly="['ACTION_PLACEMENTS_MODIFY']">
+        <button mat-menu-item *ngIf="placementOnBoarding.StatusName==='Onboarded'" [mat-dialog-close]="'EditOnboard'">
+            <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="icEdit"></mat-icon>
+            <span>Edit</span>
+          </button>
+    </span>
+    <span *ngxPermissionsOnly="['ACTION_PLACEMENTS_DELETE']" title="Reject">
+        <button *ngIf="placementOnBoarding.StatusName==='Pending Review'" mat-menu-item [mat-dialog-close]="'Rejected'">
+            <mat-icon style="font-size: 18px;">not_interested</mat-icon>
+            <span>Reject</span>
+          </button>
+      </span>
+
+    <span *ngxPermissionsOnly="['ACTION_PLACEMENTS_DELETE']">
+        <button *ngIf="placementOnBoarding.StatusName==='Pending Review'" mat-menu-item [mat-dialog-close]="'Delete'" >
+            <mat-icon style="margin-top: 5px;" [icIcon]="icdelete" size="16px"></mat-icon>
+            <span>Delete</span>
+        </button>
+    </span>
+      
+  </mat-menu>

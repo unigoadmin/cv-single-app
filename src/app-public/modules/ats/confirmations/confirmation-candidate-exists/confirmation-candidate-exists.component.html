@@ -1,0 +1,71 @@
+<div fxLayout="row" fxLayoutAlign="start center"  class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Candidate Exists!</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-progress-bar style="width: 100% !important;margin-left: -1.5rem !important;" *ngIf="isPageload===true"
+    mode="indeterminate"></mat-progress-bar>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;">
+    <mat-card class="mb-4" style="padding-bottom: 0 !important;">
+        <mat-card-title>
+            <div>
+                <p>The Candidate with Email <b><span class="displayEmail">{{existingCandidate.Email}}</span></b> is already exists in the system. Please verify the Details and Proceed.</p>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.FirstName}}</span></div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last Name:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{existingCandidate.LastName}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.Email}}</span></div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone:</div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{existingCandidate.PrimaryPhoneNumber}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div fxFlex="50%">
+                    <div class="child-1 text-secondary" fxFlex="35"><span>Work Permit:</span></div>
+                    <div class="child-2" fxFlex="65"><span>{{existingCandidate.WorkStatus}}</span></div>
+                </div>
+                <div fxFlex="50%">
+                    <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Work Permit Expiration:
+                    </div>
+                    <div class="child-3" fxFlex="65">
+                        <span>{{existingCandidate.WorkStatusExpiry |date:'MM/dd/yyyy'}}</span>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-raised-button type="button" color="primary" [mat-dialog-close]="'Existing Candidate'" class="mr-2" matTooltip="Use Existing Candidate">Use Existing Info for Candidate</button>
+            <!-- <button mat-raised-button type="button" color="primary" [mat-dialog-close]="'Update'" class="mr-2" matTooltip="Update & Use Exsiting Candidate">Update Candidate Info</button> -->
+            <button mat-button type="button" [mat-dialog-close]="'Cancel'" class="mr-2" matTooltip="Cancel">CANCEL</button>
+        </div>
+    </div>
+</mat-dialog-footer>
+

@@ -1,0 +1,149 @@
+mat-checkbox {
+    margin-top:15px;
+  }
+  .card {
+    margin-bottom:20px;
+  }
+  
+  mat-button-toggle {
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: 4px;
+    margin-left: 0px;
+    margin-right:0px;
+    font-size: 14px;
+    font-style: bold;
+  }
+  
+  .mat-button-toggle-disabled {
+    border: 1px solid #c5c0c7;
+    background-color: #e1dde5;
+  }
+  
+  
+  
+  .mat-button-toggle-checked {
+    border: 1px solid rgba(var(--color-primary), 1);
+    background-color: rgba(var(--color-primary), 1);
+    color: white;
+  }
+  
+  
+  mat-dialog-content {
+    background: var(--background-base);
+  }
+  
+  .docsbox{
+    border-radius: 4px;
+    margin: 24px 0;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: 10px 10px 0px 10px;
+  }
+  
+  ::ng-deep{
+    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+        line-height: 25px;
+    }
+  }
+  
+  
+  div.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid rgba(82, 63, 105, 0.12);
+  float: left;
+  background: #f1f1f1;
+  border-radius: 4px 0 0 4px;
+  }
+  
+  div.example #close {
+  float: left;
+  
+  padding: 7px;
+   background: var(--background-base);
+  color: black;
+  font-size: 17px;
+  border: 1px solid rgba(82, 63, 105, 0.12);
+  border-left: none;
+  cursor: pointer;
+  }
+  
+  div.example #close:hover {
+  background: var(--background-base);
+  }
+  
+  div.example::after {
+  content: "";
+  clear: both;
+  display: table;
+  }
+  
+  ::ng-deep .example #close svg{
+  margin-top: 5px;
+  margin-left: 1px;
+  }
+  
+  .example{
+    margin-top:5px;
+  }
+  
+  .image-preview-input {
+  position: relative;
+  overflow: hidden;
+  margin: 0px;
+  border-color: rgba(#000, 0.2);
+  }
+  
+  .image-preview-input input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  }
+  
+  .btn-inverse {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  color: rgba(68, 68, 68, 1);
+  border-radius: 0px;
+  }
+  
+  .btn-inverse .fa-plus {
+  transform: scale(.65);
+  }
+  .input-group-btn>.btn {
+  padding: 7px 18px 6px;
+  }
+  .input-group-btn> .btn {
+  min-height: 34px !important;
+  border-radius: 0px 3px 3px 0px !important;
+  }
+
+  .child-1,.child-2,.child-3,.child-4{
+    padding:15px;
+  }
+  #middlebuttons1{
+    padding-left:10px;
+    border-left:1px solid  #e5e5e5;
+  }
+
+  .Activetag{
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+  }
+
+  .certtags {
+    background-color: rgba(var(--color-primary), .1);
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-right: 2px;
+  }
+  

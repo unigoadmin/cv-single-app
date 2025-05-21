@@ -1,0 +1,54 @@
+<vex-page-layout>
+
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Admin</h1>
+                <vex-breadcrumbs [matIcon]="icView_Module" [crumbs]="['Admin','Modules']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                      Modules
+                </h2>
+                  <span fxFlex></span>
+                  <button class="ml-4 pt-1" color="primary" fxFlex="none" mat-mini-fab matTooltip="Edit Company"
+                      type="button" (click)="openModules()" type="button">
+                      <ic-icon [icon]="icEdit"></ic-icon>
+                  </button>
+                </div>
+         
+            <div class="card" >
+                <div  class="pl-6 pb-3 ">
+                    <div class="border-l" >
+                    <table class="table w-full mt-8">
+                        <thead>
+                        <tr>
+                          <td class="body-2 text-secondary" fxFlex="10"></td>
+                          <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="20">MODULE</td>
+                          <td class="body-2 text-secondary th-text-bold mat-header-cell" fxFlex="70">DESCRIPTION</td>
+                         
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let module of companyModules">
+                          <td class="py-4 border-b text-center" fxFlex="10">
+                              <mat-slide-toggle [checked]="false"  [attr.id]="'Module'+module.ModuleId" [(ngModel)]="module.Status" disabled color="primary"></mat-slide-toggle>
+                         </td>
+                          <td class="py-4 border-b" fxFlex="20">{{module.ModuleName}}</td>
+                          <td class="py-4 border-b" fxFlex="70">{{module.ModuleDescription}}</td>
+                        </tr>
+                  
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+
+         
+            </div>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>

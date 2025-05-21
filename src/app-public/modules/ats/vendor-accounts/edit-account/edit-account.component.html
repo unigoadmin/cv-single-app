@@ -1,0 +1,87 @@
+<div class="mt-5">
+    
+    <div *ngIf="mode=='View'">
+        <div class="flex-container" fxLayout="row">
+            <div fxFlex="50%">
+                <div class="child-1 text-secondary" fxFlex="35"><span>Account ID:</span></div>
+                <div class="child-2" fxFlex="65">
+                    <span>{{accountdetail.CompanyAccountId}}</span>
+                </div>
+            </div>
+            <div fxFlex="50%">
+                <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Account Type:</div>
+                <div class="child-3" fxFlex="65">
+                    <div  fxLayoutAlign="start center" fxLayoutGap="4px" >
+                       <span>{{accountdetail.AccountTypeName}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="flex-container" fxLayout="row">
+        <div fxFlex="50%">
+            <div class="child-1 text-secondary" fxFlex="35"><span>Account Name:</span></div>
+            <div class="child-2" fxFlex="65">
+                <span>{{accountdetail.AccountName}}</span>
+            </div>
+        </div>
+        <div fxFlex="50%">
+            <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Owner:</div>
+            <div class="child-3" fxFlex="65">
+                <div  fxLayoutAlign="start center" fxLayoutGap="4px" >
+                   <span>{{accountdetail.FirstName}} {{accountdetail.LastName}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div *ngIf="mode=='Edit'">
+        <form role="form" [formGroup]="ManageAccountForm">
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <div fxFlex="100%" fxLayout="row">
+                    <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                        <mat-label>Account Type</mat-label>
+                        
+                        <mat-select [disabled]="true" required placeholder="Account Type" name="accountType" id="accountType"
+                            formControlName="accountType" [(ngModel)]="accountdetail.AccountTypeId">
+                            <mat-option *ngFor="let item of AccTypeList" [value]="item.AccountTypeID">
+                                {{item.AccountTypeName}}
+                              </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <div fxFlex="100%" fxLayout="row">
+                    <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                        <mat-label>Account Name</mat-label>
+                        <input formControlName="accountName" [(ngModel)]="accountdetail.AccountName" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <div fxFlex="100%" fxLayout="row">
+                    <mat-form-field fxFlex="100" fxFlex.gt-xs="100" appearance="outline">
+                        <mat-label>Account Owner</mat-label>
+                        <mat-select required name="accountOwner" formControlName="accountOwner" [(ngModel)]="accountdetail.OwnerId"
+                        id="accountOwner">
+                        <mat-option *ngFor="let assign of assignees" [value]="assign.value">{{assign.name}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+       
+        </form>
+    </div>
+
+</div>
+
+
+    <div fxLayout="row" class="mt-4" *ngIf="mode=='Edit'">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" class="mr-4" matTooltip="Cancel" (click)="OnReset()">RESET</button>
+            <button [disabled]="ManageAccountForm.invalid" color="primary" (click)="updateAccount()" mat-button type="submit" matTooltip="Submit">UPDATE</button>
+        </div>
+    </div>
+

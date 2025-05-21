@@ -1,0 +1,89 @@
+<div class="mb-0 body-1" mat-dialog-title>
+    <div>
+        <h2 class="body-2 font-medium m-0 text-secondary p-6" fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="auto"></span> 
+            <div class="text-center">
+                <mat-progress-spinner *ngIf="IsFileLoading" mode="indeterminate"
+                    diameter="20"></mat-progress-spinner>
+                <label for="ECL" class="fileBrowselbl">
+                    <form [formGroup]="addCandidateForm">
+                    <input id="attachR" type="file" (change)="onChange($event)" style="display:none;" #fileInput />
+                    <a color="primary" mat-raised-button (click)="fileInput.click()"
+                        class="btnnewlog"><strong>
+                            <mat-icon style="margin-bottom: -5px;" [icIcon]="icFileUpload">
+                            </mat-icon> Attach Resume
+                        </strong></a>
+                        <p class="mt-1">{{currentApplicant.AttachedFileName}}</p>
+                        <mat-error *ngIf="formSubmitted && addCandidateForm.get('resume').hasError('required')">Please upload a resume</mat-error>
+                    </form>
+                </label>
+            </div>
+        </h2>
+        <div [formGroup]="addCandidateForm" class="p-6" fxLayout="column" fxLayoutGap="16px">
+            <div fxFlex="auto" fxLayout="column">
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-form-field fxFlex="grow">
+                            <mat-label>First Name</mat-label>
+                            <input required formControlName="First_Name" matInput [ngModel]="currentApplicant.FirstName | titlecase"
+                            (ngModelChange)="currentApplicant.FirstName=$event">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                        <mat-form-field fxFlex="grow">
+                            <mat-label>Last Name</mat-label>
+                            <input required formControlName="Last_Name" matInput [ngModel]="currentApplicant.LastName | titlecase" 
+                            (ngModelChange)="currentApplicant.LastName=$event">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="grow">
+                        <mat-label>Email</mat-label>
+                        <input formControlName="Email" matInput required [ngModel]="currentApplicant.Email | lowercase"
+                        (ngModelChange)="currentApplicant.Email=$event">
+                    </mat-form-field>
+                    
+                    <mat-form-field fxFlex="grow">
+                        <mat-label>Phone No</mat-label>
+                        <input formControlName="Primary_Phone_Number" matInput required [ngModel]="currentApplicant.Phno | phoneformat"
+                        (ngModelChange)="currentApplicant.Phno=$event">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-label>Location (City / State)</mat-label>
+                        <input matInput required type="text" placeholder="Address" formControlName="applicantLocation"
+                            [(ngModel)]="currentApplicant.ApplicantLocation" #addresstext (change)="autocompleteInputChange($event)">
+                    </mat-form-field>
+                
+                    <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-label>Work Permit</mat-label>
+                        <mat-select required formControlName="wpermit" name="WorkPermit" [(ngModel)]="currentApplicant.WorkPermit"
+                            id="WorkPermit">
+                            <mat-option *ngFor="let work of workStatuFields" [value]="work.value">
+                                {{work.label}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                        <mat-label>LinkedIn</mat-label>
+                        <input [(ngModel)]="currentApplicant.LinkedIn" formControlName="LinkedIn" matInput name="lname">
+                    </mat-form-field>
+                    
+                </div>
+            </div>
+        </div>
+        <h2 class="body-2 font-medium m-0 text-secondary p-6" fxLayout="row" fxLayoutAlign="start center">
+            
+            <span fxFlex="auto"></span>
+            <button class="mr-2" mat-button type="button" (click)="onCancel()">CANCEL</button>
+            <button color="primary" mat-raised-button type="button" (click)="OnApply()">APPLY</button>
+            
+        </h2>
+    </div>
+
+
+</div>

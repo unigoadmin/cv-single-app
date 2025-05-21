@@ -1,0 +1,31 @@
+export class JobQuickApply{
+    CompanyId:number;
+    FirstName:string;
+    LastName:string;
+    Email:string;
+    Phno:string;
+    City:string;
+    State:string;
+    LinkedIn:string;
+    PublishedJobId:string;
+    WorkPermit:string;
+    AttachedFileName:string;
+    AttachedFilePath:string;
+    ActualFileName:string; 
+    ApplicantLocation:string;
+    constructor(){
+        this.ActualFileName=null;
+        this.CompanyId=0;
+        this.AttachedFileName=null;
+        this.AttachedFilePath=null;
+        this.FirstName=null;
+        this.LastName=null;
+        this.Email=null;
+        this.Phno=null;
+        this.PublishedJobId=null;
+        this.LinkedIn=null;
+        this.WorkPermit=null;
+        this.ApplicantLocation=null;
+    }
+
+}

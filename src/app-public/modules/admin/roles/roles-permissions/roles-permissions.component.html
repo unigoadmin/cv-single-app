@@ -1,0 +1,49 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <h2 class="headline m-0" fxFlex="auto">({{role.RoleName}}) Permissions</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column">
+  <div style="height: 450px;">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <span *ngIf="node.level==1" style="width: 100%">
+        <mat-checkbox [checked]="checklistSelection.isSelected(node)" color="primary" 
+        (change)="todoLeafItemSelectionToggle(node)" class="checklist-leaf-node" style="border-bottom: 1px solid #ddd;
+          padding-bottom: 5px;
+          width: 100%;">{{node.item}}</mat-checkbox>
+      </span>
+      <span *ngIf="node.level!=1" style="width: 100%">
+        <mat-radio-button  name="{{getParentItem(node)}}" [value]="node.item" [checked]="node.checked" 
+        (change)="OnRadioBbuttonChange($event,node)" class="border-b example-radio-button" 
+        style="border-bottom: 1px solid #ddd;padding-bottom: 5px;width: 100%;">
+          {{node.item}}
+        </mat-radio-button>
+      </span>
+      <span>
+        {{node.Description}}
+      </span>
+    </mat-tree-node>
+  
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+      <button mat-icon-button matTreeNodeToggle
+              [attr.aria-label]="'toggle ' + node.filename">
+              <mat-icon *ngIf="treeControl.isExpanded(node) === true" [icIcon]="icExpand_More" ></mat-icon>
+              <mat-icon *ngIf="treeControl.isExpanded(node) === false" [icIcon]="icChevron_Right"></mat-icon>
+      </button>
+      <mat-checkbox [checked]="descendantsPartiallySelected(node) || descendantsAllSelected(node) || checklistSelection.isSelected(node)"
+        (change)="todoItemSelectionToggle(node)" color="primary" class="checklist-node border-b"
+        style="border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        width: 100%;">{{node.item}}</mat-checkbox>
+    </mat-tree-node>
+  </mat-tree>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">CANCEL</button>
+  <button color="primary" mat-button type="button" (click)="savePermissions()">SAVE CHANGES</button>
+</mat-dialog-actions>

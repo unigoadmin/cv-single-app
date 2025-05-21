@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Worker Timesheet</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Verdana, Arial, sans-serif;
+      padding: 4px;
+      color: #000000;
+      background-color: #fff;
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 14px;
+      margin-bottom: 2px;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    header h2 {
+      font-size: 12px;
+      margin-bottom: 2px;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .employee-details {
+      margin: 0 auto 4px auto;
+      border: 1px solid #ddd;
+      padding: 3px;
+      border-radius: 2px;
+    }
+
+    .employee-details p {
+      margin: 2px 0;
+      font-size: 10px;
+      display: inline-block;
+      width: 49%;
+      color: #000000;
+      text-align: left;
+    }
+
+    .timesheet {
+      margin: 0 auto 4px auto;
+      width: 100%;
+    }
+
+    .timesheet-table,
+    .attachments-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 auto 2px auto;
+    }
+
+    .timesheet-table th {
+      border: 1px solid #ddd;
+      padding: 4px;
+      font-size: 10px;
+      text-align: center;
+      background-color: #f5f5f5;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .timesheet-table td {
+      border: 1px solid #ddd;
+      padding: 4px;
+      font-size: 10px;
+      text-align: left;
+      color: #000000;
+    }
+
+    .timesheet-table td:nth-child(1),
+    .timesheet-table td:nth-child(2),
+    .timesheet-table td:nth-child(3) {
+      text-align: center;
+    }
+
+    .attachments-table th,
+    .attachments-table td {
+      border: 1px solid #ddd;
+      padding: 4px;
+      font-size: 10px;
+      text-align: left;
+      color: #000000;
+    }
+
+    .attachments-table th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .total-hours {
+      text-align: right;
+      font-size: 10px;
+      font-weight: bold;
+      margin: 2px 0;
+      color: #000000;
+    }
+
+    .summary {
+      margin: 2px auto 0 auto;
+      padding-top: 2px;
+    }
+
+    .summary h2,
+    .attachments h2 {
+      font-size: 10px;
+      margin-bottom: 2px;
+      font-weight: bold;
+      color: #000000;
+      text-align: center;
+    }
+
+    .summary p {
+      font-size: 10px;
+      margin: 2px 0;
+      color: #000000;
+      text-align: left;
+    }
+
+    .attachments {
+      border-top: 1px solid #ddd;
+      margin: 2px auto 0 auto;
+      padding-top: 2px;
+    }
+
+    footer {
+      font-size: 8px;
+      color: #000000;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    section {
+      width: 100%;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>{{CompanyName}}</h1>
+      <h2>Worker Timesheet</h2>
+    </header>
+
+    <section class="employee-details">
+      <p><strong>Name:</strong> {{EmployeeName}}</p>
+      <p><strong>Timesheet ID:</strong> {{TimesheetId}}</p>
+      <p><strong>Assignment:</strong> {{AssignmentName}}</p>
+      <p><strong>Period:</strong> {{StartDate}} to {{EndDate}}</p>
+      <p><strong>Status:</strong>{{StatusName}}</p>
+    </section>
+
+    <section class="timesheet">
+      <table class="timesheet-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Standard Hours</th>
+            <th>OT Hours</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{TimesheetDays}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="summary">
+      <h2>Work Summary</h2>
+      <p>{{Description}}</p>
+    </section>
+
+    <section class="attachments">
+      <h2>Attachments</h2>
+      <table class="attachments-table">
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>File Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{Attachments}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="attachments">
+      <h2>Notes</h2>
+      <table class="attachments-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Comment</th>
+            <th>Created By</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{Notes}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="attachments">
+      <h2>Activity Log</h2>
+      <table class="attachments-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>Created By</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ActivityLog}}
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <!-- <p>Generated on {{}} | {{CompanyName}}</p> -->
+    </footer>
+  </div>
+</body>
+</html>

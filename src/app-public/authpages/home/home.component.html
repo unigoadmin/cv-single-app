@@ -1,0 +1,97 @@
+<div class="bg-pattern">
+  <vex-page-layout>
+
+    <vex-page-layout-content vexContainer>
+      <div class="text-center py-8 header">
+        <div class="container">
+          <h2 @fadeInUp class="display-2 mt-10 mb-2" style="font-weight: bold;">
+            <span class="text-primary">Streamlined solutions </span>for consulting companies to
+
+          </h2>
+          <h2 class="display-1 mt-10 mb-8" style="font-weight: bold;">
+            SOURCE. MANAGE. TRACK. CONSULT. COMMUNICATE.
+          </h2>
+          <div @fadeInUp fxLayout="row" fxLayoutAlign="center center">
+            <button color="primary" fxFlex="none" mat-raised-button type="button" [routerLink]="['/contact']">GET
+              DEMO</button>
+          </div>
+
+          <div @stagger class="mt-14 -mb-16 mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px"
+            fxLayoutGap.xs="16px">
+            <a #rla="routerLinkActive"
+              *ngFor="let link of links"
+              @fadeInUp
+              [class.border-primary]="rla.isActive"
+              [routerLink]="link.route"
+              class="block text-center p-3 hover:text-primary trans-ease-out cursor-pointer relative no-underline text-dark"
+              fxFlex
+              fxFlex.xs="none"
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              matRipple
+              routerLinkActive>
+              <ic-icon [class.text-primary]="rla.isActive" [icon]="link.icon" size="52px"></ic-icon>
+              <h3 class="title mb-0 mt-4">{{ link.label }}</h3>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+    </vex-page-layout-content>
+
+    <div class="bg-primary text-primary-contrast py-10  mt-20 px-gutter">
+      <h1 class="display-2 mt-2 mb-4 text-center">SIMPLE. FAST. EFFECTIVE.</h1>
+      <h2 class="display-1 mt-2 mb-4 text-center">Very smart sign up to begin managing and marketing your consulting
+        business.
+      </h2>
+      <div @fadeInUp fxLayout="row" class="pb-10 " fxLayoutAlign="center center">
+        <button fxFlex="none" mat-raised-button type="button" [routerLink]="['/register']">SIGNUP AS A COMPANY</button>
+      </div>
+    </div>
+    <div class=" py-10  px-gutter">
+      <h1 class="display-2 mt-2 mb-4 text-center">Vital resources to <span class="text-primary">manage</span> and <span
+          class="text-primary">market</span></h1>
+      <h1 class="display-2 mt-2 mb-4 text-center"> your <span class="text-primary">consulting business</span></h1>
+
+    </div>
+
+    <div @stagger class=" mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap.xs="16px">
+      <a @fadeInUp
+        class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+        fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple>
+        <img src="assets/img/time.png" />
+        <h3 class="title mb-0 mt-4 text-primary">Time Saving</h3>
+        <p>Integrated resources that are specifically designed to save time and gain revenue in your growing consulting
+          business.</p>
+
+      </a>
+      <a @fadeInUp
+        class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+        fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple>
+        <img src="assets/img/cloud.png" />
+        <h3 class="title mb-0 mt-4 text-primary">Cloud based Services</h3>
+        <p>Flexible services that enable faster and better business decisions across multiple platforms any time and
+          anywhere.</p>
+
+      </a>
+      <a @fadeInUp
+        class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
+        fxFlex fxFlex.xs="auto" fxLayout="column" fxLayoutAlign="center center" matRipple>
+        <img src="assets/img/server.png" />
+        <h3 class="title mb-0 mt-4 text-primary">Zero Infrastrcuture</h3>
+        <p>Zero infrastructure costs and reliable IT support dedicated to serve your specific consulting industry
+          business needs.</p>
+
+      </a>
+    </div>
+    <div class=" py-20  px-gutter">
+      <h1 class="display-2 mt-2 mb-4 text-center"> Focus on Onething, <span class="text-primary"> Track
+          Everything</span></h1>
+      <p class="subheading-2 text-hint text-center max-w-lg mx-auto m-0">Consultvite is not just a tool, Its a Robust
+        platform comprising of multiple modules, Where you can just login with a single account<br> Access all the apps
+        for free.</p>
+
+    </div>
+  </vex-page-layout>
+</div>

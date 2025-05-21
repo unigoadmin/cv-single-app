@@ -1,0 +1,109 @@
+<div *ngxPermissionsOnly="['ACTION_VIEW_JCSETTINGS']">
+    <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-xs="100">
+            <mat-card>
+                <mat-card-content>
+                    <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                            <mat-label>Inbox Source</mat-label>
+                            <mat-select name="InboxType" required id="InboxType" [(ngModel)]="jcSetting.InboxSource">
+                                <mat-option [value]="1">Rchilli</mat-option>
+                                <mat-option [value]="2">Mailgun</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="10px" class="mt-4">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when sending applicant for review.</mat-label>
+                                <mat-slide-toggle name="ReviewNotification" color="primary" [(ngModel)]="jcSetting.IsReviewNotification"
+                                    (change)="onReviewEventChanged($event.checked)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when applicant assigned to recruiter.</mat-label>
+                                <mat-slide-toggle name="AssignNotification" color="primary"
+                                    [(ngModel)]="jcSetting.IsApplicantAssignedNotification" (change)="onReviewEventChanged($event.checked)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="10px" class="mt-4">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when applicant shared to others.</mat-label>
+                                <mat-slide-toggle name="shareNotification" color="primary"
+                                    [(ngModel)]="jcSetting.IsApplicantSharedNotification"
+                                    (change)="onReviewEventChanged($event.checked)">
+                                </mat-slide-toggle>
+                            </div>
+
+                        </div>
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when notes added.</mat-label>
+                                <mat-slide-toggle name="notesNotification" color="primary"
+                                    [(ngModel)]="jcSetting.IsNotesNotification"
+                                    (change)="onReviewEventChanged($event.checked)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="10px" class="mt-4">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when status changed.</mat-label>
+                                <mat-slide-toggle name="statusNotification" color="primary"
+                                    [(ngModel)]="jcSetting.IsStatusChangeNotification" (change)="onReviewEventChanged($event.checked)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when applicant moved to marketing.</mat-label>
+                                <mat-slide-toggle name="marketingNotification" color="primary" [(ngModel)]="jcSetting.IsMoveToMarketing">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="10px" class="mt-4">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <mat-label>Email Notification, when applicant moved to techscreen.</mat-label>
+                                <mat-slide-toggle name="techscreenNotification" color="primary"
+                                    [(ngModel)]="jcSetting.IsMoveToTechcreen">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row">
+                        <div fxFlex="100" fxFlex.gt-xs="50">
+
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" style="text-align: right;">
+                            <button [disabled]="loading" style="float: right;" class="mr-4" (click)="saveSettings()"
+                                color="primary" mat-raised-button>SAVE
+                                <img *ngIf="loading"
+                                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                            </button>
+                        </div>
+
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<div *ngxPermissionsExcept="['ACTION_VIEW_JCSETTINGS']" class="w-full p-gutter text-center">
+    <img class="w-full max-w-lg mx-auto mb-6" src="assets/img/illustrations/data_center.svg">
+
+    <h1 class="display-3 font-medium m-0">401</h1>
+    <h2 class="headline m-0">Unauthorized.</h2>
+
+</div>

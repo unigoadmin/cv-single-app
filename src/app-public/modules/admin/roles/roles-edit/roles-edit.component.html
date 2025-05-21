@@ -1,0 +1,45 @@
+
+
+<form (ngSubmit)="saveRole()" [formGroup]="form">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+      <h2 class="headline m-0" fxFlex="auto">{{ title }}</h2>
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+      </button>
+    </div>
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+    <mat-dialog-content fxLayout="column">
+      <mat-form-field class="mt-6">
+        <mat-label>Name</mat-label>
+        <input cdkFocusInitial formControlName="RoleName" matInput required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea formControlName="RoleDescription" matInput></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Module</mat-label>
+        <mat-select formControlName="ModuleId"  required disabled>
+          <mat-option *ngFor="let module of companyModules" [value]="module.ModuleId" >
+            {{module.ModuleName}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>UserType</mat-label>
+      <mat-select formControlName="UserType"  required [disabled]="employerRole.RoleId">
+        <mat-option [value]="3">Internal User</mat-option>
+        <mat-option [value]="2">Consultant User</mat-option>
+    </mat-select>
+    </mat-form-field>
+
+    </mat-dialog-content>
+  
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">CANCEL</button>
+      <button color="primary" mat-button type="submit"  [disabled]="!form.valid">SAVE CHANGES</button>
+    </mat-dialog-actions>
+  </form>
+  
+  
+  

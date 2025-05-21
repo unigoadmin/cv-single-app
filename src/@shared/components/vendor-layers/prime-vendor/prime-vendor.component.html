@@ -1,0 +1,77 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card>
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 16px !important;">
+                            <span>Prime Vendor</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="PrimeVendorFromGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="vex-flex-form-field flex-auto">
+                            <mat-label>Company Name</mat-label>
+                            <input required [formControl]="primeClientControl" formControlName="PEndclientName" [matAutocomplete]="auto"
+                                [ngModel]="primevendorAccount.AccountName | titlecase" (ngModelChange)="primevendorAccount.AccountName=$event" matInput>
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="SeelectedAccount($event,'end')">
+                                <mat-option *ngFor="let client of PrimeClientOptions | async"
+                                    [value]="client.AccountName" [id]="client.AccountID">
+                                    <span class="body-1">{{ client.AccountName }}</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <section *ngIf="DisplayBilling===true" style="padding: 20px 0px;clear: both;" fxFlex="100" fxFlex.gt-xs="25">
+                            <mat-checkbox id="Primecheckbill" formControlName="Evbilling" [(ngModel)]="primevendorAccount.Isbilling"
+                                (change)="SelectBillingAccount($event,'Prime')">
+                                Billing Vendor
+                            </mat-checkbox>
+                        </section>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                            class="flex-auto">
+                            <mat-label>POC First Name</mat-label>
+                            <input required formControlName="fName" cdkFocusInitial matInput name="fEndclientName" 
+                            [ngModel]="primevendorAccount.SalesPOC.FirstName | titlecase" (ngModelChange)="primevendorAccount.SalesPOC.FirstName=$event"
+                            (change)="OnInputChange($event)">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="25"
+                            class="flex-auto">
+                            <mat-label>POC Last Name</mat-label>
+                            <input required formControlName="lName" cdkFocusInitial matInput  name="lEndclientName"
+                          [ngModel]="primevendorAccount.SalesPOC.LastName | titlecase" (ngModelChange)="primevendorAccount.SalesPOC.LastName=$event"
+                          (change)="OnInputChange($event)">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                            <mat-label>POC Email</mat-label>
+                            <input required formControlName="Email" cdkFocusInitial matInput name="EEndclientmail"
+                            [ngModel]="primevendorAccount.SalesPOC.Email | lowercase" (ngModelChange)="primevendorAccount.SalesPOC.Email=$event"
+                            (change)="OnInputChange($event)">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="50"
+                            class="flex-auto">
+                            <mat-label>POC Phone</mat-label>
+                            <input required formControlName="Phone" cdkFocusInitial matInput
+                                name="Endclientphone" (keypress)="onInputKeyPress($event)"
+                                (change)="PhonenumberFormate('end')"
+                                [(ngModel)]="primevendorAccount.SalesPOC.Phonenumber">
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="primevendorAccount.Isbilling==true">
+                        <cv-billing-vendor [billingAccount]="primevendorAccount" [vendortype]="'Prime'"
+                        (out_billing)="GetBllingData($event)" (formValidityChanged)="OnBillingFormValidity($event)">
+                        </cv-billing-vendor>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

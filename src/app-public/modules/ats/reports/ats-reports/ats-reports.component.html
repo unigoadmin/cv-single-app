@@ -1,0 +1,39 @@
+<vex-page-layout>
+    
+      <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+          <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+              <h1 class="title mt-0 mb-1">Reports</h1>
+              <vex-breadcrumbs [matIcon]="icReports" [crumbs]="['TalentCentral',' Reports']"></vex-breadcrumbs>
+            </div>
+          </div>
+        </vex-page-layout-header>
+
+        <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+          <div class="card overflow-auto -mt-16 mb-10">
+          <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+            <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                TalentCentral Reports
+              </h2>
+              <span fxFlex></span>
+          </div>
+          <div class="card">
+            <mat-tab-group [selectedIndex]="index">
+              <mat-tab label="Standard Reports" *ngxPermissionsOnly="['ACTION_VIEW_STANDARD_REPORT']">
+                <div class="p-6">
+                  <cv-standard-reports *ngxPermissionsOnly="['ACTION_VIEW_STANDARD_REPORT']"></cv-standard-reports>
+                </div>
+              </mat-tab>
+              <mat-tab label="Custom Reports" *ngxPermissionsOnly="['ACTION_VIEW_CUSTOM_REPORT']">
+                <div class="p-6">
+                  <cv-custom-reports *ngxPermissionsOnly="['ACTION_VIEW_CUSTOM_REPORT']"></cv-custom-reports>
+                </div>
+              </mat-tab>
+             
+            </mat-tab-group>
+          </div>
+        </div>
+        </vex-page-layout-content>
+        
+     
+  </vex-page-layout>

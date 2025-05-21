@@ -1,0 +1,275 @@
+<form (ngSubmit)="saveUser()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="user?.imageSrc" [src]="user?.imageSrc" class="avatar ltr:mr-5 rtl:ml-5"> -->
+    <h2 class="headline m-0" fxFlex="auto">{{ title }}</h2>
+    <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
+      <mat-icon [icIcon]="icMoreVert"></mat-icon>
+    </button>
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+
+    <div fxLayout="column" fxLayout.gt-sm="row" *ngIf="!isEditMode">
+      <div class="p-6" fxFlex="none">
+          <div class="image_container">
+              <img  mat-card-image [attr.src]="profilePic" *ngIf="profilePic">
+              <span *ngIf="!profilePic">
+              <ic-icon [icon]="icPerson"  class="ltr:mr-3 rtl:ml-3" size="250px" class="text-primary" ></ic-icon>
+            </span>
+          </div>
+      </div>
+      <div class="border-l" fxFlex="auto">
+          <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3 pt-4 border-b">
+              <div fxFlex="50%">
+                  <p> <span class="text-secondary" fxFlex="33">First Name:</span> {{currentUser?.FirstName}} </p>
+              </div>
+              <div fxFlex="50%">
+                  <p> <span class="text-secondary"  fxFlex="33">Last Name:</span> {{currentUser?.LastName}}</p>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+            <div fxFlex="50%">
+                <p> <span class="text-secondary"  fxFlex="33">Primary Email:</span> {{currentUser?.PrimaryEmail}}</p>
+            </div>
+            <div fxFlex="50%">
+                <p> <span class="text-secondary"  fxFlex="33">Secondary Email:</span> {{currentUser?.SecondaryEmail}}</p>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+            <div fxFlex="50%">
+                <p> <span class="text-secondary"  fxFlex="33">Primary Phone:</span> <span fxFlex="40">{{"("+currentUser?.PrimaryCountryCode+") " + currentUser?.PrimaryPhoneNo}} </span> <span class="text-secondary"  fxFlex="10">Ext</span> {{currentUser?.PrimaryPhoneExt }}</p>
+            </div>
+            <div fxFlex="50%">
+                <p> <span class="text-secondary"  fxFlex="33">Secondary Phone:</span> <span fxFlex="40"><span  *ngIf="currentUser?.SecondaryPhoneNo">{{"("+currentUser?.SecondaryCountryCode+") " + currentUser?.SecondaryPhoneNo}}</span> </span><span class="text-secondary" fxFlex="10">Ext</span> {{currentUser?.SecondaryPhoneExt }}</p>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3 pt-4 border-b">
+              <div fxFlex="50%">
+                  <p> <span class="text-secondary"  fxFlex="33">Address 1:</span> {{currentUser?.Address1}}</p>
+              </div>
+              <div fxFlex="50%">
+                  <p> <span class="text-secondary"  fxFlex="33">Address 2:</span> {{currentUser?.Address2}}</p>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+            <div fxFlex="33%">
+              <p> <span class="text-secondary" fxFlex="52">City:</span> {{currentUser?.City}}</p>
+            </div>
+            <div fxFlex="33%">
+              <p> <span class="text-secondary" fxFlex="45">State:</span> {{currentUser?.State}}</p>
+            </div>
+            <div fxFlex="33%">
+              <p> <span class="text-secondary" fxFlex="45">Zip:</span> {{currentUser?.Zip}}</p>
+            </div>
+           
+          
+          </div>
+          <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+            <div fxFlex="100%">
+              <p> <span class="text-secondary" fxFlex="17">Timezone:</span> {{timeZoneName}}</p>
+            </div>
+            
+        </div>
+        <!-- <div fxLayout="row" fxLayoutGap="10" class="pl-6 pb-3  pt-4 border-b">
+          <div fxFlex="50%">
+              <p> <span class="text-secondary"  fxFlex="33">Keywords</span> {{keywordsText}}</p>
+          </div>
+        
+      </div> -->
+        
+      </div>
+    </div>
+  
+    <div fxLayout="column" fxLayout.gt-sm="row" *ngIf="isEditMode">
+      <div class="p-6" fxFlex="none">
+        <div class="image_container">
+          <img  mat-card-image [attr.src]="profilePic" *ngIf="profilePic">
+          <span *ngIf="!profilePic">
+            <ic-icon [icon]="icPerson"  class="ltr:mr-3 rtl:ml-3" size="250px" class="text-primary" ></ic-icon>
+          </span>
+        </div>
+        <div>
+          <div class="p-2 text-center">
+            <button  mat-button type="button" color="primary" (click)="fileInput.click()">
+              <ic-icon [icon]="icCloud_Upload" class="ltr:mr-2 rtl:ml-3" inline="true"></ic-icon>
+              <span>Upload</span>
+            </button>
+            <input type="file" (change)="onChange($event)" style="display:none;" #fileInput />
+            <button mat-button type="button" (click)="removeProfilePicture()"  *ngIf="profilePic">
+              <ic-icon [icon]="icRemove_Circle_Outline" class="ltr:mr-2 rtl:ml-3" inline="true" size="18px"></ic-icon>
+              <span>Remove</span>
+            </button>
+            
+          </div>
+        </div>
+      </div>
+      <div class="border-l" fxFlex="auto">
+        <div  class="px-6 py-4" fxLayout="column">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>First Name</mat-label>
+              <input cdkFocusInitial formControlName="FirstName" matInput required>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Last Name</mat-label>
+              <input formControlName="LastName" matInput required>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Primary Email</mat-label>
+              <input readonly="true" formControlName="PrimaryEmail" matInput required>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Secondary Email</mat-label>
+              <input formControlName="SecondaryEmail" matInput>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="auto" fxLayout="row" fxLayoutGap="8px">
+          
+             <!-- <mat-form-field class="vex-flex-form-field" fxFlex="none">
+              <mat-label>Code</mat-label>
+              <input formControlName="PrimaryPhoneCountryExt" matInput 
+              [formControl]="primaryCountryControl" [matAutocomplete]="pcountryauto">
+              <mat-autocomplete #pcountryauto="matAutocomplete">
+                  <mat-option *ngFor="let country of primaryFilteredCountries$ | async"
+                      [value]="country.iso">
+                      {{country.display_name +"(+"+country.numcode+")"}}
+                  </mat-option>
+              </mat-autocomplete>
+            </mat-form-field> -->
+
+          
+            <mat-form-field class="vex-flex-form-field"  fxFlex="none" style="width: 49%;">
+              <mat-label>Country Code</mat-label>
+              <mat-select formControlName="PrimaryPhoneCountryExt">
+                <mat-option *ngFor="let country of countries" [value]="country.iso2">
+                  {{"(+"+country.dialCode+") - " + country.name }}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+            
+        
+            <mat-form-field class="vex-flex-form-field" fxFlex="auto">
+              <mat-label>Primary PhoneNo</mat-label>
+              <input formControlName="PrimaryPhoneNo" matInput required>
+            </mat-form-field>
+
+            <mat-form-field class="vex-flex-form-field" fxFlex="none">
+              <mat-label>Ext</mat-label>
+              <input formControlName="PrimaryPhoneExt" matInput>
+            </mat-form-field>
+         
+            </div>
+            
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="auto" fxLayout="row" fxLayoutGap="8px">
+              <!-- <mat-form-field class="vex-flex-form-field" fxFlex="none">
+                <mat-label>Code</mat-label>
+                <input formControlName="SecondaryPhoneCountryExt" matInput 
+                [formControl]="secondaryCountryControl" [matAutocomplete]="scountryauto">
+                <mat-autocomplete #scountryauto="matAutocomplete">
+                    <mat-option *ngFor="let country of secondaryFilteredCountries$ | async"
+                        [value]="country.iso">
+                        {{country.display_name +"(+"+country.numcode+")"}}
+                    </mat-option>
+                </mat-autocomplete>
+              </mat-form-field> -->
+
+            <mat-form-field  class="vex-flex-form-field" fxFlex="none" style="width: 49%;">
+              <mat-label>Country Code</mat-label>
+              <mat-select formControlName="SecondaryPhoneCountryExt">
+                <mat-option *ngFor="let country of countries" [value]="country.iso2">
+                  {{"(+"+country.dialCode+") - " + country.name }}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Secondary PhoneNo</mat-label>
+              <input formControlName="SecondaryPhoneNo" matInput>
+            </mat-form-field>
+            <mat-form-field class="vex-flex-form-field" fxFlex="none">
+              <mat-label>Ext</mat-label>
+              <input formControlName="SecondaryPhoneExt" matInput>
+            </mat-form-field>
+          </div>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Address 1</mat-label>
+              <input formControlName="Address1" matInput>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Address 2</mat-label>
+              <input formControlName="Address2" matInput>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>City</mat-label>
+              <input formControlName="City" matInput 
+              [formControl]="cityControl"  [matAutocomplete]="cityauto">
+              <mat-autocomplete #cityauto="matAutocomplete">
+                  <mat-option *ngFor="let city of filteredCities$ | async"
+                      [value]="city.CityName">
+                      {{city.CityName}}
+                  </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>State</mat-label>
+              <input formControlName="State" matInput 
+              [formControl]="stateControl" [matAutocomplete]="stateauto">
+              <mat-autocomplete #stateauto="matAutocomplete" 
+                  (optionSelected)="onSelectionChanged($event)">
+                  <mat-option *ngFor="let state of filteredStates$ | async"
+                      [value]="state.StateName">
+                      {{state.StateName}}
+                  </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Zipcode</mat-label>
+              <input formControlName="Zip" matInput/>
+            </mat-form-field>
+           
+          </div>
+         
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+              <mat-label>Timezone</mat-label>
+              <mat-select formControlName="TimeZoneId">
+                  <mat-option *ngFor="let zone of timezones" [value]="zone.TimeZoneID">
+                      {{zone.TimeZoneName+" " +zone.UTC}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          
+        </div>
+        </div>
+      </div>
+    </div>
+ 
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button color="primary" mat-button type="submit" *ngIf="isEditMode" [disabled]="!form.valid">SAVE CHANGES</button>
+  </mat-dialog-actions>
+</form>
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+  <button mat-menu-item  (click)="isEditMode = true" *ngIf="!isEditMode">
+    <mat-icon [icIcon]="icEdit"></mat-icon>
+    <span>Edit</span>
+  </button>
+  <button mat-menu-item  (click)="isEditMode = false" *ngIf="isEditMode">
+    <mat-icon [icIcon]="icRemove_Red_Eye"></mat-icon>
+    <span>View</span>
+  </button>
+</mat-menu>
+

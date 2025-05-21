@@ -1,0 +1,38 @@
+::ng-deep .mat-tooltip {
+    font-size: 12px !important;
+   }
+
+   .profileImage {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #512DA8;
+    font-size: 8px;
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    margin: 20px 0;
+  }
+
+  .mat-toogle-grp{
+    border-radius: 20px !important;
+    margin: 10px;
+  }
+
+  ::ng-deep cv-responses-data-table  .mat-button-toggle-checked {
+    background-color: rgba(var(--color-primary));
+    color:white !important;
+}
+
+  ::ng-deep cv-responses-data-table .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 40px !important;
+}
+
+.custom-modal .mat-dialog-container {
+  padding: 0; /* Removes extra padding from the modal */
+  overflow: hidden; /* Ensures no unwanted scrollbars */
+  border-radius: 8px; /* Optional: Rounds the modal corners */
+}
+
+
+  

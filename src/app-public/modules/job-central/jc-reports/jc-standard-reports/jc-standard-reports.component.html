@@ -1,0 +1,66 @@
+<div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="32px" fxLayoutAlign="start" class="p-10">
+  <div fxLayout="column wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="start"
+    style="width:33%;min-width: 350px;">
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="recruiterPanelOpenState = true" (closed)="recruiterPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="iconService.icPerson" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Recruiter(s)
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of recruitersReport;let i=index">
+              <span (click)="openReport(report,'TalentCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div fxFlex.lt-md="1 1 calc(50%-32px)" fxFlex.lt-sm="100%">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="applicantsPanelOpenState = true" (closed)="applicantsPanelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="8px" fxLayoutAlign="start">
+                <span fxLayoutAlign="center center">
+                  <mat-icon [icIcon]="iconService.icschedule" size="22px" color="primary"></mat-icon>
+                </span>
+                <span fxLayout="column center">
+                  <span class="Text">
+                    Applicant(s)
+                  </span>
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let report of applicantsReport;let i=index">
+              <span (click)="openReport(report,'JobCentral')"
+                class="text-dark body-1 no-underline hover:text-primary trans-ease-out">
+                <span style="font-size: 12px;">{{ report.ReportName }}</span>
+              </span>
+
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+  </div>
+
+
+</div>

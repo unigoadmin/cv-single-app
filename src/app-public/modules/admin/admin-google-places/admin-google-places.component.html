@@ -1,0 +1,10 @@
+<mat-form-field  *ngIf="InputMode=='Edit'" fxLayout="row" style="display: block;" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+    <mat-label>Location (City / Zip code)</mat-label>
+    <input matInput  required
+      type="text" placeholder="Address"
+      [(ngModel)]="autocompleteInput"
+      #addresstext
+      (change)="autocompleteInputChange($event)"
+      [disabled]="disable"
+      >
+    </mat-form-field>

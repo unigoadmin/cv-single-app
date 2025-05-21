@@ -1,0 +1,17 @@
+.item-badge {
+    flex: none;
+    border-radius: 9999px;
+    font-size: 11px;
+    line-height: 20px;
+    -webkit-margin-start: var(--padding-8);
+    margin-inline-start: var(--padding-8);
+    padding: 0 7px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  ::ng-deep cv-jobboard-responses .mat-tab-body-content { overflow: hidden!important}
+
+  ::ng-deep cv-jobboard-responses .mat-dialog-container{
+    overflow: hidden !important;
+  }

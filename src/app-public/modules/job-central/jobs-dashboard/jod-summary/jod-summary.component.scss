@@ -1,0 +1,60 @@
+
+.mat-button{
+    color: rgba(var(--color-primary-contrast));
+    background-color: rgba(var(--color-primary));
+    //margin-right: 5px;
+  }
+  
+  
+  #middlebuttons1{
+   
+    padding-left:10px;
+    
+    border-left:1px solid  #e5e5e5;
+    
+  }
+  .child-1,.child-2,.child-3,.child-4{
+    padding:15px;
+  }
+  
+  .mat-divider{
+    border-top-width: 2px; 
+  }
+  
+  .certtags {
+    background-color: rgba(var(--color-primary), .1);
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-right: 2px;
+  }
+  
+  .submissionTypeCard{
+  
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    color:rgba(var(--color-primary-contrast));
+    background-color: rgba(var(--color-primary));
+    margin-right: 10px;
+  }
+  
+  .textcgs {
+    text-transform: lowercase;
+  }
+  
+  .textcgs::first-line {
+    text-transform: capitalize;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .row {
+    overflow:scroll;
+      flex-direction: row;
+    }
+  
+    
+  }
+  

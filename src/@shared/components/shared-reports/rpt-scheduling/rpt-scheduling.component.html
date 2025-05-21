@@ -1,0 +1,198 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">Report Scheduling
+        </h2>
+
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        <button class="text-secondary" [mat-dialog-close]="'Close'" mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+</div>
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row" class="mb-4 mt-4 card">
+        <div class="border-l border-r" fxFlex="100">
+            <mat-tab-group style="height:450px;">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon [icIcon]="icschedule" size="22px"></mat-icon>
+                        Scheduling Options
+                    </ng-template>
+                    <div class="mt-2 ml-4" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px"
+                        style="width: 650px;">
+                        <form [formGroup]="schFormGroup">
+                            <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <mat-slide-toggle [checked]="schedule.IsActive" color="primary"
+                                    [(ngModel)]="schedule.IsActive" formControlName="Enabled"
+                                    (change)="onSchedueEventChanged($event.checked)">
+                                    Enable Scheduling
+                                </mat-slide-toggle>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Start Sending Report From</mat-label>
+
+                                    <input [matDatepicker]="schstartdatepickerRef" formControlName="selectedDateTime"
+                                        required [(ngModel)]="stDate" matInput name="startDate">
+                                    <mat-datepicker-toggle [for]="schstartdatepickerRef" matSuffix>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #schstartdatepickerRef></mat-datepicker>
+
+                                    <!-- <input matInput [ngxMatDatetimePicker]="schstartdatepickerRef" formControlName="selectedDateTime"  id="selectedDateTime" name="startDate"
+                                        [(ngModel)]="selectedDateTime" >
+                                        <mat-datepicker-toggle matSuffix [for]="schstartdatepickerRef"></mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #schstartdatepickerRef [enableMeridian]="true"></ngx-mat-datetime-picker> -->
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Time</mat-label>
+                                    <mat-select name="StartTime" required formControlName="StartTime" id="Type"
+                                        [(ngModel)]="StTime" [disabled]="!schedule.IsActive">
+                                        <mat-option *ngFor="let work of timeFormatList" [value]="work.value">
+                                            {{work.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Repeat</mat-label>
+                                    <input type="number" required matInput id="Frequency" name="Frequency"
+                                        [(ngModel)]="Frequency" formControlName="Frequency">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>Repeat Every</mat-label>
+                                    <mat-select name="Type" required formControlName="RecurrencePattern" id="Type"
+                                        [(ngModel)]="schedule.RecurrencePattern" [disabled]="!schedule.IsActive">
+                                        <mat-option [value]="1">day(s)</mat-option>
+                                        <mat-option [value]="2">week(s)</mat-option>
+                                        <mat-option [value]="3">month</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                            </div>
+                            <div *ngIf="schedule.RecurrencePattern==2" fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <div fxFlex="100" fxFlex.gt-xs="100">
+                                    <mat-list role="list" class="inline-list">
+                                        <mat-list-item role="listitem" *ngFor="let item of dayslist; let i = index"
+                                            class="list-group-item">
+                                            <mat-radio-button color="primary" [checked]="item.isSelected" [value]="i"
+                                                [disabled]="!schedule.IsActive" (change)="OnWeekChange($event.value)">
+                                                {{item.value}}
+                                            </mat-radio-button>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="schedule.RecurrencePattern==3" fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <div fxFlex="80%" fxLayout="row">
+                                    <span class="splabel" fxFlex="50">Select Date of Month</span>
+
+                                    <mat-form-field fxFlex="50" appearance="outline">
+                                        <input matInput type="number" min="1" max="28" formControlName="selectedDay"
+                                            id="selectedDay" name="selectedDay" [(ngModel)]="selectedDay">
+
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+
+                            <div fxLayout="row" fxLayoutGap="10px" class="mt-4">
+                                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-label>End</mat-label>
+                                    <mat-select name="Type" required formControlName="ScheduleEnd" id="Type"
+                                        [disabled]="!schedule.IsActive" 
+                                        [(ngModel)]="EndType" (selectionChange)="radioChange($event)">
+                                        <mat-option [value]="'Never'">Never</mat-option>
+                                        <mat-option [value]="'EndsAt'">Until</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- <mat-radio-group class="splabel" fxFlex="100" fxFlex.gt-xs="20" color="accent" [disabled]="!schedule.IsActive"
+                                                                    fxLayout="row" fxLayoutGap="20px" (change)="radioChange($event)">
+                                                                    <mat-radio-button [checked]="true" color="primary" value="Never">Never
+                                                                    </mat-radio-button>
+                                                                    <mat-radio-button color="primary" value="EndsAt">On</mat-radio-button>
+                                                                </mat-radio-group> -->
+
+                                <mat-form-field *ngIf="isEndDate==true" fxFlex="100" fxFlex.gt-xs="50">
+                                    <input [matDatepicker]="schenddatepickerRef" formControlName="EndDate" required
+                                        [(ngModel)]="SchEndDate" matInput name="EndDate">
+                                    <mat-datepicker-toggle [for]="schenddatepickerRef" matSuffix>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #schenddatepickerRef></mat-datepicker>
+                                </mat-form-field>
+
+                            </div>
+                        </form>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon [icIcon]="icContacts" size="22px"></mat-icon>
+                        Recipients
+                    </ng-template>
+                    <div class="mt-2 ml-4" fxFlex="100">
+                        <form [formGroup]="RecepientsFormGroup">
+                            <div fxLayout="row" class="mt-4 mr-4" fxLayoutGap="10px">
+                                <h3>Consultvite Users</h3>
+                            </div>
+                            <div fxLayout="row" class="mt-4 mr-4" fxLayoutGap="10px">
+                                <mat-form-field fxFlex="100" appearance="outline">
+                                    <mat-chip-list #chipAssigneesList aria-label="Fruit selection">
+                                        <mat-chip *ngFor="let keywrd of SelectedAssigness"
+                                            [selectable]="assigneesselectable" [removable]="assigneesremovable"
+                                            (removed)="assigneesremove(keywrd)" [value]="keywrd.value">
+                                            {{keywrd.name}}
+                                            <mat-icon matChipRemove [icIcon]="icClose" *ngIf="removable">cancel
+                                            </mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="select User..." #AssigneeInput [formControl]="AssigneeCtrl"
+                                            [matAutocomplete]="Assigneeauto" [matChipInputFor]="chipAssigneesList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            [matChipInputAddOnBlur]="addOnBlur">
+                                    </mat-chip-list>
+                                    <mat-autocomplete #Assigneeauto="matAutocomplete"
+                                        (optionSelected)="Assigneeselected($event)">
+                                        <mat-option *ngFor="let assign of filteredAssignees | async"
+                                            [value]="assign.value">
+                                            {{assign.name}}</mat-option>
+                                    </mat-autocomplete>
+
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" class="mt-4 mr-4" fxLayoutGap="10px">
+                                <mat-form-field fxFlex="100" appearance="outline">
+                                    <mat-label>Email Recepients</mat-label>
+                                    <textarea formControlName="EmailRecp" matInput
+                                        [(ngModel)]="customrecepients"></textarea>
+                                    <mat-hint>
+                                        Enter email addresses separated by a Comma or Line break
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </form>
+
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-stroked-button type="button" mat-dialog-close
+                class="mr-4 mat-focus-indicator mat-stroked-button mat-button-base  bg-cancel-light"
+                matTooltip="Cancel">CANCEL</button>
+            <button color="primary" mat-stroked-button
+                class="mat-focus-indicator mat-stroked-button mat-button-base mat-primary bg-primary-light"
+                [disabled]="!(schFormGroup.valid)" type="submit" matTooltip="Save"
+                (click)="SaveRecurrence()">SAVE</button>
+        </div>
+    </div>
+</mat-dialog-footer>

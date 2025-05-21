@@ -1,0 +1,256 @@
+<vex-page-layout>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="tblMenutitle mt-0 mb-1">Candidates</h1>
+        <vex-breadcrumbs [crumbs]="['JobCentral','Candidates']"></vex-breadcrumbs>
+      </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+    <mat-progress-bar *ngIf="isLoadpage===true" style="top: 4px;" mode="indeterminate" color="primary">
+    </mat-progress-bar>
+    <div class="card overflow-auto -mt-16 mb-10">
+
+      <div class="bg-app-bar h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+          <span class="ml-3" *ngIf="selection.hasValue()">{{ selection.selected.length }}
+            Candidate<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+        </h2>
+        <div class="mr-2">
+
+        </div>
+        <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs
+          fxLayout="row" fxLayoutAlign="start center">
+          <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+          <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search By Name,JobTitle,Email,Phno." type="search">
+        </div>
+
+        <span fxFlex></span>
+
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+
+        <button *ngxPermissionsOnly="['ACTION_ADD_JC_CANDIDATES']" (click)="CreateCandidate()" class="ml-4 mr-4"
+          color="primary" fxFlex="none" mat-mini-fab matTooltip="Add Candidate" type="button">
+          <mat-icon [icIcon]="icAdd"></mat-icon>
+        </button>
+
+        <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4 mr-4" fxFlex="none" mat-icon-button
+          matTooltip="Filter Columns" type="button">
+          <mat-icon [icIcon]="icFilterList"></mat-icon>
+        </button>
+
+      </div>
+      <div fxLayout="column" fxLayoutAlign="space-between" style="overflow: auto;">
+        <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+          <!-- Image Column -->
+          <ng-container matColumnDef="image">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+              <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+            </td>
+          </ng-container>
+
+          <!-- Text Columns -->
+          <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+            <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+              <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+              </th>
+              <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:20 }}</span>
+              </td>
+            </ng-container>
+          </ng-container>
+
+          <!-- Contact Column -->
+          <ng-container matColumnDef="contact">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+            <td *matCellDef="let row" mat-cell>
+              <div class="flex">
+
+                <a (click)="$event.stopPropagation()"
+                  class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary-light"
+                  mat-icon-button>
+                  <mat-icon [icIcon]="icPhone" size="18px" matTooltip="{{row['PrimaryPhoneNumber']}}"></mat-icon>
+                </a>
+
+                <a (click)="$event.stopPropagation()" href="mailto:{{row['Email']}}"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-teal bg-teal-light"
+                  [disabled]="!row['Email']" mat-icon-button>
+                  <mat-icon [icIcon]="icMail" size="18px" matTooltip="{{row['Email']}}"></mat-icon>
+                </a>
+
+                <a *ngIf="row['LinkedIn']!=null && row['LinkedIn']!=''" (click)="$event.stopPropagation()"
+                  target="_blank" href="{{row['LinkedIn']}}"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                  mat-icon-button>
+                  <mat-icon svgIcon="linkedin" size="16px" matTooltip="{{row['LinkedIn']}}"></mat-icon>
+                </a>
+                <a *ngIf="!row['LinkedIn']" (click)="$event.stopPropagation()"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                  mat-icon-button>
+                  <mat-icon svgIcon="disable-linkedin" size="16px"></mat-icon>
+                </a>
+
+                <a (click)="$event.stopPropagation();downloadResume(row)"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                  [disabled]="!row['ResumePathKey']" mat-icon-button>
+                  <mat-icon [icIcon]="icEye" size="18px"
+                    [matTooltip]="!row['ResumePathKey'] ? null : 'Download Resume'">
+                  </mat-icon>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <!--Location--bg-primary-light-->
+          <ng-container matColumnDef="Location">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Location</th>
+            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+              <span class="rounded-full text-secondary font-medium locationbtn">
+                <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+                </ic-icon>
+                <span>{{row['Location']}}</span>
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="WorkStatus">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Work Permit</th>
+            <td *matCellDef="let row" mat-cell>
+              <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+                  <span>{{row['WorkStatus']}}</span>
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="EmploymentType">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Employment Type</th>
+            <td *matCellDef="let row" mat-cell>
+              <div (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxLayoutGap="4px">
+                <span *ngIf="row['EmploymentType']" class="rounded-full text-secondary font-medium text-xs categorybtn">
+                  <span>{{row['EmploymentType']}}</span>
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Resume">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>RESUME</th>
+            <td *matCellDef="let row" mat-cell>
+              <div class="flex">
+                <a (click)="$event.stopPropagation();ViewResume(row)"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                  [disabled]="!row['ResumePathKey']" mat-icon-button>
+                  <mat-icon [icIcon]="icInsert_Drive_File" size="18px"
+                    [matTooltip]="!row['ResumePathKey'] ? null : 'View Resume'">
+                  </mat-icon>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Recruiter">
+            <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell mat-sort-header>Recruiter
+            </th>
+            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <a *ngIf="row['RecruiterShortName']!=null" style="margin-right: -8px;"
+                  (click)="$event.stopPropagation()"
+                  class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+                  mat-icon-button>
+                  <span matTooltip="{{row.Recruiter}}"> {{row.RecruiterShortName}} </span>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Notes">
+            <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Notes</th>
+            <td *matCellDef="let row" mat-cell>
+              <div class="flex">
+                <a (click)="$event.stopPropagation();ViewNotes(row);"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                  mat-icon-button>
+                  <mat-icon [icIcon]="icComment" size="18px" matTooltip="Notes">
+                  </mat-icon>
+                  <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Actions</th>
+            <td *matCellDef="let row" mat-cell>
+              <div class="flex" *ngxPermissionsOnly="['ACTION_EDIT_JC_CANDIDATES']">
+                <span>
+                  <button (click)="$event.stopPropagation();" class="mr-2" [matMenuTriggerData]="{ applicant: row }"
+                    [matMenuTriggerFor]="actionsMenu" color="primary" mat-raised-button type="button">Actions
+                    <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+                  </button>
+                </span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="StatusName">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+            <td *matCellDef="let row" mat-cell>
+              <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                <span [ngClass]="[row.bgClass]" class="rounded px-2 py-1 font-medium text-xs">
+                  {{row['StatusName']}}
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+          <tr (click)="ViewCandidate(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+            class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+        </table>
+        <div *ngIf="!isLoadpage && dataSource.filteredData?.length === 0" @scaleFadeIn fxFlex="auto" fxLayout="column"
+          fxLayoutAlign="center center">
+          <img class="m-12 h-64" src="assets/img/illustrations/idea.svg">
+          <h2 class="headline m-0 text-center">No records found.</h2>
+        </div>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+      </div>
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+
+<mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+  <ng-template let-applicant="applicant" matMenuContent>
+    <button (click)="ShareCandidate(applicant)" mat-menu-item>
+      <mat-icon [icIcon]="icShare" size="18px" [matTooltip]="'Share Candidate'">
+      </mat-icon><span>Share Candidate</span>
+    </button>
+    <button [disabled]="applicant['Status']==11 || applicant['Status']==12" (click)="AssignRecruiter(applicant)"
+      mat-menu-item>
+      <mat-icon [icIcon]="icPersonAdd" size="18px" [matTooltip]="'Assign Recruiter'">
+      </mat-icon><span>Assign Recruiter</span>
+    </button>
+    <button [disabled]="applicant['Status']==12" (click)="AssignManager(applicant)" mat-menu-item>
+      <mat-icon [icIcon]="icPersonAdd" size="18px" [matTooltip]="'Send for Review'">
+      </mat-icon><span>Send for Review</span>
+    </button>
+    <button (click)="DeleteCandidate(applicant)" [disabled]="applicant['AttachmentCount']==0" mat-menu-item>
+      <mat-icon [icIcon]="icDelete" size="18px" [matTooltip]="'Delete Candidate'">
+      </mat-icon><span>Delete Candidate</span>
+    </button>
+  </ng-template>
+</mat-menu>

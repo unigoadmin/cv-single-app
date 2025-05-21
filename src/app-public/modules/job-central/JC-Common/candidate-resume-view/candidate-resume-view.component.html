@@ -1,0 +1,22 @@
+<div fxLayout="row" fxLayoutAlign="end center" mat-dialog-title style="margin: 0px !important;">
+    <button class="text-secondary" (click)="viewClose()" mat-icon-button type="button" style="bottom: 12px;">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<div id="progressBar"><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+<mat-dialog-content fxLayout="column" style="max-height:81vh">
+    <div *ngIf="SelectedCandidate.AttachedFilePath" fxLayout="row">
+        <ngx-doc-viewer 
+        [url]="SelectedCandidate.AttachedFilePath"
+        googleCheckContentLoaded="true"
+        googleCheckInterval = 3000
+        googleMaxChecks = 5 
+        viewer="google" 
+        (loaded)="contentLoaded()"
+        style="width:100%;height:80vh;"
+        disableContent="none">
+        </ngx-doc-viewer>
+      </div>
+</mat-dialog-content>

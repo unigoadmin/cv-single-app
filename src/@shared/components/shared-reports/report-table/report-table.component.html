@@ -1,0 +1,45 @@
+<div fxLayout="column" fxLayoutAlign="space-between">
+  <table @stagger [dataSource]="DataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+      <ng-container *ngIf="column.type == 'text'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+        </th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+      </ng-container>
+
+      <ng-container *ngIf="column.type === 'count'" [matColumnDef]="column.property">
+        <!-- Display the count and make it clickable -->
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+        </th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <a class="text-primary mt-1 bg-primary-light" mat-stroked-button type="button"
+            (click)="onStatusClick(row[column.property.replace('_Count', '')])">
+            {{ row[column.property] }}
+          </a>
+        </td>
+      </ng-container>
+
+      <ng-container *ngIf="column.type == 'button'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+        </th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <button style="line-height: 30px;" class="text-primary mt-1 bg-primary-light" mat-stroked-button
+            type="button">{{ row[column.property] }}</button>
+        </td>
+      </ng-container>
+    </ng-container>
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp class="hover:bg-hover trans-ease-out cursor-pointer"
+      mat-row></tr>
+  </table>
+  <div *ngIf="!DataSource || DataSource.filteredData?.length === 0" @scaleFadeIn fxFlex="auto" fxLayout="column"
+    fxLayoutAlign="center center">
+    <img class="m-12 h-64" src="assets/img/illustrations/idea.svg">
+    <h2 class="headline m-0 text-center">No data found. Try adjusting the filter settings.</h2>
+  </div>
+
+
+  <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+  </mat-paginator>
+</div>

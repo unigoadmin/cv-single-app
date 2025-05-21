@@ -1,0 +1,29 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <h2 class="headline m-0" fxFlex="auto">{{title}}</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content class="confirm" fxLayout="column" style="overflow: auto;">
+    <div fxLayout="row">
+        {{message}}
+    </div>
+    <br>
+    <div fxLayout="row">
+        <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100"
+                                    class="flex-auto">
+                                    <mat-label>Notes</mat-label>
+                                    <textarea matInput id="Notes" required  mdAutosizeMaxRows="3"
+                                    placeholder="{{placeholder}}" type="text" name="Notes" [(ngModel)]="DeleteNotes"></textarea>
+                                </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-footer> 
+    <div fxLayout="row" class="mt-4">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel" (click)="onDismiss()">CANCEL</button>
+            <button color="primary" mat-button type="submit" matTooltip="Submit" (click)="onConfirm()" >YES</button>
+        </div>
+    </div>
+</mat-dialog-footer>

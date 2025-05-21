@@ -1,0 +1,171 @@
+<vex-page-layout>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav class="mat-sidenav-fixed" #activitylog mode="over" hasBackdrop="true" position="end">
+      <div fxLayout="column" *ngIf="selectedTimesheetId">
+        <div class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none" style="margin-top:60px">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+          <span fxFlex></span>
+          <a (click)="OnActiviyLogclose()"
+            class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+            mat-icon-button>
+            <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+          </a>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="MsgList" id="wallmessages" *ngIf="ActivityLogs.length>0">
+          <div class="MsgItem" *ngFor="let logitem of ActivityLogs; let index = index">
+            <div class="MsgIn">
+              <div class="message-head clearfix">
+                <div class="user-detail">
+
+                  <div class="msg-date">{{logitem.CreatedDate}} </div>
+                  <div class="msg-by">by {{logitem.CommentBy}}</div>
+                  <div class="msg-content" [innerHtml]="logitem.Comment"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">Timesheet</h1>
+        <vex-breadcrumbs [matIcon]="icEvent" [crumbs]="['Worker-Central','Timesheet']"></vex-breadcrumbs>
+      </div>
+
+
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+    <div class="card overflow-auto -mt-16 mb-10">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <div class="ml-1 mr-2">
+          <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="16px" width="16px"
+            style="color: #757a7f;font-size: 16px;margin-top: 5px;"></mat-icon>
+        </div>
+        <div class="bg-card rounded-full border px-4" fxFlex="359px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+          fxLayoutAlign="start center">
+
+          <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+          <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..." type="search">
+        </div>
+        <div class=" ml-4">Status</div>
+        <div class="bg-card  border  ml-2" style="width: 160px;border-radius: 4px !important;">
+          <button mat-button [matMenuTriggerFor]="statusMenu" fxFlex="auto" color="primary">
+            {{selectedStatus}} <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+
+        <span fxFlex></span>
+
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+
+        </button>
+
+      </div>
+      <div fxLayout="column" fxLayoutAlign="space-between">
+      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+
+        <!-- Text Columns -->
+        <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+          <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+            </th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:30 }}</span>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <ng-container matColumnDef="StatusName">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+          <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <span *ngIf="row['status']===5" class="rounded px-2 py-1 font-medium text-xs text-yellow bg-yellow-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['status']==2" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['status']==3" class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['status']==4" class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                {{row['StatusName']}}
+              </span>
+              <span *ngIf="row['status']==6" class="rounded px-2 py-1 font-medium text-xs text-purple bg-purple-light">
+                {{row['StatusName']}}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header class="uppercase th-text-bold">ACTIONS</th>
+          <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+            <div class="flex">
+              <a (click)="$event.stopPropagation();ViewNotes(row);"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icComment" size="18px" matTooltip="Notes">
+                </mat-icon>
+                <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+              </a>
+
+              <a (click)="$event.stopPropagation();ViewLogs(row);"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icFormattedList" size="16px" matTooltip="Activity Logs"></mat-icon>
+              </a>
+            </div>
+
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr (click)="viewTimeSheet(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+          class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+      </table>
+      <div *ngIf="dataSource.filteredData?.length === 0" @scaleFadeIn fxFlex="auto" fxLayout="column"
+              fxLayoutAlign="center center">
+              <img class="m-12 h-64" src="assets/img/illustrations/idea.svg">
+              <h2 class="headline m-0 text-center">No records found.</h2>
+            </div>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+    </div>
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>
+
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+<mat-menu #statusMenu="matMenu">
+  <button mat-menu-item (click)="filterStatus(0)">
+    <span>All</span>
+  </button>
+  <button mat-menu-item (click)="filterStatus(2)">
+    <span>Approved</span>
+  </button>
+  <button mat-menu-item (click)="filterStatus(4)">
+    <span>Submitted</span>
+  </button>
+  <button mat-menu-item (click)="filterStatus(5)">
+    <span>Draft</span>
+  </button>
+  <button mat-menu-item (click)="filterStatus(3)">
+    <span>Rejected</span>
+  </button>
+</mat-menu>

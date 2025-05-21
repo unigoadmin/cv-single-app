@@ -1,0 +1,43 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+
+    <div fxFlex="70%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">
+          <span *ngIf="mode=='View'">View Account</span>
+          <span *ngIf="mode=='Edit'">Edit Account</span>
+        </h2>
+      </div>
+        <div fxFlex="30%" style="text-align: right !important;">
+          <button *ngIf="mode=='View'" [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
+            <mat-icon [icIcon]="icMoreVert"></mat-icon>
+          </button>
+          <button class="text-secondary" [mat-dialog-close]="'Close'" mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+          </button>
+        </div>
+    
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content class="confirm pl-tabs" style="overflow: auto;">
+    <mat-tab-group [(selectedIndex)]="index" class="mt-0">
+        <mat-tab label="Account Information">
+            <cv-edit-account [AccountID]="AccountId" [mode]="mode"> </cv-edit-account>
+        </mat-tab>
+        <mat-tab label="Contact Information">
+            <cv-account-contact-info [AccountID]="AccountId" [mode]="mode"></cv-account-contact-info>
+        </mat-tab>
+        <mat-tab label="Associated Accounts">
+            <cv-associated-accounts [AccountID]="AccountId"></cv-associated-accounts>
+        </mat-tab>
+        <mat-tab label="Notes">
+            <cv-account-notes [AccountID]="AccountId"></cv-account-notes>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+    <span>
+        <button mat-menu-item *ngIf="mode=='View'" (click)="editClick()" >
+            <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="icEdit"></mat-icon>
+            <span>Edit</span>
+          </button>
+    </span>
+  </mat-menu>

@@ -1,0 +1,27 @@
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+    <mat-form-field class="example-chip-list" appearance="outline" fxFlex="100">
+        <mat-label>Skills<span *ngIf="Isrequired" class="required"> *</span></mat-label>
+        <mat-chip-list #chipList aria-label="Fruit selection">
+            <mat-chip *ngFor="let keywrd of SelectedKwywods" 
+            [selectable]="selectable"
+            [removable]="removable" 
+            (removed)="remove(keywrd)">
+              {{keywrd}}
+              <mat-icon matChipRemove [icIcon]="icClose" *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="New Skill..."
+                   #fruitInput
+                   [formControl]="KeywordCtrl"
+                   [matAutocomplete]="Skillauto"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="addOnBlur"
+                   (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+          <mat-autocomplete #Skillauto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let item of filteredKeywords | async" [value]="item">
+              {{item}}
+            </mat-option>
+          </mat-autocomplete>
+    </mat-form-field>
+</div>

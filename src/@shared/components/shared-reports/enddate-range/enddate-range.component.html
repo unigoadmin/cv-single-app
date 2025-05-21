@@ -1,0 +1,16 @@
+<mat-form-field fxFlex="100" fxFlex.gt-xs="100" appearance="outline"
+    style="width: 215px !important;" class="example-form-field">
+    <mat-label>{{label}}</mat-label>
+    <mat-date-range-input [disabled]="isDisabled" [formGroup]="endperiodrange" [rangePicker]="rangePicker">
+        <input matStartDate formControlName="start" [(ngModel)]="FromDate" placeholder="Start date">
+        <input matEndDate formControlName="end" [(ngModel)]="ToDate" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker #rangePicker>
+        <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel (click)="ClearFilterDates()">Clear</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply
+                (click)="GetSelectedEndDataRange()">Apply</button>
+        </mat-date-range-picker-actions>
+    </mat-date-range-picker>
+</mat-form-field>

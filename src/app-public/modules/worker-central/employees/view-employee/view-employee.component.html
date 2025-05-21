@@ -1,0 +1,49 @@
+<div fxLayout="row" fxLayoutAlign="start center"  class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+        <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">View Worker
+        </h2>
+       
+        </div>
+        <div fxFlex="50%" style="text-align: right !important;">
+          <button [matMenuTriggerFor]="settingsMenu" style="margin-right: 6px;bottom: 5px;"
+          color="primary"
+          mat-raised-button
+          type="button">Actions
+    <ic-icon [icon]="icArrowDropDown"  class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+  </button>
+  <button [mat-dialog-close]="'Close'" style="top:3px;--tw-bg-opacity: 1 !important;background-color: rgba(158, 158, 158, var(--tw-bg-opacity)) !important;color: rgba(var(--color-accent-contrast), 1) !important;height: 40px !important;width: 40px !important;" mat-fab type="button">
+      <mat-icon style="bottom: 8px !important;position: relative;" [icIcon]="icClose"></mat-icon>
+    </button>
+        </div>
+</div>
+<mat-dialog-content class="confirm" style="overflow: auto;">
+<cv-common-employee-view class="mt-4" [EmployeeID]="Data"></cv-common-employee-view>
+</mat-dialog-content>
+
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+        <button *ngxPermissionsOnly="['ACTION_WORKERS_MODIFY']" mat-menu-item [mat-dialog-close]="'Edit'">
+          <mat-icon style="margin-top: 5px;" size="16px" [icIcon]="icEdit"></mat-icon>
+          <span>Edit</span>
+        </button>
+        <div *ngIf="Employee.Status==1">
+          <button *ngxPermissionsOnly="['ACTION_WORKERS_MODIFY']" mat-menu-item [mat-dialog-close]="'Delete'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icDelete" size="16px"></mat-icon>
+            <span>Terminate</span>
+          </button>
+        </div>
+        <div *ngIf="Employee.WebsiteUser==null && Employee.IsCVAccess==false">
+          <button *ngxPermissionsOnly="['ACTION_CREATE_CONSULTANT']" mat-menu-item [mat-dialog-close]="'CreateUser'">
+              <mat-icon style="margin-top: 5px;" [icIcon]="icAdd" size="16px"></mat-icon>
+              <span>Create CV User Account</span>
+          </button>
+      </div>
+
+      <div *ngIf="Employee.WebsiteUser==null && Employee.IsCVAccess==true">
+        <button *ngxPermissionsOnly="['ACTION_CREATE_CONSULTANT']" mat-menu-item [mat-dialog-close]="'LinkUser'">
+            <mat-icon style="margin-top: 5px;" [icIcon]="icAdd" size="16px"></mat-icon>
+            <span>Activate CV User Account</span> 
+        </button>
+    </div>
+       
+      
+  </mat-menu>

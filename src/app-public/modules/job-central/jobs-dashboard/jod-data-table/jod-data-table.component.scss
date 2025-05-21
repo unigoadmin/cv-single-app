@@ -1,0 +1,20 @@
+
+  .textcgs {
+    text-transform: lowercase;
+  }
+  
+  .textcgs::first-line {
+    text-transform: capitalize;
+  }
+
+  .mat-sidenav{
+    background-color:#F5F5F5;
+    }
+
+    .custom-dialog-container {
+      background: var(--background-app-bar) !important;
+      /* Additional styles if needed */
+    }
+    ::ng-deep cv-test-job .mat-dialog-container {
+      background: var(--background-app-bar) !important;
+    }

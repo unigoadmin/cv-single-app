@@ -1,0 +1,179 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+  <div>
+    <h2 class="title my-0 leading-snug text-secondary textcgs">Applicant History</h2>
+  </div>
+
+  <span fxFlex></span>
+  <button class="text-secondary" mat-icon-button type="button" (click)="viewClose()">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+  <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4 mr-4" fxFlex="none" mat-icon-button
+      matTooltip="Filter Columns" type="button">
+      <mat-icon [icIcon]="icFilterList"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="confirm pl-tabs" fxLayout="column" style="overflow: auto;">
+
+  <div fxLayout="column" fxLayoutAlign="space-between" style="overflow: auto;">
+    <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+
+      <!-- Text Columns -->
+      <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{
+            column.label }}
+          </th>
+          <td *matCellDef="let row" mat-cell
+            [ngClass]="{'make-gold': row.IsCandidateViewed == 0, 'text-secondary,font-medium':row.IsCandidateViewed == 1}">
+            <span [matTooltip]="row[column.property]">{{row[column.property]|shorten:20}}</span>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <ng-container matColumnDef="ApplicantLocation">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Applicant Location</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+          <span class="rounded-full text-secondary font-medium locationbtn">
+            <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+            </ic-icon>
+            <span>{{row['ApplicantLocation']}}</span>
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Resume">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>RESUME</th>
+        <td *matCellDef="let row" mat-cell>
+          <div class="flex">
+            <a (click)="$event.stopPropagation();ViewResume(row)"
+              class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+              [disabled]="!row['AttachedFilePath']" mat-icon-button>
+              <mat-icon [icIcon]="icInsert_Drive_File" size="18px"
+                [matTooltip]="!row['AttachedFilePath'] ? null : 'View Resume'">
+              </mat-icon>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="WorkPermit">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Work Permit</th>
+        <td *matCellDef="let row" mat-cell>
+          <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+            <span *ngIf="row['WorkPermit']" class="rounded-full text-secondary font-medium text-xs categorybtn">
+              <span>{{row['WorkPermit']}}</span>
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="EmploymentType">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Employment Type</th>
+        <td *matCellDef="let row" mat-cell>
+          <div (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxLayoutGap="4px">
+            <span *ngIf="row['EmploymentType']" class="rounded-full text-secondary font-medium text-xs categorybtn">
+              <span>{{row['EmploymentType']}}</span>
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Recruiter">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Recruiter(s)</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <div *ngIf="row.RecruiterList" fxLayout="row" fxLayoutAlign="center center">
+            <a style="margin-right: -8px;" *ngFor="let person of row.RecruiterList" (click)="$event.stopPropagation()"
+              class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+              mat-icon-button>
+              <span matTooltip="{{person.FullName}}"> {{person.ShortName}} </span>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Assignees">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Manager</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <div *ngIf="row.AssigneeList" fxLayout="row" fxLayoutAlign="center center">
+            <a style="margin-right: -8px;" *ngFor="let person of row.AssigneeList" (click)="$event.stopPropagation()"
+              class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+              mat-icon-button>
+              <span matTooltip="{{person.FullName}}"> {{person.ShortName}} </span>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ApplicantViews">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Viewed</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <div *ngIf="row.ViewedList" fxLayout="row" fxLayoutAlign="center center">
+            <a style="margin-right: -8px;" *ngFor="let person of row.ViewedList" (click)="$event.stopPropagation()"
+              class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+              mat-icon-button>
+              <span matTooltip="{{person.FullName}}"> {{person.ShortName}} </span>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <!--Status Column-->
+      <ng-container matColumnDef="ApplicantStatusName">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+        <td *matCellDef="let row" mat-cell>
+          <div class="flex" (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+            <span *ngIf="row['ApplicantStatus']===2 || row['ApplicantStatus']===3"
+              class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+              {{row['ApplicantStatusName']}}
+            </span>
+            <span *ngIf="row['ApplicantStatus']===4 || row['ApplicantStatus']===5"
+              class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+              {{row['ApplicantStatusName']}}
+            </span>
+            <span *ngIf="row['ApplicantStatus']===6 || row['ApplicantStatus']===7"
+              class="rounded px-2 py-1 font-medium text-xs text-red bg-red-light">
+              {{row['ApplicantStatusName']}}
+            </span>
+            <span *ngIf="row['ApplicantStatus']===1"
+              class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+              {{row['ApplicantStatusName']}}
+            </span>
+          </div>
+
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Notes">
+        <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Notes</th>
+        <td *matCellDef="let row" mat-cell>
+          <div class="flex">
+            <a (click)="$event.stopPropagation();ViewNotes(row);"
+              class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+              mat-icon-button>
+              <mat-icon [icIcon]="icComment" size="18px" matTooltip="Applicant Notes">
+              </mat-icon>
+              <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+      <tr (click)="ViewApplicant(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+        class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+    </mat-paginator>
+  </div>
+
+</mat-dialog-content>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>

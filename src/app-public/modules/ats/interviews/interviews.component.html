@@ -1,0 +1,215 @@
+<vex-page-layout>
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav class="mat-sidenav-fixed" #activitylog mode="over" hasBackdrop="true" position="end">
+      <div fxLayout="column" *ngIf="selectedSubmissionId">
+        <div class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none" style="margin-top:60px">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+          <span fxFlex></span>
+          <a (click)="OnActiviyLogclose()"
+            class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+            mat-icon-button>
+            <mat-icon [icIcon]="icClose" size="18px"></mat-icon>
+          </a>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="MsgList" id="wallmessages" *ngIf="ActivityLogs.length>0">
+          <div class="MsgItem" *ngFor="let logitem of ActivityLogs; let index = index">
+            <div class="MsgIn">
+              <div class="message-head clearfix">
+                <div class="user-detail">
+
+                  <div class="msg-date">{{logitem.CreatedDate}} </div>
+                  <div class="msg-by">by {{logitem.CreatedBy}}</div>
+                   <div class="msg-content" [innerHtml] = "logitem.Action"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+          <div>
+            <h1 class="title mt-0 mb-1">Interviews</h1>
+            <vex-breadcrumbs [crumbs]="['TalentCentral','Interviews']"></vex-breadcrumbs>
+          </div>
+        </div>
+      </vex-page-layout-header>
+      <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16 mb-10">
+          <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+            <div class="mr-2">
+              <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px" style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+            </div>
+            <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+              fxLayoutAlign="start center">
+              <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+              <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                placeholder="Search..." type="search">
+            </div>
+          
+            <div *ngxPermissionsOnly="['ACTION_INTERVIEWS_ASSIGNEE']" class="ml-4">
+              Sales Rep
+            </div>
+            <div *ngxPermissionsOnly="['ACTION_INTERVIEWS_ASSIGNEE']" class="bg-card  border ml-2"
+              style="width: 180px;border-radius: 4px !important;">
+              <button mat-button [matMenuTriggerFor]="statusMenu" fxFlex="auto" color="primary">
+                {{selectedAssignee}} <mat-icon>expand_more</mat-icon>
+              </button>
+            </div>
+          
+
+            <span fxFlex></span>
+
+            <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+              <mat-icon [icIcon]="icSearch"></mat-icon>
+            </button>
+            <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+              matTooltip="Filter Columns" type="button">
+              <mat-icon [icIcon]="icFilterList"></mat-icon>
+            </button>
+          </div>
+          <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+            <!-- Text Columns -->
+            <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+              <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                  <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:20 }}</span>
+                </td>
+              </ng-container>
+            </ng-container>
+            <!--Location--bg-primary-light-->
+            <ng-container matColumnDef="Location">
+              <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header="Location">Location</th>
+              <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+                <span *ngIf="row.Location!=null" class="rounded-full text-secondary font-medium locationbtn">
+                  <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true" size="14px">
+                  </ic-icon>
+                  <span>{{row.Location}}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="InterviewDate">
+              <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Intv Date & Time</th>
+              <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+                <span class="rounded-full text-secondary font-medium">
+                  <span>{{row['InterviewDate']}} {{row['InterviewTimeZone']}}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <!--Interview Type-->
+           <ng-container matColumnDef="InterviewTypeName">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Type</th>
+            <td *matCellDef="let row" mat-cell>
+              <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+                  <span>{{row['InterviewTypeName']}}</span>
+                </span>
+              </div>
+            </td>
+           </ng-container>
+
+            <!--Interview Type-->
+           <ng-container matColumnDef="SubmittedByName">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Sales Rep(s)</th>
+            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+              <div  fxLayout="row" fxLayoutAlign="center center">
+                <a style="margin-right: -8px;" (click)="$event.stopPropagation()"
+                  class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-secondary font-medium bg-primary-light avatar overlapping"
+                  mat-icon-button>
+                  <span matTooltip="{{row.SubmittedByName}}"> {{row.ShortName}} </span>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+            <!--Status Column-->
+            <ng-container matColumnDef="InterviewStatusName">
+              <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+              <td *matCellDef="let row" mat-cell>
+                <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                  <span  
+                  [ngClass]="[row.bgClass]" class="rounded px-2 py-1 font-medium text-xs">
+                  {{row['InterviewStatusName']}}
+                </span>
+                  <div *ngxPermissionsOnly="['ACTION_INTERVIEWS_MODIFY']" (click)="labelSelect.open()"
+                    class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover" fxFlex="none" fxLayout="row"
+                    fxLayoutAlign="center center">
+                    <ic-icon [icon]="icEdit" size="18px"></ic-icon>
+                  </div>
+
+                  <!-- <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event, row)"
+                    [value]="row.labels" class="invisible w-0 h-0 text-sm" fxFlex="0 1 0px">
+                    <mat-option *ngFor="let label of statusLabels" [value]="label">
+                      <span [ngClass]="[label.bgClass]">{{ label.StatusName }}</span>
+                    </mat-option>
+                  </mat-select> -->
+
+                  <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event, row)" class="invisible w-0 h-0 text-sm"
+                    fxFlex="0 1 0px">
+                    <mat-option *ngFor="let label of statusLabels" [value]="label">
+                      <div [ngClass]="label.bgdisplay" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                      </div>
+                      <span>{{ label.StatusName }}</span>
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="actions">
+              <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>ACTIONS</th>
+              <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+                <div class="flex">
+                  <a (click)="$event.stopPropagation();ViewLogs(row)"
+                    class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                    mat-icon-button>
+                    <mat-icon [icIcon]="icFormattedList" size="16px" matTooltip="Activity Logs"></mat-icon>
+                  </a>
+
+                  <a (click)="$event.stopPropagation();ViewNotes(row)"
+                    class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                    mat-icon-button>
+                    <mat-icon [icIcon]="icInsertComment" size="16px" matTooltip="Notes"></mat-icon>
+                    <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+                  </a>
+                </div>
+
+              </td>
+            </ng-container>
+
+            <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+            <tr (click)="editInterview(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+              class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+          </mat-paginator>
+        </div>
+      </vex-page-layout-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</vex-page-layout>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+
+<mat-menu #statusMenu="matMenu">
+  <div *ngFor="let item of assignees" fxFlex="none">
+    <button mat-menu-item (click)="filterByAssignee(item)">
+      <span>{{ item.name }}</span>
+    </button>
+  </div>
+</mat-menu>

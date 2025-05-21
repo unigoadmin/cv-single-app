@@ -1,0 +1,223 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Send Applicant for Review</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+<mat-dialog-content fxLayout="column">
+    <form [formGroup]="addForm">
+        <div @fadeInUp class="overflow-auto">
+            <!-- Assign to Section -->
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="100">
+                  <mat-label>Assign to</mat-label>
+                  <input matInput required [formControl]="addForm.get('ReviweAssigneeCtrl')" [matAutocomplete]="auto">
+                  
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let assign of filteredOptions | async" [value]="assign.FullName"
+                                [id]="assign.value" (onSelectionChange)="onSelFunc(assign)">
+                      <span class="body-1">{{ assign.FullName }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+              
+                  <mat-error *ngIf="addForm.get('ReviweAssigneeCtrl').invalid && addForm.get('ReviweAssigneeCtrl').touched">
+                    {{ getAssigneeErrorMessage() }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            <div fxLayout="row" class="mt-2" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field  fxFlex="100" class="flex-auto">
+                    <mat-label>Applicant Notes</mat-label>
+                    <input type="text" formControlName="Notes" [(ngModel)]="currentApplicant.Notes" matInput>
+                </mat-form-field>
+            </div>
+            
+            <div>
+                <cv-skills-autocomplete [existingSkills]="selectedKeywords" (out_selectedSkills)="GetSelectedSkills($event)" [Isrequired]="true"></cv-skills-autocomplete> 
+                <input type="hidden" formControlName="skills" />
+                <mat-error *ngIf="addForm.get('skills').invalid && addForm.get('skills').touched">
+                    Skills are required.
+                </mat-error>
+            </div>
+            
+
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="0">
+                <mat-form-field class="example-chip-list" fxFlex="100">
+                    <mat-label>HashTags</mat-label>
+                    <mat-chip-list multiple id="chipList" [selectable]="true">
+                        <mat-chip *ngFor="let chip of hashtags" [selected]="chip.state"
+                            (click)="chip.state=!chip.state;HashTagschangeSelected('s', chip.HashTagId)">
+                            {{chip.HashTagText}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+            <!-- First and Last Name -->
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px">
+                <mat-form-field fxFlex="50">
+                    <mat-label>First Name</mat-label>
+                    <input formControlName="firstName" matInput required>
+                    <mat-error *ngIf="addForm.get('firstName').invalid && addForm.get('firstName').touched">
+                        First Name is required and must be alphabetic.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50">
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="lastName" matInput required>
+                    <mat-error *ngIf="addForm.get('lastName').invalid && addForm.get('lastName').touched">
+                        Last Name is required and must be alphabetic.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Availability, DOB, SSN -->
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Availability to join the Project</mat-label>
+                    <mat-select name="Availability_To" id="Availability_To" formControlName="AvailabilityToJoin"
+                        [(ngModel)]="currentApplicant.AvailabilityToJoin">
+                        <mat-option value="Immediately">Immediately</mat-option>
+                        <mat-option value="2 Weeks from confirmation">2 Weeks from confirmation</mat-option>
+                        <mat-option value="1 Month from confirmation">1 Month from confirmation</mat-option>
+                        <mat-option value="6 weeks from confirmation">6 weeks from confirmation
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="25">
+                    <mat-label>DOB:(MM/DD)</mat-label>
+                    <input [(ngModel)]="currentApplicant.DOB" [ngModel]="currentApplicant.DOB"
+                    [textMask]="{mask: datemask}" formControlName="DOB" matInput name="DOB">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="25">
+                    <mat-label>Last 4 Digit of SSN</mat-label>
+                    <input [(ngModel)]="currentApplicant.SSN" formControlName="SSN" matInput  name="lname">
+                    <mat-error *ngIf="addForm.get('SSN').invalid && addForm.get('SSN').touched">
+                        Invalid SSN format.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Email and Phone Number -->
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px">
+                <mat-form-field fxFlex="50">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" 
+                    [value]="addForm.get('email').value | lowercase" matInput required>
+                    <mat-error *ngIf="addForm.get('email').invalid && addForm.get('email').touched">
+                        Enter a valid email address.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50">
+                    <mat-label>Phone Number</mat-label>
+                    <input formControlName="phone" [value]="formattedPhone"
+                    matInput required>
+                    <mat-error *ngIf="addForm.get('phone').invalid && addForm.get('phone').touched">
+                        Enter a valid phone number.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto">
+                    <cv-google-place style="display:contents;" (setAddress)="getAssignAddress($event)"
+                        (inputAddress)="inputAssignAddress($event)" selectedAddress="{{currentApplicant.ApplicantLocation}}"
+                        adressType="(cities)" InputMode="Edit">
+                    </cv-google-place>
+                </div>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>LinkedIn</mat-label>
+                    <input [(ngModel)]="currentApplicant.LinkedIn" formControlName="LinkedIn" matInput required name="lname">
+                    <mat-error *ngIf="addForm.get('LinkedIn').invalid && addForm.get('LinkedIn').touched">
+                        Enter a valid LinkedIn URL.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                    <mat-label>Technical Skills Rating</mat-label>
+                    <fieldset class="rate">
+                        <input type="radio" id="Rev_rating10" name="Rev_rating" value="5" [checked]="Techrating==5" (click)="onRatingChange(5)" /><label for="Rev_rating10" title="5 stars"></label>
+                        <input type="radio" id="Rev_rating9" name="Rev_rating" value="4.5" [checked]="Techrating==4.5" (click)="onRatingChange(4.5)" /><label class="half" for="Rev_rating9" title="4 1/2 stars"></label>
+                        <input type="radio" id="Rev_rating8" name="Rev_rating" value="4" [checked]="Techrating==4" (click)="onRatingChange(4)" /><label for="Rev_rating8" title="4 stars"></label>
+                        <input type="radio" id="Rev_rating7" name="Rev_rating" value="3.5" [checked]="Techrating==3.5" (click)="onRatingChange(3.5)" /><label class="half" for="Rev_rating7" title="3 1/2 stars"></label>
+                        <input type="radio" id="Rev_rating6" name="Rev_rating" value="3" [checked]="Techrating==3" (click)="onRatingChange(3)" /><label for="Rev_rating6" title="3 stars"></label>
+                        <input type="radio" id="Rev_rating5" name="Rev_rating" value="2.5" [checked]="Techrating==2.5" (click)="onRatingChange(2.5)" /><label class="half" for="Rev_rating5" title="2 1/2 stars"></label>
+                        <input type="radio" id="Rev_rating4" name="Rev_rating" value="2" [checked]="Techrating==2" (click)="onRatingChange(2)"  /><label for="Rev_rating4" title="2 stars"></label>
+                        <input type="radio" id="Rev_rating3" name="Rev_rating" value="1.5" [checked]="Techrating==1.5" (click)="onRatingChange(1.5)"/><label class="half" for="Rev_rating3" title="1 1/2 stars"></label>
+                        <input type="radio" id="Rev_rating2" name="Rev_rating" value="1" [checked]="Techrating==1" (click)="onRatingChange(1)"/><label for="Rev_rating2" title="1 star"></label>
+                        <input type="radio" id="Rev_rating1" name="Rev_rating" value="0.5" [checked]="Techrating==0.5" (click)="onRatingChange(0.5)" /><label class="half" for="Rev_rating1" title="1/2 star"></label>
+                      </fieldset>
+                     <input hidden [(ngModel)]="currentApplicant.TechnicalSkillRating" formControlName="SkillRating" matInput>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50" floatLabel="always">
+                    <mat-label>Communication Skills Rating</mat-label>
+                    <fieldset class="rate">
+                        <input type="radio" id="Rev_crating10" name="Rev_crating" value="5" [checked]="Commrating==5" (click)="onCommRatingChange(5)" /><label for="Rev_crating10" title="5 stars"></label>
+                        <input type="radio" id="Rev_crating9" name="Rev_crating" value="4.5" [checked]="Commrating==4.5" (click)="onCommRatingChange(4.5)" /><label class="half" for="Rev_crating9" title="4 1/2 stars"></label>
+                        <input type="radio" id="Rev_crating8" name="Rev_crating" value="4" [checked]="Commrating==4" (click)="onCommRatingChange(4)" /><label for="Rev_crating8" title="4 stars"></label>
+                        <input type="radio" id="Rev_crating7" name="Rev_crating" value="3.5" [checked]="Commrating==3.5" (click)="onCommRatingChange(3.5)" /><label class="half" for="Rev_crating7" title="3 1/2 stars"></label>
+                        <input type="radio" id="Rev_crating6" name="Rev_crating" value="3" [checked]="Commrating==3" (click)="onCommRatingChange(3)" /><label for="Rev_crating6" title="3 stars"></label>
+                        <input type="radio" id="Rev_crating5" name="Rev_crating" value="2.5" [checked]="Commrating==2.5" (click)="onCommRatingChange(2.5)" /><label class="half" for="Rev_crating5" title="2 1/2 stars"></label>
+                        <input type="radio" id="Rev_crating4" name="Rev_crating" value="2" [checked]="Commrating==2" (click)="onCommRatingChange(2)"  /><label for="Rev_crating4" title="2 stars"></label>
+                        <input type="radio" id="Rev_crating3" name="Rev_crating" value="1.5" [checked]="Commrating==1.5" (click)="onCommRatingChange(1.5)"/><label class="half" for="Rev_crating3" title="1 1/2 stars"></label>
+                        <input type="radio" id="Rev_crating2" name="Rev_crating" value="1" [checked]="Commrating==1" (click)="onCommRatingChange(1)"/><label for="Rev_crating2" title="1 star"></label>
+                        <input type="radio" id="Rev_crating1" name="Rev_crating" value="0.5" [checked]="Commrating==0.5" (click)="onCommRatingChange(0.5)" /><label class="half" for="Rev_crating1" title="1/2 star"></label>
+                      </fieldset>
+                    <input hidden [(ngModel)]="currentApplicant.CommunicationSkillRating" formControlName="CommRating" matInput> 
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" class="mt-4" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Pay Rate</mat-label>
+                    <input type="number" [(ngModel)]="currentApplicant.PayRate" formControlName="PayRate" matInput
+                     min="0" max="1000" oninput="validity.valid||(value='');">
+                </mat-form-field>
+                <mat-form-field fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-label>Employment Type</mat-label>
+                    <mat-select name="workCategory" required formControlName="workCategory" id="workCategory"
+                        [(ngModel)]="currentApplicant.EmploymentType">
+                        <mat-option [value]="'C2C'">C2C</mat-option>
+                        <mat-option [value]="'W2'">W2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="currentApplicant.EmploymentType==='C2C'">
+                <mat-error *ngIf="addForm.get('subVendorInfo').invalid && addForm.get('subVendorInfo').touched">
+                    Sub Vendor Information is Required.
+                </mat-error>
+                <cv-candidate-sub-vendor *ngIf="currentApplicant.EmploymentType==='C2C'"
+                    [canSubvendorAccount]="cansubVClientAccount" (out_candsubvendor)="GetCandSubVendorData($event)">
+                </cv-candidate-sub-vendor>
+                <input type="hidden" formControlName="subVendorInfo" />
+            </div>
+            
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+    <mat-error *ngIf="showReferencesError">
+        Please fill the references.
+    </mat-error>
+    <cv-job-applicant-references 
+        [IsMandatory]="appReferences_Mandatory" [IsReadonly]="appReferences_Readonly"
+        [reference1]="reference1" 
+        [reference2]="reference2"
+        (out_Reference1)="UpdateReference1($event)" (out_Reference2)="UpdateReference2($event)"
+        (reference1_formValidityChanged)="onReference1FormValidity($event)"
+        (reference2_formValidityChanged)="onReference2FormValidity($event)">
+    </cv-job-applicant-references>
+    
+</mat-dialog-content>
+
+
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+        <button class="mr-2" mat-button type="button" (click)="clearFields()">RESET</button>
+        <button color="primary" mat-raised-button type="submit" (click)="Review()">SEND</button>
+        <!-- <button color="primary" [disabled]="addForm.invalid || !reference1FormValid || !reference2FormValid || AssigneName==null || (!addForm.dirty && !IsPageDirty )" mat-raised-button type="submit" (click)="Review()">SEND</button> -->
+        </div>
+    </div>
+    
+</mat-dialog-footer>

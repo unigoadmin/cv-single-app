@@ -1,0 +1,237 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">HotList</h1>
+                <vex-breadcrumbs [crumbs]="['JobCentral','HotList']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+      <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav class="mat-sidenav-fixed" #activitylog mode="over" hasBackdrop="true" position="end">
+          <div fxLayout="column" *ngIf="selectedHotListId" style="overflow: auto !important;">
+            <div class="p-3 cursor-pointer bg-primary text-primary-contrast" fxFlex="none" style="margin-top:60px">
+              <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">Activity Logs</h2>
+              <span fxFlex></span>
+              <a (click)="OnActiviyLogclose()"
+                class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary-contrast bg-primary-contrast"
+                mat-icon-button>
+                <mat-icon [icIcon]="iconService.icClose" size="18px"></mat-icon>
+              </a>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="MsgList" id="wallmessages" *ngIf="ActivityLogs.length>0">
+              <div class="MsgItem" *ngFor="let logitem of ActivityLogs; let index = index">
+                <div class="MsgIn">
+                  <div class="message-head clearfix">
+                    <div class="user-detail">
+                      <div class="msg-date">{{logitem.CreatedDate}} </div>
+                      <div class="msg-by">by {{logitem.CreatedBy}}</div>
+                      <div class="msg-content" [innerHtml]="logitem.Action"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-sidenav>
+      </mat-sidenav-container>
+        <div class="card overflow-auto -mt-16 mb-10">
+            <div class="bg-app-bar h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="tblMenutitle my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
+                    fxFlex="none" fxHide.xs>
+                </h2>
+                <div class="ml-2 mr-2">
+                    <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+                        style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+                </div>
+                <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs
+                    fxLayout="row" fxLayoutAlign="start center">
+                    <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+                    <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                        placeholder="search by name..." type="search">
+                </div>
+
+                <span fxFlex></span>
+
+                <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                    <mat-icon [icIcon]="iconService.icSearch"></mat-icon>
+                </button>
+               
+                <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+                    matTooltip="Filter Columns" type="button">
+                    <mat-icon [icIcon]="iconService.icFilterList"></mat-icon>
+                </button>
+
+                <button (click)="createHotList()" class="ml-4 mr-2" color="primary" fxFlex="none" mat-mini-fab
+                    matTooltip="Add HotList" type="button">
+                    <mat-icon [icIcon]="iconService.icAdd"></mat-icon>
+                </button>
+
+            </div>
+            <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+                <!-- Text Columns -->
+                <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+                  <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                    <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+                    <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                      <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:40 }}</span>
+                    </td>
+                  </ng-container>
+                </ng-container>
+                
+                <ng-container matColumnDef="MappedJobs">
+                    <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Jobs</th>
+                    <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+                      <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                        <button style="line-height: 30px;" [disabled]="row['MappedJobs']==0"
+                          class="text-primary mt-1 bg-primary-light" mat-stroked-button type="button"
+                          (click)="ViewJobs(row)">{{row['MappedJobs']}}</button>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="StatusName">
+                    <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> status</th>
+                    <td *matCellDef="let row" mat-cell>
+                      <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                        <span *ngIf="row['Status']===3 || row['Status']===4"
+                          class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                          {{row['StatusName']}}
+                        </span>
+                        <span *ngIf="row['Status']===1" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                          Active
+                        </span>
+                        <span *ngIf="row['Status']===1" class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light">
+                          {{row['StatusName']}}
+                        </span>
+                      </div>
+                      
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ActivityLogs">
+                    <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>Activity</th>
+                    <td *matCellDef="let row" mat-cell>
+                      <div  fxLayoutAlign="start center">
+                        <a (click)="$event.stopPropagation();ViewLogs(row)"
+                          class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                          mat-icon-button>
+                          <mat-icon [icIcon]="iconService.icFormattedList" size="16px" matTooltip="Activity Logs"></mat-icon>
+                        </a>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="actions">
+                  <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>ACTIONS</th>
+                  <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+                    <div class="flex">
+                        <span>
+                            <button (click)="$event.stopPropagation();" class="mr-2" [matMenuTriggerData]="{ applicant: row }"
+                              [matMenuTriggerFor]="actionsMenu" color="primary" mat-raised-button type="button">Actions
+                              <ic-icon [icon]="iconService.icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+                            </button>
+                          </span>
+                    </div>
+    
+                  </td>
+                </ng-container>
+    
+                <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+                <tr (click)="editHotList(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+                  class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+              </mat-paginator>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+        class="checkbox-item mat-menu-item">
+        <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+            {{ column.label }}
+        </mat-checkbox>
+    </button>
+</mat-menu>
+
+<mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+    <ng-template let-applicant="applicant" matMenuContent>
+  
+      <button (click)="MapNewJob(applicant)" mat-menu-item>
+        <mat-icon [icIcon]="iconService.icPersonAdd" size="18px" [matTooltip]="'Map New Job'">
+        </mat-icon><span>Map New Job</span>
+      </button>
+  
+      <button (click)="MapExistingJob(applicant)" mat-menu-item>
+        <mat-icon [icIcon]="iconService.icPersonAdd" size="18px" [matTooltip]="'Map Existing Job'">
+        </mat-icon><span>Map Existing Job</span>
+      </button>
+
+        <button [disabled]="applicant['MappedJobs']==0" (click)="ShareJobList(applicant)" mat-menu-item>
+          <mat-icon [icIcon]="iconService.icShare" size="18px" [matTooltip]="'Share HotList'">
+          </mat-icon><span>Share HotList</span>
+        </button>
+     
+    </ng-template>
+  </mat-menu>
+
+<ng-template #hotlistModal>
+    <div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Add HotList</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+            <form [formGroup]="HotlistForm">
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                        <mat-label>HotList Name</mat-label>
+                        <input matInput id="HotListName" formControlName="HotListName" type="text" required
+                            [(ngModel)]="currentHotlist.HotListName">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                        <mat-label>Description</mat-label>
+                        <input matInput id="Description" formControlName="Description" type="text" required
+                            [(ngModel)]="currentHotlist.Description">
+                    </mat-form-field>
+                </div>
+                <!-- <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                        <mat-label>Color Code</mat-label>
+                        <mat-select id="ColorCode" formControlName="ColorCode"  [(ngModel)]="currentStatus.ColorCode"
+                        (selectionChange)="onColorChange($event)">
+                            <mat-option *ngFor="let item of StatusColorCodes" [value]="item.label">
+                                <div [ngClass]="[item.value]" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                                </div>
+                                <span [ngClass]="[item.bgclass]">{{ item.label }}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div> -->
+            </form>
+        </mat-dialog-content>
+        <div>
+            <div fxLayout="row" class="mt-4">
+                <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                    <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                    <button color="primary" [disabled]="IsLoading || !HotlistForm.valid" (click)="SaveHotList()"
+                        mat-button type="submit" matTooltip="Submit">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-template>

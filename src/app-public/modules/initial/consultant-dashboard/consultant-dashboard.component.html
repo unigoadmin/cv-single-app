@@ -1,0 +1,44 @@
+<div class="w-full h-full header ">
+<vex-page-layout>
+
+  <vex-page-layout-content vexContainer>
+    <div @stagger>
+      <div class="py-16 px-gutter">
+        <h1 @fadeInUp class="display-2 mt-0 mb-4 text-center">Welcome to Consultvite</h1>
+        <!-- <h2 @fadeInUp class="subheading-2 text-hint text-center max-w-lg mx-auto m-0">Sample text description.</h2> -->
+      </div>
+    
+      <div class="my-12 container  pl-0 pr-0"
+           fxLayout="row"
+           fxLayout.xs="column"
+           fxLayoutAlign="center center"
+           fxLayoutAlign.xs="start stretch"
+           fxLayoutGap="24px">
+    
+        <div @fadeInUp class="card p-6" fxFlex fxLayout="column" fxLayoutAlign="start center" *ngFor="let module of modules" fxFlex="20">
+          <div class="inline-block p-6 rounded-full text-primary mx-auto flex items-center justify-center bg-primary-light">
+            <ic-icon [icon]="module.icon" size="48px"></ic-icon>
+          </div>
+    
+          <h2 class="headline my-6">{{module.label}}</h2>
+    
+          <!-- <div class="body-1"><span class="body-2">2</span> Users</div>
+          <div class="body-1"><span class="body-2">10</span> Projects</div>
+          <div class="body-1"><span class="body-2">10GB</span> Storage</div>
+          <div class="body-1"><span class="body-2">Basic</span> Support</div>
+    
+          <h3 class="display-2 font-bold my-6">19<span class="text-secondary headline align-top">$</span></h3> -->
+    
+          <a class="rounded-full max-w-full w-200" color="primary"  [attr.href]="module.route" mat-raised-button type="button">GO</a>
+        </div>
+    
+       
+    
+      </div>
+    
+     
+    </div>
+    
+  </vex-page-layout-content>
+</vex-page-layout>
+</div>

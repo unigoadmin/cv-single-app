@@ -1,0 +1,32 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .dialog-header {
+    flex: 0 0 auto;
+    padding: 16px 16px 0 16px;
+  }
+
+  .dialog-content {
+    flex: 1;
+    min-height: 0;
+    padding: 16px !important;
+    margin: 0;
+    overflow: hidden !important;
+  }
+
+  .iframe-container {
+    height: calc(80vh - 130px);
+    width: 100%;
+  }
+
+  iframe {
+    border: none;
+  }
+
+  .dialog-footer {
+    flex: 0 0 auto;
+    padding: 16px;
+  }

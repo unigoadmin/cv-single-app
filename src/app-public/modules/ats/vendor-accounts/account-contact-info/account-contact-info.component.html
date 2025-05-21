@@ -1,0 +1,211 @@
+<div class="mt-1">
+  <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+
+    <div class="mr-2">
+      <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+        style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+    </div>
+    <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+      fxLayoutAlign="start center">
+      <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+      <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+        placeholder="Search..." type="search">
+    </div>
+
+
+    <span fxFlex></span>
+
+    <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+      <mat-icon [icIcon]="icSearch"></mat-icon>
+    </button>
+
+    <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4 mr-4" fxFlex="none" mat-icon-button
+      matTooltip="Filter Columns" type="button">
+      <mat-icon [icIcon]="icFilterList"></mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="space-between">
+    <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+      <!-- Text Columns -->
+      <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{
+            column.label }}
+          </th>
+          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+            <span [matTooltip]="row[column.property]">{{row[column.property]|shorten:20}}</span>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="FirstName">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> First Name</th>
+        <td *matCellDef="let user"  mat-cell (click)="$event.stopPropagation()">
+          <ng-container *ngIf="!editContact.ContactId || !user.ContactId || user.ContactId!==editContact.ContactId">
+            <p class="text-truncate">{{user.FirstName || 'N/A'}} </p>
+          </ng-container>
+          <ng-container *ngIf="editContact.ContactId && user.ContactId && user.ContactId===editContact.ContactId">
+            <mat-form-field>
+              <input required matInput placeholder="FirstName" [disabled]="editdisabled" name="FirstName"
+                [(ngModel)]="user.FirstName" (change)="inputHandler($event, user.ContactId, 'FirstName')">
+            </mat-form-field>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="LastName">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Last Name</th>
+        <td *matCellDef="let user"  mat-cell (click)="$event.stopPropagation()">
+          <ng-container *ngIf="!editContact.ContactId || !user.ContactId || user.ContactId!==editContact.ContactId">
+            <p class="text-truncate">{{user.LastName || 'N/A'}} </p>
+          </ng-container>
+          <ng-container *ngIf="editContact.ContactId && user.ContactId && user.ContactId===editContact.ContactId">
+            <mat-form-field>
+              <input required matInput placeholder="LastName" [disabled]="editdisabled" name="LastName"
+                [(ngModel)]="user.LastName" (change)="inputHandler($event, user.ContactId, 'LastName')">
+            </mat-form-field>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Email">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> EMAIL</th>
+        <td *matCellDef="let user"  mat-cell (click)="$event.stopPropagation()">
+          <ng-container *ngIf="!editContact.ContactId || !user.ContactId || user.ContactId!==editContact.ContactId">
+            <p class="text-truncate">{{user.Email || 'N/A'}} </p>
+          </ng-container>
+          <ng-container *ngIf="editContact.ContactId && user.ContactId && user.ContactId===editContact.ContactId">
+            <mat-form-field>
+              <input required matInput placeholder="Email" [disabled]="editdisabled" name="Email" [(ngModel)]="user.Email"
+              (change)="inputHandler($event, user.ContactId, 'Email')" type="email" pattern=".+@.+">
+            </mat-form-field>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Phonenumber">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Phone</th>
+        <td *matCellDef="let user" mat-cell (click)="$event.stopPropagation()">
+          <ng-container *ngIf="!editContact.ContactId || !user.ContactId || user.ContactId!==editContact.ContactId">
+            <p class="text-truncate">{{user.Phonenumber || 'N/A'}} </p>
+          </ng-container>
+          <ng-container *ngIf="editContact.ContactId && user.ContactId && user.ContactId===editContact.ContactId">
+            <mat-form-field>
+              <input required matInput placeholder="Phonenumber" [disabled]="editdisabled" name="Email"
+                [(ngModel)]="user.Phonenumber" (change)="inputHandler($event, user.ContactId, 'Phonenumber')">
+            </mat-form-field>
+          </ng-container>
+        </td>
+      </ng-container> -->
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>ACTIONS</th>
+        <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+          <div class="flex">
+            <ng-container >
+              <a (click)="$event.stopPropagation();EditContact(row)"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icEdit" size="16px" matTooltip="Edit"></mat-icon>
+              </a>
+            </ng-container>
+            <!-- <ng-container *ngIf="editContact.ContactId && row.ContactId && row.ContactId===editContact.ContactId">
+              <a (click)="$event.stopPropagation();updateEdit(row.ContactId)" [disabled]="editdisabled"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icSave" size="16px" matTooltip="Update"></mat-icon>
+              </a>
+              <a (click)="$event.stopPropagation();cancelEdit()" [disabled]="editdisabled"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icCancel" size="16px" matTooltip="Cancel"></mat-icon>
+              </a>
+            </ng-container> -->
+          </div>
+
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp class="hover:bg-hover trans-ease-out cursor-pointer"
+        mat-row></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+    </mat-paginator>
+  </div>
+</div>
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item">
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>
+
+
+<ng-template #editaccountContact>
+  <div>
+      <div fxLayout="row" fxLayoutAlign="start center"
+          class="bg-app-bar px-6 h-16 border-b sticky left-0">
+          <div>
+              <h2 class="title my-0 leading-snug text-secondary textcgs">Edit Contact</h2>
+          </div>
+          <div fxFlex="auto">
+          </div>
+          <button class="text-secondary" mat-icon-button type="button" (click)="CloseEditContact()">
+              <mat-icon [icIcon]="icClose"></mat-icon>
+          </button>
+      </div>
+      <mat-dialog-content class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <form [formGroup]="editContactform">
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+              <div fxFlex="100%" fxLayout="row">
+                  <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                      <mat-label>First Name</mat-label>
+                      <input formControlName="FirstName" [(ngModel)]="eFirstName" matInput required>
+                  </mat-form-field>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="LastName" [(ngModel)]="eLastName" matInput required>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <div fxFlex="100%" fxLayout="row">
+              <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                  <mat-label>Email</mat-label>
+                  <input formControlName="Email" [(ngModel)]="eEmail" matInput required>
+              </mat-form-field>
+          </div>
+      </div>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+        <div fxFlex="100%" fxLayout="row">
+            <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                <mat-label>Phone</mat-label>
+                <input formControlName="Phonenumber" [(ngModel)]="ePhonenumber" matInput
+                (keypress)="onInputKeyPress($event)" (change)="onPhoneNumberChange()" required name="phone">
+            </mat-form-field>
+        </div>
+    </div>
+  
+          </form>
+      </mat-dialog-content>
+      <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" (click)="CloseEditContact()" class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" [disabled]="!editContactform.valid" (click)="UpdateContact()" mat-button type="submit"
+                      matTooltip="Submit">SUBMIT</button>
+              </div>
+          </div>
+      </div>
+  
+  </div>
+</ng-template>

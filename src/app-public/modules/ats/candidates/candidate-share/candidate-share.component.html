@@ -1,0 +1,59 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Share Candidate</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row">
+        <div class="border-l border-r border-b" fxFlex="auto">
+            <div class="px-6" fxLayout="column" style="width: 100%;">
+                <form [formGroup]="RecepientsFormGroup">
+                    <div class="mt-4">
+                        <cv-internal-users-chips [existingAssigness]="existingAssigness" [module]="currentModule" [ctrlName]="'Select Recruiter'" (out_selectedAssigness)="GetSelectedAssignees($event)"></cv-internal-users-chips>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="5px">
+                        <mat-form-field fxFlex="100" appearance="outline">
+                            <mat-label>Email Recepients</mat-label>
+                            <textarea formControlName="EmailRecp" matInput
+                                [(ngModel)]="customrecepients"></textarea>
+                            <mat-hint>
+                                Enter email addresses separated by a Comma or Line break.
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="5px">
+                        <mat-form-field fxFlex="100" appearance="outline">
+                            <mat-label>Notes</mat-label>
+                            <textarea formControlName="EmailNotes" matInput
+                                [(ngModel)]="EmailNotes"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <cv-skills-autocomplete [existingSkills]="SelectedKwywods" (out_selectedSkills)="GetSelectedSkills($event)"></cv-skills-autocomplete> 
+
+                    <cv-hashtags-chips [existingTags]="dbHashTags"
+                    (out_selectedHashTaga)="GetSelectedHashTags($event)">
+                    </cv-hashtags-chips>   
+                    
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-footer>
+    <div fxLayout="row" class="mt-4" fxLayoutAlign="end center">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+            <button mat-button mat-dialog-close type="button">CANCEL</button>
+            <button  color="primary" mat-raised-button type="submit"
+                (click)="ShareCandidaes()">SHARE</button>
+        </div>
+    </div>
+
+</mat-dialog-footer>

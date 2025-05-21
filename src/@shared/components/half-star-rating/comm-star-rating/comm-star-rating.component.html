@@ -1,0 +1,12 @@
+<fieldset class="rate" *ngIf="RatingType=='COMM'">
+    <input type="radio" id="crating10" name="crating" value="5" [checked]="Commrating==5" (click)="onCommRatingChange(5)" /><label for="crating10" title="5 stars"></label>
+    <input type="radio" id="crating9" name="crating" value="4.5" [checked]="Commrating==4.5" (click)="onCommRatingChange(4.5)" /><label class="half" for="crating9" title="4 1/2 stars"></label>
+    <input type="radio" id="crating8" name="crating" value="4" [checked]="Commrating==4" (click)="onCommRatingChange(4)" /><label for="crating8" title="4 stars"></label>
+    <input type="radio" id="crating7" name="crating" value="3.5" [checked]="Commrating==3.5" (click)="onCommRatingChange(3.5)" /><label class="half" for="crating7" title="3 1/2 stars"></label>
+    <input type="radio" id="crating6" name="crating" value="3" [checked]="Commrating==3" (click)="onCommRatingChange(3)" /><label for="crating6" title="3 stars"></label>
+    <input type="radio" id="crating5" name="crating" value="2.5" [checked]="Commrating==2.5" (click)="onCommRatingChange(2.5)" /><label class="half" for="crating5" title="2 1/2 stars"></label>
+    <input type="radio" id="crating4" name="crating" value="2" [checked]="Commrating==2" (click)="onCommRatingChange(2)"  /><label for="crating4" title="2 stars"></label>
+    <input type="radio" id="crating3" name="crating" value="1.5" [checked]="Commrating==1.5" (click)="onCommRatingChange(1.5)"/><label class="half" for="crating3" title="1 1/2 stars"></label>
+    <input type="radio" id="crating2" name="crating" value="1" [checked]="Commrating==1" (click)="onCommRatingChange(1)"/><label for="crating2" title="1 star"></label>
+    <input type="radio" id="crating1" name="crating" value="0.5" [checked]="Commrating==0.5" (click)="onCommRatingChange(0.5)" /><label class="half" for="crating1" title="1/2 star"></label>
+  </fieldset>

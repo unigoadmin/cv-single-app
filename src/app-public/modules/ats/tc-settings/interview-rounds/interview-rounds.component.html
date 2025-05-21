@@ -1,0 +1,115 @@
+<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+    
+    <div class="mr-2">
+      <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+        style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+    </div>
+    <div class="bg-card rounded-full border px-4 searchCtrl" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+      fxLayoutAlign="start center">
+      <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+      <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+        placeholder="Search..." type="search">
+    </div>
+  
+    <span fxFlex></span>
+    <button class="ml-8" (click)="AddNewStatus()" color="primary" fxFlex="none" mat-mini-fab
+      matTooltip="Add Interview Round" type="button">
+      <mat-icon [icIcon]="iconService.icAdd"></mat-icon>
+    </button>
+  
+  </div>
+  <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+  
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+      <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+      </ng-container>
+    </ng-container>
+    <ng-container matColumnDef="ColorCode">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Color Code</th>
+      <td *matCellDef="let row" [ngClass]="[row.bgClass]" class="w-10 text-secondary" mat-cell>
+        {{ row.ColorCode }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="CreatedDate">
+      <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Created Date</th>
+      <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+        {{ row.CreatedDate|date:'MM/dd/yyyy' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell class="uppercase th-text-bold">Actions</th>
+      <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+        <div class="flex">
+          <a *ngIf="row.CompanyId > 0" (click)="$event.stopPropagation();EditStatus(row);"
+            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+            mat-icon-button>
+            <mat-icon [icIcon]="iconService.icEdit" size="16px" matTooltip="Edit Status"></mat-icon>
+          </a>
+          <a *ngIf="row.CompanyId > 0" (click)="$event.stopPropagation();DeleteSubmissionStatus(row);"
+            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-warn bg-primary-light"
+            mat-icon-button>
+            <mat-icon [icIcon]="iconService.icDelete" size="16px" matTooltip="Delete Status"></mat-icon>
+          </a>
+        </div>
+  
+      </td>
+    </ng-container>
+  
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: visibleColumns;" @fadeInUp class="hover:bg-hover trans-ease-out cursor-pointer"
+      mat-row></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+
+  <ng-template #interviewroundModal>
+    <div>
+        <div  fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Interview Round</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+            <form [formGroup]="InterviewRoundForm">
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                        <mat-label>Interview Round Name</mat-label>
+                        <input matInput id="InterviewRoundName" formControlName="InterviewRoundName" type="text" required
+                            [(ngModel)]="currentStatus.InterviewRoundName">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                        <mat-label>Color Code</mat-label>
+                        <mat-select id="ColorCode" formControlName="ColorCode"  [(ngModel)]="currentStatus.ColorCode"
+                        (selectionChange)="onColorChange($event)">
+                            <mat-option *ngFor="let item of StatusColorCodes" [value]="item.label">
+                                <div [ngClass]="[item.value]" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                                </div>
+                                <span [ngClass]="[item.bgclass]">{{ item.label }}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </form>
+        </mat-dialog-content>
+        <div>
+            <div fxLayout="row" class="mt-4">
+                <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                    <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                    <button color="primary" [disabled]="IsSubLoading || !InterviewRoundForm.valid" (click)="SaveInterviewRound()"
+                        mat-button type="submit" matTooltip="Submit">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</ng-template>

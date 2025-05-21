@@ -1,0 +1,141 @@
+<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+    <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+        Existing Active Jobs
+    </h2>
+    <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+        fxLayoutAlign="start center">
+        <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+        <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..." type="search">
+    </div>
+
+    <span fxFlex></span>
+
+    <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icSearch"></mat-icon>
+    </button>
+
+    <!-- <button class="mr-2" color="primary" mat-raised-button type="button" (click)="submitMappings()"
+        [disabled]="!toggledMappings.length">Save
+    </button> -->
+
+    <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+        matTooltip="Filter Columns" type="button">
+        <mat-icon [icIcon]="iconService.icFilterList"></mat-icon>
+    </button>
+
+    <button class="text-secondary" mat-icon-button type="button" (click)="OnClose()">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+
+</div>
+
+<table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+            <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+        </td>
+    </ng-container>
+
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+            </th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                <span matTooltip="{{row[column.property]}}">{{ row[column.property] | shorten:25 }}</span>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <!--Location--bg-primary-light-->
+    <ng-container matColumnDef="Location">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Location</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+            <span *ngIf="row.Location!=null && row.Location!=''"
+                class="rounded-full text-secondary font-medium locationbtn">
+                <ic-icon [icon]="iconService.iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2" inline="true"
+                    size="14px"></ic-icon>
+                <span>{{row['Location']}}</span>
+            </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MappedApplicants">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Applicants</th>
+        <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell (click)="$event.stopPropagation()">
+          <div (click)="$event.stopPropagation()" fxLayoutAlign="center center" fxLayoutGap="4px">
+           <span >{{row['MappedApplicants']}}</span> 
+          </div>
+        </td>
+      </ng-container>
+
+    <ng-container matColumnDef="JobCategoryName">
+        <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>CATEGORY</th>
+        <td *matCellDef="let row" mat-cell>
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                <span class="rounded-full text-secondary font-medium text-xs categorybtn">
+                    <span>{{row['JobCategoryName']}}</span>
+                </span>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Notes">
+        <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Notes</th>
+        <td *matCellDef="let row" mat-cell >
+            <div class="flex">
+                <a (click)="$event.stopPropagation();ViewNotes(row);"
+                    class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                    mat-icon-button>
+                    <mat-icon [icIcon]="iconService.icComment" size="18px" matTooltip="Applicant Notes">
+                    </mat-icon>
+                    <span *ngIf="row['NotesCount']>0" class="box-text">{{row['NotesCount']}}</span>
+                </a>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="PublishedJobUrl">
+        <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>JobLink</th>
+        <td *matCellDef="let row" mat-cell>
+            <div class="flex">
+                <a *ngIf="row['PublishedJobUrl']!=null && row['PublishedJobUrl']!=''" (click)="$event.stopPropagation()" target="_blank"
+                    href="{{row['PublishedJobUrl']}}" class="ml-1 hover:bg-hover text-primary bg-primary-light underline">
+                    Public Link
+                </a>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Mapping Status</th>
+        <td *matCellDef="let row" mat-cell class="w-6 ml-4">
+            <div class="flex">
+                <span>
+                    <mat-slide-toggle (click)="$event.stopPropagation()" (change)="emitToggleStatus($event,row)"
+                        [checked]="row['IsJobMappedToReq']" color="primary" [disabled]="DisplayOnlyMappingJobs" ></mat-slide-toggle>
+                </span>
+            </div>
+        </td>
+    </ng-container>
+
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr (click)="updateJob(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp class="hover:bg-hover trans-ease-out cursor-pointer"
+        mat-row></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+</mat-paginator>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+        class="checkbox-item mat-menu-item">
+        <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+            {{ column.label }}
+        </mat-checkbox>
+    </button>
+</mat-menu>

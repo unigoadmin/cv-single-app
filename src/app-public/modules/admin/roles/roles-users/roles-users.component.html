@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <h2 class="headline m-0" fxFlex="auto">({{role.RoleName}}) Users</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column">
+  <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    
+    <div @fadeInUp class="card" fxFlex="auto">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="0px" fxLayoutGap.lt-sm="0">
+        <mat-form-field fxFlex="auto">
+          <mat-label>User Name</mat-label>
+
+          <input [formControl]="myControl" type="text" placeholder="Select User" aria-label="User Name"
+                 matInput [matAutocomplete]="auto" [(ngModel)]="selectedUser">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.FullName}}
+            </mat-option>
+          </mat-autocomplete>
+
+        </mat-form-field>
+        <button  
+            class="text-secondary uppercase font-medium bg-primary text-primary-contrast rounded-none ltr:rounded-br rtl:rounded-bl"
+            mat-button style="height:52px;" type="button" (click)="addUser()">
+            <ic-icon [icIcon]="icPerson_Add"  [inline]="true" class="mr-1" size="15px"></ic-icon>
+            <span>ADD</span>
+        </button>
+    </div>
+    
+      <div class="px-6 py-4" fxLayout="column">
+        <table class="table w-full">
+          <thead>
+            <tr class="border-b">
+              <td class="body-2 text-secondary" fxFlex="30">FIRST NAME</td>
+              <td class="body-2 text-secondary" fxFlex="30">LAST NAME</td>
+              <td class="body-2 text-secondary" fxFlex="30">E-MAIL</td>
+              <td fxFlex="10">Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of role.Users;">
+              <td class="py-3 border-b " fxFlex="30">
+                {{user.FirstName}}
+              </td>
+              <td class="py-3 border-b" fxFlex="30">
+                {{user.LastName}}
+              </td>
+              <td class="py-3 border-b" fxFlex="30">
+                {{user.Email}}
+              </td>
+              <td class="py-3 border-b" fxFlex="10">
+            
+              <a (click)="removeUser(user)" [disabled]="user.UserType == 1 || user.UserType == 2"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                mat-icon-button>
+                <mat-icon [icIcon]="icDelete" size="18px"></mat-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+     
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">CANCEL</button>
+  <button color="primary" mat-button type="button" (click)="saveUsers()">SAVE CHANGES</button>
+</mat-dialog-actions>

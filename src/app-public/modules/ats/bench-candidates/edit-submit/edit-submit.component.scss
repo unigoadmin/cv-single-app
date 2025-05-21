@@ -1,0 +1,71 @@
+mat-button-toggle {
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: 4px;
+    margin-left: 0px;
+    margin-right:0px;
+    font-size: 14px;
+    font-style: bold;
+}
+
+.mat-button-toggle-disabled {
+    border: 1px solid #c5c0c7;
+    background-color: #e1dde5;
+}
+
+
+
+.mat-button-toggle-checked {
+    border: 1px solid rgba(var(--color-primary), 1);
+    background-color: rgba(var(--color-primary), 1);
+    color: white;
+ }
+
+
+
+ ::ng-deep{
+    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+        line-height: 25px;
+    }
+ }
+
+ .docsbox{
+    border-radius: 4px;
+    margin: 24px 0;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: 10px 10px 0px 10px;
+ }
+
+ 
+
+ ::ng-deep cv-edit-submit mat-dialog-content {
+    background: var(--background-base);
+}
+
+::ng-deep .full-view .mat-form-field{
+    display: block !important;
+    margin-right: 6px !important;
+}
+
+.child-1,.child-2,.child-3,.child-4{
+    padding:15px;
+  }
+  #middlebuttons1{
+    padding-left:10px;
+    border-left:1px solid  #e5e5e5;
+  }
+
+  .certtags {
+    background-color: rgba(var(--color-primary), .1);
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-right: 2px;
+  }
+
+  .editstatusicon{
+    position: absolute;
+    margin-top: 6px;
+  }
+
+ 

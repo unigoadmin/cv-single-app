@@ -1,0 +1,68 @@
+<div *ngIf="IsHeaderVisible" fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <div>
+        <h2 class="title my-0 leading-snug text-secondary textcgs">Requisition Notes</h2>
+    </div>
+    <div fxFlex="auto">
+    </div>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+    </button>
+</div>
+<div *ngIf="IsFileLoading" id="progressBar"><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+<mat-dialog-content fxLayout="column">
+    <div fxLayout="column" fxLayout.gt-sm="row" style="min-height: 500px;max-height:500px; overflow: auto;">
+        <div class="border-l border-r" fxFlex="auto">
+            <div class="MsgList" id="wallmessages" class="ltr:ml-10 rtl:mr-10 mt-2">
+                <div class="MsgItem" *ngFor="let comment of NotesList" class="mt-4">
+                    <div class="MsgIn" fxLayout="row" fxLayoutAlign="start center">
+                        <img src="assets/img/profile.png" class="avatar h-8 w-8 ltr:mr-3 rtl:ml-3">
+                        <div>
+                            <div class="msg-by text-secondary">by {{comment.CreatedByName}}</div>
+                            <div class="msg-date">{{comment.CreatedDate}} </div>
+                        </div>
+                    </div>
+    
+                    <div class="msg-content" [innerHtml]="comment.Comment"></div>
+                    <span *ngIf="comment.IsFile==true">
+                        <div class="flex">
+                            <a (click)="ViewAttachment(comment);"
+                                class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center bg-hover cursor-pointer relative"
+                                matRipple>
+                                <ic-icon [icon]="icPictureAsPdf" class="flex-none text-primary" size="18px"></ic-icon>
+                                <p class="flex-auto ml-4 text-sm">{{comment.FileName}}</p>
+                            </a>
+                          </div>
+                    </span>
+                    
+                </div>
+                <input id="attachR" type="file" (change)="onFileSelected($event)" style="display:none;" #fileUpload />
+                <div class="mt-6" fxLayout="row" fxLayoutAlign="start center">
+                    <img class="avatar w-8 h-8 ltr:mr-3 rtl:ml-3" fxFlex="none" src="assets/img/profile.png">
+                    <mat-form-field appearance="outline" class="vex-dense-form-field vex-flex-form-field" fxFlex="auto">
+                        <input id="incomment" [formControl]="commentCtrl" matInput placeholder="Write a comment ..."
+                            (keyup.enter)="addComment()">
+                        <div *ngIf="isFileUploaded==true" style="width: 50% !important;"
+                            class="vex-mail-compose-attachment mt-4 mb-2 rounded-full border px-4 py-1 flex items-center bg-hover transition duration-200 ease-in-out cursor-pointer relative"
+                            matRipple>
+                            <ic-icon [icon]="iconService.icPictureAsPdf" class="flex-none text-primary" size="18px"></ic-icon>
+                            <p class="flex-auto ml-4 text-sm">{{fileUploadResponse.FileName}}</p>
+                            <button (click)="$event?.stopPropagation();ViewAttachedFile()" class="flex-none w-8 h-8 leading-none text-primary bg-primary-light"
+                                mat-icon-button type="button">
+                                <mat-icon [icIcon]="iconService.icEye" size="18px" matTooltip="View Attachment"></mat-icon>
+                            </button>
+                            <button (click)="$event?.stopPropagation();deleteFile()" class="flex-none w-8 h-8 leading-none text-primary bg-primary-light"
+                                mat-icon-button type="button">
+                                <mat-icon [icIcon]="iconService.icClose" size="18px" matTooltip="Delete Attachment"></mat-icon>
+                            </button>
+                        </div>
+                        <button (click)="addComment()" class="-top-1" color="primary" mat-button matSuffix
+                            type="button">SUBMIT</button>
+                        <button *ngIf="isFileUploaded==false" (click)="fileUpload.click()" class="-top-1" color="primary"
+                            mat-button matSuffix type="button"><mat-icon
+                                style="display: inline;">attach_file</mat-icon></button>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,35 @@
+  <vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Settings</h1>
+                <vex-breadcrumbs [matIcon]="icSettings" [crumbs]="['JobCentral','Settings']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+        <div class="card overflow-auto -mt-16">
+                  <div class="card">
+                    <mat-tab-group [selectedIndex]="index">
+                      <mat-tab label="Notifications">
+                        <div class="p-3">
+                          <cv-notification-settings></cv-notification-settings>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Applicant Status">
+                        <div class="p-3">
+                          <cv-applicant-status></cv-applicant-status>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="Form Settings">
+                        <div class="p-3">
+                          <cv-jobcentral-form-settings></cv-jobcentral-form-settings>
+                        </div>
+                      </mat-tab>
+                      
+                    </mat-tab-group>
+                  </div>
+                </div>
+    </vex-page-layout-content>
+</vex-page-layout>  
+

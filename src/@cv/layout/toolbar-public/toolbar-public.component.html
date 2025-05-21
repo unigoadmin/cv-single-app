@@ -1,0 +1,67 @@
+<div class="toolbar w-full px-gutter" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+  <a *ngIf="isVerticalLayout$ | async"
+     [routerLink]="['/']"
+     class="ltr:mr-4 rtl:ml-4 block"
+     fxLayout="row"
+     fxLayoutAlign="start center"
+     [fxHide]="mobileQuery"
+     style="position: absolute;left: 40%;">
+    <img class="w-50 select-none" src="assets/img/demo/consultvite_logo.png">
+    <!-- <h1 [fxHide]="mobileQuery" class="title ltr:pl-4 rtl:pr-4 m-0 select-none">CONSULTVITE</h1> -->
+  </a>
+
+  
+
+  <div *ngIf="(isVerticalLayout$ | async) && isNavbarInToolbar$ | async"
+      
+       class="px-gutter"
+       fxFlex="none"
+       fxLayout="row"
+       fxLayoutAlign="start center">
+    <vex-navigation-item *ngFor="let item of navigationItems" [item]="item"></vex-navigation-item>
+  </div>
+
+<!-- <div #megaMenuOriginRef class="ltr:ml-2 rtl:mr-2">
+  <button  mat-button type="button" color="primary">
+    HOME
+  </button>
+</div>
+
+<div #megaMenuOriginRef class="ltr:ml-2 rtl:mr-2">
+  <button  mat-button type="button" color="primary">
+    CONTACT
+  </button>
+</div> -->
+  <span fxFlex></span>
+
+  <div class="-mx-1 flex items-center">
+    <!-- <div class="px-1">
+      <button (click)="openSearch()" mat-icon-button type="button">
+        <mat-icon [icIcon]="icSearch"></mat-icon>
+      </button>
+    </div> -->
+
+    <div class="px-1">
+      <!-- <vex-toolbar-notifications></vex-toolbar-notifications> -->
+    </div>
+
+    <div class="px-1">
+     <button class="rounded-full" (click)="login()" color="primary" fxFlex="none" mat-raised-button type="button">LOGIN</button>
+    </div>
+
+    <!-- <div class="px-1">
+      <button [matMenuTriggerFor]="languageMenu" mat-icon-button type="button">
+        <mat-icon [icIcon]="emojioneUS"></mat-icon>
+      </button>
+    </div> -->
+
+    <div class="px-1">
+      <!-- <vex-toolbar-user></vex-toolbar-user> -->
+    </div>
+
+   
+  </div>
+</div>
+
+<vex-navigation *ngIf="(isVerticalLayout$ | async) && isNavbarBelowToolbar$ | async"
+                [fxHide]="mobileQuery"></vex-navigation>

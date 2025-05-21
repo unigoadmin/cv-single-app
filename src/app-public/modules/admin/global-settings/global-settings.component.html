@@ -1,0 +1,67 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Admin</h1>
+                <vex-breadcrumbs  [crumbs]="['Admin','Global Settings']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+        <div class="card overflow-auto -mt-16">
+
+          <div class="card">
+            <mat-tab-group [selectedIndex]="index" (selectedTabChange)="onTabChanged($event)">
+              <mat-tab label="Prefixes">
+                <div class="p-3">
+                  <cv-settings-prefix *ngIf="isPrefix===true"></cv-settings-prefix>
+                </div>
+              </mat-tab>
+              <mat-tab label="ResumeSource">
+                <div class="p-3">
+                  <cv-resume-source *ngIf="isResumeSource===true"></cv-resume-source>
+                </div>
+              </mat-tab>
+              <mat-tab label="Keywords">
+                <div class="p-3">
+                  <cv-key-words *ngIf="isKeywords===true"></cv-key-words>
+                </div>
+              </mat-tab>
+              <mat-tab label="HashTags">
+                <div class="p-3">
+                  <cv-hash-tags *ngIf="isHashTags===true"></cv-hash-tags>
+                </div>
+              </mat-tab>
+              <mat-tab label="Candidate Status">
+                <div class="p-3">
+                  <cv-candidate-status *ngIf="isCandidateStatus===true"></cv-candidate-status>
+                </div>
+              </mat-tab>
+              <mat-tab label="CustomMessages">
+                <div class="p-3">
+                  <cv-custom-messages *ngIf="isCustomMessage===true"></cv-custom-messages>
+                </div>
+              </mat-tab>
+              <mat-tab label="Session Settings">
+                <div class="p-3">
+                  <cv-session-settings *ngIf="isSessionSettings===true"></cv-session-settings>
+                </div>
+              </mat-tab>
+              <mat-tab label="WorkPermits">
+                <div class="p-3">
+                  <cv-work-permits *ngIf="isWorkPermitSettings===true"></cv-work-permits>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        
+        </div>
+    </vex-page-layout-content>
+    
+  
+  
+    
+  
+  
+  
+  

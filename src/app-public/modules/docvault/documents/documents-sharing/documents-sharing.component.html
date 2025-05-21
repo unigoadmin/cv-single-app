@@ -1,0 +1,87 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <h2 class="headline m-0" fxFlex="auto">Document Sharing</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column">
+  <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" style="min-height: 450px;">
+
+    <div @fadeInUp  fxFlex="auto">
+      <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="0px" fxLayoutGap.lt-sm="0">
+        <mat-form-field fxFlex="auto" *ngIf="UserRole=='employer'">
+          <mat-label>Share to</mat-label>
+          <mat-select [(ngModel)]="CurrentSharing.ShareType" (selectionChange)="onSelectedChange($event)">
+            <!-- <mat-option [value]="0">ALL</mat-option> -->
+            <mat-option [value]="1">All Internal Users</mat-option>
+            <mat-option [value]="2">All Consultant Users</mat-option>
+            <mat-option [value]="3">Specific User</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="0px" fxLayoutGap.lt-sm="0"
+          *ngIf="CurrentSharing.ShareType==3 || UserRole=='candidate'">
+          <mat-form-field fxFlex="auto">
+            <mat-label>User Name</mat-label>
+            <input type="text" placeholder="Select User" aria-label="User Name" matInput [matAutocomplete]="auto"
+              [(ngModel)]="selectedUser" [formControl]="myControl">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option.UserName}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button
+            class="text-secondary uppercase font-medium bg-primary text-primary-contrast rounded-none ltr:rounded-br rtl:rounded-bl"
+            mat-button style="height:52px;" type="button" (click)="addUser()">
+            <ic-icon [icIcon]="icPerson_Add" [inline]="true" class="mr-1" size="15px"></ic-icon>
+            <span>ADD</span>
+          </button>
+        </div>
+      </div>
+      <div class="px-6 py-4" fxLayout="column">
+        <table class="table w-full">
+          <thead>
+            <tr class="border-b">
+              <td class="body-2 text-secondary" fxFlex="60">USER NAME</td>
+              <td class="body-2 text-secondary" fxFlex="30">USER TYPE</td>
+              <td fxFlex="10">Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of sharedUsers;">
+              <td class="py-3 border-b " fxFlex="60">
+                {{user.OnlyUserName}}
+              </td>
+              <td class="py-3 border-b " fxFlex="30" >
+                <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                  <div  *ngIf="user.UserType==3"
+                  class="rounded px-2 py-1 font-medium text-xs text-cyan bg-cyan-light"
+                  fxFlex="none">
+                  Internal 
+                  </div>
+                  <div  *ngIf="user.UserType==2"
+                    class="rounded px-2 py-1 font-medium text-xs text-amber bg-amber-light"
+                    fxFlex="none">
+                    Consultant
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 border-b" fxFlex="10">
+                <a (click)="removeUser(user)"
+                  class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                  mat-icon-button>
+                  <mat-icon [icIcon]="icDelete" size="18px"></mat-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">CANCEL</button>
+  <button color="primary" mat-button type="button" (click)="shareDocument()">SAVE CHANGES</button>
+</mat-dialog-actions>

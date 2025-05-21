@@ -1,0 +1,81 @@
+<div fxLayout="row">
+    <div fxFlex="100" fxFlex.gt-xs="100">
+        <mat-card>
+            <mat-card-title>
+                <div class="card-title-text pb-1 pt-1" fxLayoutGap="10">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="flex-auto pr-1"
+                            style="margin-top: -12px !important;font-size: 16px !important;">
+                            <span>Sub Vendor</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="candidateSubVendorFormGroup">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <!-- <mat-form-field  fxFlex="100" fxFlex.gt-xs="50"
+                            class="vex-flex-form-field flex-auto">
+                            <mat-label>Company Name</mat-label>
+                            <input required [formControl]="CandSubVendorControl" formControlName="CompanyName" [matAutocomplete]="auto"
+                                [(ngModel)]="cansubVClientAccount.AccountName" matInput (change)="onCompanyNameChange($event)">
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="SeelectedAccount($event,'subvendor')">
+                                <mat-option *ngFor="let client of CandSubVendorOptions | async"
+                                    [value]="client.AccountName" [id]="client.AccountID">
+                                    <span class="body-1">{{ client.AccountName }}</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field> -->
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="50" class="vex-flex-form-field flex-auto"
+                            [class.mat-form-field-invalid]="candidateSubVendorFormGroup.get('CompanyName').invalid && (candidateSubVendorFormGroup.get('CompanyName').touched || candidateSubVendorFormGroup.get('CompanyName').dirty)">
+                            <mat-label>Company Name</mat-label>
+                            <input matInput formControlName="CompanyName" [matAutocomplete]="auto"
+                                (change)="onCompanyNameChange($event)" required>
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="SeelectedAccount($event, 'subvendor')">
+                                <mat-option *ngFor="let client of CandSubVendorOptions | async"
+                                    [value]="client.AccountName" [id]="client.AccountID">
+                                    <span class="body-1">{{ client.AccountName }}</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error
+                                *ngIf="candidateSubVendorFormGroup.get('CompanyName').hasError('required') && (candidateSubVendorFormGroup.get('CompanyName').touched || candidateSubVendorFormGroup.get('CompanyName').dirty)">
+                                Company Name is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                            <mat-label>POC First Name</mat-label>
+                            <input required formControlName="fcsubName" matInput name="pvfname">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                            <mat-label>POC Last Name</mat-label>
+                            <input required formControlName="lcsubName" matInput name="pvlname">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                            <mat-label>POC Email</mat-label>
+                            <input required formControlName="csubEmail" matInput name="pvemail">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.gt-xs="25" class="flex-auto">
+                            <mat-label>POC Phone</mat-label>
+                            <input required formControlName="csubPhone" matInput name="pvphone">
+                        </mat-form-field>
+                        <section style="padding: 20px 0px;clear: both;" fxFlex="20" fxFlex.gt-xs="25">
+                            <mat-checkbox id="checkcanEmployer" formControlName="checkcanEmployer" class="example-margin" (change)="onClickCheckBox($event)">
+                                Employer
+                              </mat-checkbox>
+                            <!-- <mat-checkbox id="checkcanEmployer" formControlName="checkcanEmployer"
+                                [(ngModel)]="cansubVClientAccount.Employer" class="example-margin"
+                                (change)="onClickCheckBox($event,'cand')">
+                                Employer</mat-checkbox> -->
+                        </section>
+
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

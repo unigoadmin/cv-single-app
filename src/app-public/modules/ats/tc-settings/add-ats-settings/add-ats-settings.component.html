@@ -1,0 +1,131 @@
+<div *ngIf="Data.type === 'AccountType'">
+    <div *ngIf="Data.type === 'AccountType'" fxLayout="row" fxLayoutAlign="start center"
+        class="bg-app-bar px-6 h-16 border-b sticky left-0">
+        <div>
+            <h2 class="title my-0 leading-snug text-secondary textcgs">Account Types</h2>
+        </div>
+        <div fxFlex="auto">
+        </div>
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+    <mat-dialog-content *ngIf="Data.type === 'AccountType'" class="confirm mt-4" fxLayout="column"
+        style="overflow: auto;">
+        <form [formGroup]="accountTypeForm">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Resume Source</mat-label>
+                    <input matInput id="Account Type Name" [(ngModel)]="accountTypes.AccountTypeName"
+                        name="AccountTypeName" formControlName="AccountTypeName" type="text">
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-footer *ngIf="Data.type === 'AccountType'">
+        <div fxLayout="row" class="mt-4">
+            <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                <button color="primary" [disabled]="!accountTypeForm.valid" (click)="addAccountTypeName()" mat-button
+                    type="submit" matTooltip="Submit">SUBMIT</button>
+            </div>
+        </div>
+    </mat-dialog-footer>
+</div>
+
+<div *ngIf="Data.type === 'Interview'">
+    <div *ngIf="Data.type === 'Interview'" fxLayout="row" fxLayoutAlign="start center"
+        class="bg-app-bar px-6 h-16 border-b sticky left-0">
+        <div>
+            <h2 class="title my-0 leading-snug text-secondary textcgs">Interview Status</h2>
+        </div>
+        <div fxFlex="auto">
+        </div>
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+    <mat-dialog-content *ngIf="Data.type === 'Interview'" class="confirm mt-4" fxLayout="column"
+        style="overflow: auto;">
+        <form [formGroup]="interviewForm">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Interview Status Name</mat-label>
+                    <input matInput id="InterviewStatusName" formControlName="InterviewStatusName" type="text" required
+                        [(ngModel)]="interviewStatus.InterviewStatusName">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Color Code</mat-label>
+                    <mat-select id="Interviewcolorcode" formControlName="InterviewColorCode"  [(ngModel)]="interviewStatus.ColorCode"
+                    (selectionChange)="onIntvColorChange($event)">
+                        <mat-option *ngFor="let item of StatusColorCodes" [value]="item.label">
+                            <div [ngClass]="[item.value]" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                            </div>
+                            <span [ngClass]="[item.bgclass]">{{ item.label }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-footer *ngIf="Data.type === 'Interview'">
+        <div fxLayout="row" class="mt-4">
+            <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                <button color="primary" [disabled]="IsIntvLoading || !interviewForm.valid" (click)="addinterviewStatus()" mat-button
+                    type="submit" matTooltip="Submit">SUBMIT</button>
+            </div>
+        </div>
+    </mat-dialog-footer>
+</div>
+
+<div *ngIf="Data.type === 'SubmissionStatus'">
+    <div *ngIf="Data.type === 'SubmissionStatus'" fxLayout="row" fxLayoutAlign="start center"
+        class="bg-app-bar px-6 h-16 border-b sticky left-0">
+        <div>
+            <h2 class="title my-0 leading-snug text-secondary textcgs">Submission Status</h2>
+        </div>
+        <div fxFlex="auto">
+        </div>
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+    <mat-dialog-content *ngIf="Data.type === 'SubmissionStatus'" class="confirm mt-4" fxLayout="column"
+        style="overflow: auto;">
+        <form [formGroup]="SubmissionStatusForm">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Submission Status Name</mat-label>
+                    <input matInput id="StatusName" formControlName="StatusName" type="text" required
+                        [(ngModel)]="submissonStatus.StatusName">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="100" class="flex-auto">
+                    <mat-label>Color Code</mat-label>
+                    <mat-select id="Submissioncolorcode" formControlName="Submissioncolorcode"  [(ngModel)]="submissonStatus.ColorCode"
+                    (selectionChange)="onSubmissionColorChange($event)">
+                        <mat-option *ngFor="let item of StatusColorCodes" [value]="item.label">
+                            <div [ngClass]="[item.value]" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block">
+                            </div>
+                            <span [ngClass]="[item.bgclass]">{{ item.label }}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-footer *ngIf="Data.type === 'SubmissionStatus'">
+        <div fxLayout="row" class="mt-4">
+            <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                <button color="primary" [disabled]="IsSubLoading || !SubmissionStatusForm.valid" (click)="SaveSubmissionStatus()"
+                    mat-button type="submit" matTooltip="Submit">SUBMIT</button>
+            </div>
+        </div>
+    </mat-dialog-footer>
+</div>
+

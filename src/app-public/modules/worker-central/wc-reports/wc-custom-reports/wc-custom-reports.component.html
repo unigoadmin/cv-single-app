@@ -1,0 +1,63 @@
+<div fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="32px" fxLayoutAlign="start" class="p-5">
+    <table mat-table [dataSource]="dataSource" matSort fxFlex="100" fxFlex.gt-xs="100">
+
+        <ng-container matColumnDef="ReportName">
+            <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef mat-sort-header>Report Name
+            </th>
+            <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                {{element.ReportName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="ReportTypeName">
+            <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef mat-sort-header>Report Type
+            </th>
+            <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                {{element.ReportTypeName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="CreatedByName">
+            <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef mat-sort-header>Created By </th>
+            <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                {{element.CreatedByName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="CreatedDate">
+            <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef mat-sort-header>Created Date </th>
+            <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                {{element.CreatedDate|date:'MM/dd/yyyy'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Actions">
+            <th mat-header-cell class="uppercase th-text-bold" *matHeaderCellDef mat-sort-header>Actions </th>
+            <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                <div class="flex">
+                    <a style="cursor: pointer; padding-right: 10px;"
+                        class="text-dark body-1 text-primary hover:underline trans-ease-out"
+                        (click)="EditCustomization(element)">Edit</a>
+                    <span>
+                        <a style="cursor: pointer; padding-right: 10px;"
+                            class="text-dark body-1 text-primary hover:underline trans-ease-out"
+                            (click)="onRunReport(element,'WorkerCentral')">Run</a>
+                    </span>
+
+                    <span>
+                        <a style="cursor: pointer; padding-right: 10px;"
+                            class="text-dark body-1 text-primary hover:underline trans-ease-out"
+                            (click)="OnSchedule(element)">Schedule
+                        </a>
+                    </span>
+                    <span>
+                        <a style="cursor: pointer; padding-right: 10px;"
+                            class="text-dark body-1 text-primary hover:underline trans-ease-out"
+                            (click)="OnDelete(element)">Delete
+                        </a>
+                    </span>
+
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"
+            class="hover:bg-hover trans-ease-out cursor-pointer"></tr>
+    </table>
+</div>

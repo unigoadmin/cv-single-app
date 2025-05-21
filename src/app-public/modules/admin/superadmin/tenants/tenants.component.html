@@ -1,0 +1,284 @@
+<vex-page-layout>
+  <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">Super Admin</h1>
+        <vex-breadcrumbs [crumbs]="['Super Admin','Companies']"></vex-breadcrumbs>
+      </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6  h-full">
+    <div class="card overflow-auto -mt-16 mb-10">
+      <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+          Companies
+        </h2>
+        <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs fxLayout="row"
+          fxLayoutAlign="start center">
+          <ic-icon [icIcon]="iconService.icSearch" size="20px"></ic-icon>
+          <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search users" type="search">
+        </div>
+
+        <div class="bg-card  border  ml-5" style="width: 170px;">
+          <button mat-button [matMenuTriggerFor]="statusMenu" fxFlex="auto" color="primary">
+            {{selectedStatus}} <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+        <span fxFlex></span>
+
+        <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+          <mat-icon [icIcon]="iconService.icSearch"></mat-icon>
+        </button>
+        <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+          matTooltip="Filter Columns" type="button">
+          <mat-icon [icIcon]="iconService.icFilterList"></mat-icon>
+        </button>
+      </div>
+      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortData($event)">
+        <!-- Text Columns -->
+        <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+          <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{ column.label }}
+            </th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              <span matTooltip="{{row[column.property]}}">{{ row[column.property] }}</span>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <ng-container matColumnDef="IsActive">
+          <th class="uppercase th-text-bold" *matHeaderCellDef mat-header-cell mat-sort-header> STATUS </th>
+          <td *matCellDef="let row" mat-cell>
+            <span *ngIf="row['IsActive']==1" class="text-green bg-green-light rounded px-2 py-1 font-medium text-xs">
+              Active
+            </span>
+            <span *ngIf="row['IsActive']==0" class="text-gray bg-gray-light rounded px-2 py-1 font-medium text-xs">
+              InActive
+            </span>
+            <!-- <mat-slide-toggle (click)="$event.stopPropagation()" (change)="emitToggleStatus($event,row)"
+              [checked]="row['IsActive']" color="primary"></mat-slide-toggle> -->
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="onboarding_status">
+          <th class="uppercase th-text-bold" *matHeaderCellDef mat-header-cell mat-sort-header>ONBOARD STATUS </th>
+          <td *matCellDef="let row" mat-cell>
+            <span [ngClass]="[row.bgClass]" class="rounded px-2 py-1 font-medium text-xs">
+              {{row['onboarding_status']}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="EmpCandidateCount">
+          <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> Users</th>
+          <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell >
+            <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+              <button style="line-height: 30px;" class="text-primary mt-1 bg-primary-light" mat-stroked-button
+                type="button">{{row['EmpCandidateCount']}}</button>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Actions</th>
+          <td *matCellDef="let row" mat-cell>
+
+            <span>
+              <button (click)="$event.stopPropagation();" class="mr-2" [matMenuTriggerFor]="actionsMenu" color="primary"
+                mat-raised-button type="button">Actions
+                <ic-icon [icon]="iconService.icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+              </button>
+            </span>
+
+            <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+              <span>
+                <button (click)="$event.stopPropagation();ViewCompany(row)" mat-menu-item>
+                  <mat-icon [icIcon]="iconService.icLayers" size="18px" [matTooltip]="'View Company'">
+                  </mat-icon><span>View Company</span>
+                </button>
+              </span>
+              <span>
+                <button (click)="$event.stopPropagation();ManageCompany(row)" mat-menu-item>
+                  <mat-icon [icIcon]="iconService.icLayers" size="18px" [matTooltip]="'Manage Company'">
+                  </mat-icon><span>Manage Company</span>
+                </button>
+              </span>
+              <span *ngIf="row['onboarding_status']=='Pending Review'">
+                <button (click)="$event.stopPropagation();OnboardCompany(row)" mat-menu-item>
+                  <mat-icon [icIcon]="iconService.icLayers" size="18px" [matTooltip]="'Update Onbarding Status'">
+                  </mat-icon><span>Onboard Company</span>
+                </button>
+              </span>
+              <span *ngIf="row['EmailConfirmed']==false">
+                <button (click)="ActivateCompany(row)" mat-menu-item>
+                  <mat-icon [icIcon]="iconService.icDelete" size="18px" [matTooltip]="'Activate Company'">
+                  </mat-icon><span>Send Activation Link</span>
+                </button>
+              </span>
+
+              <span>
+                <button (click)="DeleteCompany(row)" mat-menu-item>
+                  <mat-icon [icIcon]="iconService.icDelete" size="18px" [matTooltip]="'Delete Company'">
+                  </mat-icon><span>Delete Company</span>
+                </button>
+              </span>
+
+
+            </mat-menu>
+
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+        <tr (click)="ViewCompany(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+          class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+      </mat-paginator>
+    </div>
+  </vex-page-layout-content>
+
+  <mat-menu #statusMenu="matMenu">
+    <button mat-menu-item (click)="filterStatus('All')">
+      <span>All</span>
+    </button>
+    <button mat-menu-item (click)="filterStatus('Active')">
+      <span>Active</span>
+    </button>
+    <button mat-menu-item (click)="filterStatus('Inactive')">
+      <span>Inactive</span>
+    </button>
+    <button mat-menu-item (click)="filterStatus('ActivationPending')">
+      <span>Activation-Pending</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+      class="checkbox-item mat-menu-item">
+      <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+        {{ column.label }}
+      </mat-checkbox>
+    </button>
+  </mat-menu>
+
+
+  <ng-template #OnboardModal>
+    <div>
+      <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Company OnBoard</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              Modify with appropiate Onbarding Status.
+            </p>
+      
+            <mat-form-field fxFlex="none">
+              <mat-label>Onbarding Status</mat-label>
+              <mat-select [(ngModel)]="onboardingStatus">
+                <mat-option value="Approved">Approved</mat-option>
+                <mat-option value="Suspended">Suspended</mat-option>
+                <mat-option value="On Hold">On Hold</mat-option>
+      
+              </mat-select>
+            </mat-form-field>
+      
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Notes</mat-label>
+              <textarea matInput [(ngModel)]="OnbardingNotes"></textarea>
+            </mat-form-field>
+      
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="UpdateOnbaordStatus()" mat-button
+                      type="submit" matTooltip="Submit">SUBMIT</button>
+              </div>
+          </div>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #DeleteModal>
+    <div>
+      <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Delete Company</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              Are you sure you want to delete this company? Once deleted, it will no longer be available in the list.
+            </p>
+    
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Notes</mat-label>
+              <textarea matInput [(ngModel)]="DeleteNotes"></textarea>
+            </mat-form-field>
+      
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="OnCompanyDelete()" mat-button
+                      type="submit" matTooltip="Submit">DELETE</button>
+              </div>
+          </div>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #ResendModal>
+   <div>
+    <div fxLayout="row" fxLayoutAlign="start center"
+            class="bg-app-bar px-6 h-16 border-b sticky left-0">
+            <div>
+                <h2 class="title my-0 leading-snug text-secondary textcgs">Resend Activation Link</h2>
+            </div>
+            <div fxFlex="auto">
+            </div>
+            <button class="text-secondary" mat-icon-button type="button" (click)="ClosePopup()">
+                <mat-icon [icIcon]="iconService.icClose"></mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content  class="confirm mt-4" fxLayout="column" style="overflow: auto;">
+          <div class="px-6 py-4" fxLayout="column">
+            <p class="mt-0 mb-4 text-secondary" fxFlex="none">
+              This user is the root for the company, and their email ID is <strong>{{currentcompany.PrimaryEmail}}</strong>.  Please confirm that we will send an activation link
+            </p>
+  
+          </div>
+        </mat-dialog-content>
+        <div>
+          <div fxLayout="row" class="mt-4">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="flex flex-col sm:flex-row" fxLayoutAlign="end">
+                  <button mat-button type="button" mat-dialog-close class="mr-4" matTooltip="Cancel">CANCEL</button>
+                  <button color="primary" (click)="SendActivationLink()" mat-button
+                      type="submit" matTooltip="Submit">SEND</button>
+              </div>
+          </div>
+        </div>
+   </div>
+  </ng-template>

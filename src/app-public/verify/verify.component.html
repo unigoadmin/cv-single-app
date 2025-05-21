@@ -1,0 +1,26 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <div @fadeInUp class="card overflow-hidden w-full max-w-xs mt-20">
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="fill-current text-center">
+        <a routerLink="/"><img class="w-40" src="assets/img/demo/consultvite_logo.png"> </a>
+      </div>
+    </div>
+    <div>
+      <div class="text-center mt-4  mb-10">
+        <h2 class="title m-0">You have registered successfully!</h2>
+        <div *ngIf="isSuccess">
+          <h4 class="body-2 text-secondary m-0">Your Email has been validated Successfully.</h4>
+          <p>
+            Please <a (click)="login()" class="text-primary">Login </a> with your credentials.
+          </p>
+        </div>
+        <div *ngIf="!isSuccess">
+          <h4 class="body-2 text-secondary m-0">Your Email is validated already.</h4>
+          <p>
+            Please <a (click)="login()" class="text-primary">Login </a> with your credentials.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

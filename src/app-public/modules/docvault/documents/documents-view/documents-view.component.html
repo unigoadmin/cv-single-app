@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <!-- <img *ngIf="contact?.imageSrc" [src]="contact?.imageSrc" class="avatar ltr:mr-5 rtl:ml-5"> -->
+  <h2 class="headline m-0" fxFlex="auto">{{document.FileNameOnly}}</h2>
+  <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <mat-icon [icIcon]="icClose"></mat-icon>
+  </button>
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <div class="mt-2" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"  style="min-height: 450px;">
+     <div  *ngIf="document" fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px" fxFlex="auto">
+      <div *ngIf="document.File_path_type!='.mp4' && document.File_path_type!='.webm' && document.File_path_type!='.ogg' &&  document.File_path_type!='.mp3' else video">
+        <iframe [src]="Filelocation" style="width:100%; height:450px;"></iframe>
+    </div>
+    <ng-template #video>
+        <div>
+            <video controls preload="metadata" #videoPlayer>
+                <source src="{{Filelocation}}" type="video/mp4"/>
+            </video>
+        </div>
+    </ng-template>
+      
+    </div>
+    
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+  </mat-dialog-actions>
+

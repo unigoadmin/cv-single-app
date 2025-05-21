@@ -1,0 +1,11 @@
+
+<mat-form-field fxFlex="100" fxFlex.gt-xs="100" style="width: 215px !important;" appearance="outline">
+    <mat-label>{{label}}</mat-label>
+    <input type="text" [placeholder]="label"  matInput [formControl]="myControl" [matAutocomplete]="Vendorauto"
+        [(ngModel)]="value">
+    <mat-autocomplete #Vendorauto="matAutocomplete">
+        <mat-option *ngFor="let assign of filteredOptions | async" [value]="assign.text"
+            (onSelectionChange)="onSelFunc(assign)">
+            {{assign.text}}</mat-option>
+    </mat-autocomplete>
+</mat-form-field>

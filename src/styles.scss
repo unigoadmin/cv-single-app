@@ -1,0 +1,300 @@
+@import "~simplebar/dist/simplebar.css";
+@import "~highlight.js/styles/androidstudio.css";
+// Vex Core
+@import "./@cv/styles/core";
+// regular style toast
+@import '~ngx-toastr/toastr';
+/*
+  You can override any CSS Variable or style here
+  Example:
+
+  :root {
+   --sidenav-background: #333333;
+  }
+
+  All possible variables can be found in @cv/styles/core or by simply inspecting the element you want to change
+  in Chrome/Firefox DevTools
+*/
+
+/**
+  Uncomment the below code and adjust the values to fit your colors, the application will automatically adjust
+ */
+:root {
+  
+  --page-layout-header-height:100px;
+  --page-layout-toolbar-height:32px;
+  
+  .cv-high-bg{
+    background-color: rgba(244, 67, 54, 0.1);
+  }
+  .cv-high-text{
+    color: rgb(244, 67, 54);
+  }
+  .cv-high-preview{
+    background-color: rgb(244, 67, 54);
+  }
+
+  .cv-medium-bg{
+    background-color: rgba(255, 193, 7, 0.1);
+  }
+  .cv-medium-text{
+    color: rgb(255, 193, 7);
+  }
+  .cv-medium-preview{
+    background-color: rgb(255, 193, 7);
+  }
+  .cv-low-bg{
+    background-color: rgba(255, 152, 0, 0.1);
+  }
+  .cv-low-text{
+    color: rgb(255, 152, 0);
+  }
+  .cv-low-preview{
+    background-color: rgb(255, 152, 0);
+  }
+
+  .locationbtn{
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    background-color: #ebebee;
+    margin-right: 10px;
+  }
+
+  .tblskills{
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 5px;
+    background-color: #ebebee;
+    margin-right: 1px;
+  }
+
+  .categorybtn{
+    height: 25px;
+    align-items: center;
+    text-align:center;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    color:white;
+    background-color: rgba(var(--color-primary));
+  }
+
+  .certtags {
+    background-color: rgba(var(--color-primary), .1);
+    border-radius: 20px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-right: 2px;
+  }
+
+  
+  // --color-primary: teal;
+  // --color-primary-contrast: white;
+
+  // --color-accent: yellow;
+  // --color-accent-contrast: black;
+
+  // --color-warn: yellow;
+  // --color-warn-contrast: black;
+
+  #toast-container > div {
+    max-width: 400px;
+    width: 90%;
+    margin-top: 7px;
+}
+.text-yellow-contrast {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+
+.bg-yellow {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255,255, 54, var(--tw-bg-opacity));
+}
+
+.text-yellow{
+  // --tw-text-opacity: 1;
+  // color: rgba(0, 0, 0, var(--tw-text-opacity));
+  --tw-text-opacity: 1;
+  color: rgba(217, 119, 6, var(--tw-text-opacity));
+}
+
+.bg-yellow-light {
+ // background-color: rgba(255, 255, 54, 0.911);
+ --tw-bg-opacity: 1;
+  background-color: rgba(255,255,54, var(--tw-bg-opacity));
+}
+
+.text-center{
+text-align: center;
+}
+
+.th-text-bold{
+  font-weight: bold;
+}
+
+.back-red{
+  color: rgb(244, 67, 54) !important;
+  background-color: rgba(244, 67, 54, 0.1) !important;
+}
+.back-yellow{
+color: rgb(255, 193, 7) !important;
+background-color: rgba(255, 193, 7, 0.1) !important;
+
+}
+.back-orange{
+color: rgb(255, 152, 0) !important;
+background-color: rgba(255, 152, 0, 0.1) !important;
+}
+
+/*Activity Log and Notes styles*/
+
+.MsgItem {
+  margin: 10px 10px 0px 30px;
+  position: relative;
+}
+
+.MsgItem .MsgIn {
+  padding: 10px 0px 0px;
+  position: relative;
+}
+
+.MsgItem:before {
+  background: rgba(38, 39, 60, 0.2);
+  border-radius: 2px;
+  bottom: -25px;
+  content: "";
+  height: 100%;
+  left: -15px;
+  position: absolute;
+  width: 1px;
+}
+
+.MsgItem:after {
+  background: white;
+  border: 2px solid rgba(38, 39, 60, 0.2);
+  border-radius: 50%;
+  content: "";
+  height: 15px;
+  left: -22px;
+  position: absolute;
+  top: 12px;
+  width: 15px;
+}
+
+.MsgItem:last-child:before {
+  display: none;
+}
+
+.msg-date {
+  font-size: 10px;
+  line-height: 20px;
+  color: rgba(var(--color-primary), 1);
+}
+
+.msg-by {
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.msg-content {
+  font-weight: 400;
+}
+
+.msg-content:before,
+.msg-content:after {
+  font-size: 18px;
+}
+
+.bg-primary-light{
+  background-color: rgba(var(--color-primary), .1);
+}
+
+.bg-cancel-light{
+  background-color: rgba(158, 158, 158,0.1);
+}
+
+.tblMenutitle, h3 {
+  font: 400 18px/26px var(--font) !important;
+  letter-spacing: -0.014em;
+}
+
+.ctrldisabled {
+  cursor: not-allowed;
+  background-color: rgba(var(--color-primary), .1);
+  pointer-events: none !important;
+  cursor: default !important;
+  
+}
+.searchCtrl{
+ height: 40px;
+}
+
+.text-blue{
+  color: #008ffb;
+}
+
+.my-icon-disable{
+  background: #e3e3e34f !important;
+  color: #ada8a8 !important;
+  cursor: not-allowed;
+  filter:opacity(0.5);
+}
+
+.example-second-header-row {
+  font-style: italic;
+}
+.example-second-footer-row td {
+  font-style: italic;
+}
+
+.custom-gutter{
+  padding-left: 24px;
+  padding-bottom:24px;
+  padding-right: 24px;
+}
+
+.td-cell-background{
+  --background-hover: aliceblue;
+  --background-hover: rgba(var(--color-primary), .1);
+}
+
+.make-gold {
+  color:black !important;
+  font-weight:bold !important;
+}
+
+.make-normal{
+  color:var(--text-secondary) !important;
+  font-weight:500 !important;
+}
+
+.chatinput:focus {
+  height:30px;
+}
+.chatinput{
+  width:700px;
+  height:20px;
+}
+
+.pointer-link {
+  cursor: pointer;
+}
+
+.custom-dialog-container {
+  background: var(--background-app-bar) !important;
+  /* Additional styles if needed */
+}
+
+ 
+.required {
+  color: red;
+}
+
+
+
+}

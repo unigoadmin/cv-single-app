@@ -1,0 +1,33 @@
+<div class="w-full h-full header ">
+    <vex-page-layout>
+    
+      <vex-page-layout-content vexContainer>
+        <div @stagger>
+          <div class="py-16 px-gutter">
+            <h1 @fadeInUp class="display-2 mt-0 mb-4 text-center">Welcome to Consultvite</h1>
+          </div>
+        
+          <div class="my-12 container  pl-0 pr-0"
+               fxLayout="row"
+               fxLayout.xs="column"
+               fxLayoutAlign="start start"
+               fxLayoutAlign.xs="start stretch"
+               fxLayoutGap="24px">
+        
+            <div @fadeInUp class="card p-6" fxFlex fxLayout="column" fxLayoutAlign="start center" *ngFor="let module of modules">
+              <div class="inline-block p-6 rounded-full text-primary mx-auto flex items-center justify-center bg-primary-light">
+                <ic-icon [icon]="module.icon" size="48px"></ic-icon>
+              </div>
+        
+              <h2 class="headline my-6">{{module.label}}</h2>
+    
+              <a class="rounded-full max-w-full w-200" color="primary"  [attr.href]="module.route"  mat-raised-button type="button">GO</a>
+            </div>
+        
+          </div>
+        
+        </div>
+        
+      </vex-page-layout-content>
+    </vex-page-layout>
+    </div>

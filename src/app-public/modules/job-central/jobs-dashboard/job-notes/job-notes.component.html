@@ -1,0 +1,27 @@
+<div fxLayout="column" fxLayout.gt-sm="row" style="overflow: hidden;">
+      <div class="border-l border-r" fxFlex="auto">
+          <div class="MsgList" id="wallmessages" class="ltr:ml-10 rtl:mr-10 mt-2">
+              <div class="MsgItem" *ngFor="let comment of NotesList" class="mt-4">
+                  <div class="MsgIn" fxLayout="row" fxLayoutAlign="start center">
+                      <img src="assets/img/profile.png" class="avatar h-8 w-8 ltr:mr-3 rtl:ml-3">
+                      <div>
+                          <div class="msg-by text-secondary">by {{comment.CreatedByName}}</div>
+                          <div class="msg-date">{{comment.CreatedDate}} </div>
+                      </div>
+                  </div>
+
+                  <div class="msg-content" [innerHtml]="comment.Comment"></div>
+              </div>
+
+              <div class="mt-6" fxLayout="row" fxLayoutAlign="start center">
+                  <img class="avatar w-8 h-8 ltr:mr-3 rtl:ml-3" fxFlex="none" src="assets/img/profile.png">
+                  <mat-form-field appearance="outline" class="vex-dense-form-field vex-flex-form-field" fxFlex="auto">
+                      <input id="incomment" [formControl]="commentCtrl" matInput placeholder="Write a comment ..." (keyup.enter)="addComment()"
+                      >
+                      <button (click)="addComment()" class="-top-1" color="primary" mat-button matSuffix
+                          type="button">SUBMIT</button>
+                  </mat-form-field>
+              </div>
+          </div>
+      </div>
+  </div>

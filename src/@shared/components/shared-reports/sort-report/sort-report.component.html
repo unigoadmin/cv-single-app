@@ -1,0 +1,18 @@
+<div fxFlex="100">
+    <mat-form-field fxFlex="100" fxFlex.gt-xs="100" style="width: 215px !important;" appearance="outline">
+        <mat-label>{{label}}</mat-label>
+        <mat-select [required]="isrequired" name="{{label}}" id="{{label}}" #select (selectionChange)="selectedValue($event)" [(ngModel)]="value">
+            <mat-option *ngFor="let val of dropdownList" [value]="val.value">
+                {{val.text}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field fxFlex="100" fxFlex.gt-xs="100" style="width: 215px !important;" appearance="outline">
+        <mat-label>Sort By</mat-label>
+        <mat-select name="sortorder" required  id="sortorder" [(ngModel)]="ordervalue">
+            <mat-option [value]="'ASC'">ASC</mat-option>
+            <mat-option [value]="'DESC'">DESC</mat-option>
+        </mat-select>
+        
+    </mat-form-field> -->
+</div>

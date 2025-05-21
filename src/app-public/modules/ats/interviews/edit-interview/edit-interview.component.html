@@ -1,0 +1,123 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0" mat-dialog-title>
+    <div fxFlex="50%">
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">
+        Edit Interview
+        <small>
+            <span style="margin-left: 10px;" [ngClass]="[status_textClass,status_bgClass]"  class="rounded px-2 py-1 mr-1 font-medium text-xs labelcard">
+                {{ SelectedInterview.InterviewStatusName }}
+            </span>
+        </small>
+        <span (click)="labelSelect.open()" class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover">
+            <ic-icon style="position: absolute;" [icon]="icEdit" size="18px"></ic-icon>
+        </span>
+        <mat-select #labelSelect="matSelect" (selectionChange)="onLabelChange($event)" class="invisible w-0 h-0 text-sm"
+            fxFlex="0 1 0px">
+            <mat-option *ngFor="let label of InterviewStatusList" [value]="label">
+                <div [ngClass]="status_bgClass" class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>
+                <span>{{ label.InterviewStatusName }}</span>
+            </mat-option>
+        </mat-select>
+    </h2>
+    </div>
+    <div fxFlex="50%" style="text-align: right !important;">
+        <button class="text-secondary" mat-dialog-close  mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+          </button>
+    </div>
+    
+</div>
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;">
+    <form  [formGroup]="form">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Interview Round</mat-label>
+                    <mat-select required placeholder="Interview Round" name="InterviewRound" id="InterviewRound"
+                    formControlName="IntvTitle" [(ngModel)]="SelectedInterview.InterviewRound">
+                    <mat-option *ngFor="let item of interviewRoundsList"
+                            [value]="item.InterviewRoundId">{{item.Name}}
+                        </mat-option>
+                    <!-- <mat-option value="First Round">First Round</mat-option>
+                    <mat-option value="Second Round">Second Round</mat-option>
+                    <mat-option value="Third Round">Third Round</mat-option>
+                    <mat-option value="Final Round">Final Round</mat-option> -->
+                   </mat-select>
+                    
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Interview Type</mat-label>
+                    <mat-select required placeholder="Interview Type" name="Medium" id="Medium"
+                        formControlName="InterviewType" [(ngModel)]="SelectedInterview.InterviewType">
+                        <mat-option *ngFor="let item of interviewTypesList"
+                            [value]="item.InterviewTypeId">{{item.Name}}
+                        </mat-option>
+                        <!-- <mat-option value="Telephonic">Telephonic</mat-option>
+                        <mat-option value="Video">Video</mat-option>
+                        <mat-option value="Face To Face">Face To Face</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Interview Date & Time</mat-label>
+                    <input matInput required [ngxMatDatetimePicker]="picker" formControlName="selectedDateTime"  id="selectedDateTime" name="selectedDateTime"
+                    [(ngModel)]="selectedDateTime" [min]="minDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker [enableMeridian]="true"></ngx-mat-datetime-picker>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxLayout="row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Interview Duration</mat-label>
+                    <mat-select required  name="InterviewDuration" id="InterviewDuration"
+                        formControlName="InterviewDuration" [(ngModel)]="SelectedInterview.InterviewDuration">
+                        <mat-option value="30 Mins">30 Mins</mat-option>
+                        <mat-option value="45 Mins">45 Mins</mat-option>
+                        <mat-option value="1 Hour">1 Hour</mat-option>
+                        <mat-option value="1 Hour 30 Mins">1 Hour 30 Mins</mat-option>
+                        <mat-option value="2 Hours">2 Hours</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="50%" fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Interview TimeZone</mat-label>
+                    <mat-select required  name="InterviewTimeZone" id="InterviewTimeZone"
+                        formControlName="InterviewTimeZone" [(ngModel)]="SelectedInterview.InterviewTimeZone">
+                        <mat-option value="PST">PST - Pacific Standard Time</mat-option>
+                        <mat-option value="MST">MST - Mountain Standard Time</mat-option>
+                        <mat-option value="CST">CST - Central Standard Time</mat-option>
+                        <mat-option value="EST">EST - Eastern Standard Time</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Notes</mat-label>
+                    <input cdkFocusInitial formControlName="ScheduleComments" [(ngModel)]="SelectedInterview.ScheduleComments"
+                        matInput>
+                    <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+
+        
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-button type="submit" (click)="save()" [disabled]="IsLoading || !form.valid">UPDATE</button>
+    </div>
+
+</mat-dialog-actions>

@@ -1,0 +1,133 @@
+::ng-deep cv-view-onboarding-placement .mat-horizontal-content-container{
+    background: var(--background-base);
+    padding: 0 !important;
+}
+::ng-deep cv-view-onboarding-placement mat-dialog-content {
+    background: var(--background-base);
+}
+.fix-dis{
+    display: contents !important;
+}
+
+
+div.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid rgba(82, 63, 105, 0.12);
+    float: left;
+    background: #f1f1f1;
+    border-radius: 4px 0 0 4px;
+  }
+  
+  div.example #close {
+    float: left;
+   
+    padding: 7px;
+     background: var(--background-base);
+    color: black;
+    font-size: 17px;
+    border: 1px solid rgba(82, 63, 105, 0.12);
+    border-left: none;
+    cursor: pointer;
+  }
+  
+  div.example #close:hover {
+    background: var(--background-base);
+  }
+ 
+  div.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  ::ng-deep .example #close svg{
+    margin-top: 5px;
+    margin-left: 1px;
+  }
+
+
+  .child-1,.child-2,.child-3,.child-4{
+    padding:15px;
+  }
+  #middlebuttons1{
+   // padding-left:10px;
+    border-left:1px solid  #e5e5e5;
+  }
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    border-color: rgba(#000, 0.2);
+}
+
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.btn-inverse {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    color: rgba(68, 68, 68, 1);
+    border-radius: 0px;
+}
+
+.btn-inverse .fa-plus {
+    transform: scale(.65);
+}
+.input-group-btn>.btn {
+    padding: 7px 18px 6px;
+}
+.input-group-btn> .btn {
+    min-height: 34px !important;
+    border-radius: 0px 3px 3px 0px !important;
+}
+::ng-deep .pl-tabs .mat-tab-header{
+    background: #fff;
+}
+// ::ng-deep .mat-card .pl-invoice .mat-divider-horizontal {
+//     position: absolute;
+//     left: 0;
+//     width: 88%;
+//     margin-left: 80.5px;
+// }
+
+.certtags {
+  background-color: rgba(var(--color-primary), .1);
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  padding: 5px 15px;
+  margin-right: 2px;
+}
+
+.Activetag{
+  text-align: center;
+  display: inline-block;
+  padding: 5px 15px;
+}
+.locationbtn1{
+  margin:10px;
+  border-radius: 10px;
+  text-align: center;;
+  display: inline-block;
+  padding-top: 16px;
+  background-color: #ebebee;
+  //margin-right: 10px;
+}
+.newlocation{
+  margin-top:10px;
+  margin-bottom:10px;
+
+  
+ 
+}

@@ -1,0 +1,42 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="bg-app-bar px-6 h-16 border-b sticky left-0">
+    <h2 class="title my-0 leading-snug text-secondary textcgs" fxFlex="auto">{{headerTitle}}</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+</div>
+
+<mat-divider class="-mx-6 text-border"></mat-divider>
+<mat-dialog-content fxLayout="column" style="overflow: auto;padding-top: 20px;">
+    <form role="form" [formGroup]="ManageAccountForm">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Account Type</mat-label>
+                    
+                    <mat-select required placeholder="Account Type" name="accountType" id="accountType"
+                        formControlName="accountType" [(ngModel)]="accountitem.AccountTypeId">
+                        <mat-option *ngFor="let item of AccTypeList" [value]="item.AccountTypeID">
+                            {{item.AccountTypeName}}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <div fxFlex="100%" fxLayout="row">
+                <mat-form-field appearance="outline" class="vex-flex-form-field flex-auto">
+                    <mat-label>Account Name</mat-label>
+                    <input required formControlName="accountName" [(ngModel)]="accountitem.AccountName" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+   
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close type="button">CANCEL</button>
+        <button color="primary" mat-button type="submit" [disabled]="!(ManageAccountForm.valid)" (click)="SaveAccount()">{{actionTitle}}</button>
+    </div>
+
+</mat-dialog-actions>

@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title class="dialog-header">
+    <h2 class="headline m-0" fxFlex="auto">{{Data.Name}}</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  
+  <mat-dialog-content class="dialog-content">
+    <div class="iframe-container">
+      <iframe [src]='Data.Url' width="100%" height="100%"></iframe>
+    </div>
+  </mat-dialog-content>
+  

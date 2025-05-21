@@ -1,0 +1,283 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Generate Timesheets</h1>
+                <vex-breadcrumbs [matIcon]="icLayers" [crumbs]="['WorkerCentral Admin','Generate Timesheets']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+                    Generate Timesheets
+                </h2>
+                <span fxFlex></span>
+                <button (click)="backClick()" class="ml-4" color="primary" fxFlex="none" mat-mini-fab matTooltip="Back To Console"
+                type="button">
+                <mat-icon [icIcon]="icBack"></mat-icon>
+              </button>
+            </div>
+        <mat-progress-bar *ngIf="isLoadpage===true" style="top: 4px;" mode="indeterminate" color="primary"></mat-progress-bar>
+        <mat-horizontal-stepper class="mt-4 mb-4" #stepper="matHorizontalStepper" [linear]="true">
+            <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Employee Information</ng-template>
+                    <div class="card overflow-auto"
+                        style="border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
+                        <mat-card>
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="80" class="flex-auto">
+                                        <input type="text" required
+                                            placeholder="Search Employee First Name, Last Name, Email" name="emp" id="emp"
+                                            [(ngModel)]="EmployeeSearch" aria-label="EmployeeSearch" matInput
+                                            [formControl]="EmployeeControl" [matAutocomplete]="timeempauto" formControlName="searchtext">
+                                        <mat-autocomplete #timeempauto="matAutocomplete"
+                                            (optionSelected)="onSelectionempChanged($event)">
+                                            <mat-option *ngFor="let emp of empOptions |async"
+                                                value="{{emp.FirstName +' '+emp.LastName}}" [id]="emp.EmployeeID">
+                                                {{emp.FirstName + " " +emp.LastName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <!-- <div fxFlex="100" fxFlex.gt-xs="30">
+                                        <button [disabled]="!employeeSearch" color="primary" (click)="SearchEmployee()"
+                                            mat-raised-button style="top: 17px;">
+                                            <img *ngIf="isLoading" style="position: absolute;right: 0px;top: 10px;"
+                                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    
+                                            <ic-icon [icIcon]="icSearch" style="position: absolute;vertical-align: middle !important;
+                                            margin-top: 6px;
+                                            margin-left: -17px;
+                                            padding: 2px;" size="20px"></ic-icon> <span
+                                                style="margin-left:10px;">Search</span>
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+    
+                    </div>
+                    <div class="card overflow-auto" *ngIf="Employee.EmployeeID>0">
+                        <mat-card style="padding-bottom:1px !important;">
+                            <mat-card-title>
+                                <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                    Employee Information</div>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <mat-divider></mat-divider>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>Employment Type:</span></div>
+                                        <div class="child-2" fxFlex="65"><span>{{Employee.EmploymentType}}</span></div>
+                                    </div>
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Designation:
+                                        </div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span>{{Employee.Designation}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>First Name:</span></div>
+                                        <div class="child-2" fxFlex="65"><span>{{Employee.FirstName}}</span></div>
+                                    </div>
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Last Name:</div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span>{{Employee.LastName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>Email:</span></div>
+                                        <div class="child-2" fxFlex="65"><span>{{Employee.Email}}</span></div>
+                                    </div>
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Phone:</div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span>{{Employee.PrimaryPhoneNumber}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div fxFlex="50%">
+                                        <div class="child-1 text-secondary" fxFlex="35"><span>Work Permit:</span></div>
+                                        <div class="child-2" fxFlex="65"><span>{{Employee.WorkStatus}}</span></div>
+                                    </div>
+                                    <div fxFlex="50%">
+                                        <div class="child-3 text-secondary" fxFlex="35" id="middlebuttons1">Work Permit
+                                            Expiration:</div>
+                                        <div class="child-3" fxFlex="65">
+                                            <span>{{Employee.WorkStatusExpiry|date:'MM/dd/yyyy'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                <div fxLayout="row" class="actions mt-4 mb-4" fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button color="primary" mat-button (click)="ResetClick()" type="button">Reset</button>
+                    <button color="primary" matStepperNext  [disabled]="Employee.EmployeeID>0?false:true" mat-raised-button>NEXT</button>
+                </div>
+            </form>
+            </mat-step>
+            <mat-step [stepControl]="thirdFormGroup">
+                <ng-template matStepLabel>Assignment Information</ng-template>
+                <div class="card overflow-auto" *ngIf="employeeAssignment.length>0">
+                    <mat-card class="mt-4">
+                        <mat-card-title>
+                            <div class="subheading-2 font-medium pb-1 pt-1" fxLayoutAlign="space-between stretch">
+                                Assignments Information</div>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <table mat-table [dataSource]="dataSource" matSort fxFlex="100" fxFlex.gt-xs="100">
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header> # </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs"
+                                        *matCellDef="let element;let i=index"> {{element.CompanyAssignmentId}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Assignment Name
+                                    </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        {{element.AssignmentName}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Assignment Type
+                                    </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        {{element.AssignmentType}}
+                                         </td>
+                                </ng-container>
+                                <ng-container matColumnDef="classification">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Classification </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        {{element.AsmtClassification}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="startdate">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Start Date </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        {{element.StartDate|date:'MM/dd/yyyy'}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="enddate">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>End Date </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        {{element.EndDate|date:'MM/dd/yyyy'}}  
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Timesheet">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Timesheet </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        <span *ngIf="element.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                            Enabled
+                                        </span>
+                                        <span *ngIf="!element.TimeSheet" class="rounded px-2 py-1 font-medium text-xs text-black bg-gray-light">
+                                            Not Enabled
+                                        </span> 
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="StatusName">
+                                    <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>Status </th>
+                                    <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                        <span *ngIf="element.Status>0" class="rounded px-2 py-1 font-medium text-xs text-green bg-green-light">
+                                            Active
+                                        </span>
+                                        <span *ngIf="element.Status==0" class="rounded px-2 py-1 font-medium text-xs text-gray bg-gray-light">
+                                            Inactive
+                                        </span>
+                                    </td>
+                                </ng-container>
+                              
+                                <tr mat-header-row *matHeaderRowDef="empdisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: empdisplayedColumns;"
+                                class="hover:bg-hover trans-ease-out cursor-pointer" (click)="AssignmentNextClick(stepper,row)"></tr>
+                            </table>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div fxLayout="row" class="actions mt-4 mb-4" fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button color="primary" mat-button matStepperPrevious type="button">Back</button>
+                    <!-- <button color="primary" [disabled]="thirdFormGroup.invalid" (click)="NextClick(stepper)"
+                        mat-raised-button>NEXT
+                    </button> -->
+                </div>
+    
+               
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Timesheets Information</ng-template>
+                <mat-card>
+                    <mat-card-content>
+                        <div fxLayout="column" fxLayoutAlign="space-between">
+                        <table mat-table [dataSource]="tsdataSource" matSort fxFlex="100" fxFlex.gt-xs="100">
+                            <ng-container matColumnDef="TimesheetID">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header> # </th>
+                                <td mat-cell class="text-secondary font-medium textcgs"
+                                    *matCellDef="let element;let i=index"> {{element.CompanyTimesheetID}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="TimseheetPeriod">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>PERIOD
+                                </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.TimseheetPeriod}} </td>
+                            </ng-container>
+                          
+                            <ng-container matColumnDef="StdHours">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>STD HOURS </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.StdHours}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="OTHours">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>OT HOURS </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.OTHours}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="TotalHours">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>TOTAL HOURS </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.TotalHours}}  
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="StatusName">
+                                <th mat-header-cell class="uppercase" *matHeaderCellDef mat-sort-header>STATUS </th>
+                                <td mat-cell class="text-secondary font-medium textcgs" *matCellDef="let element">
+                                    {{element.StatusName}}  
+                                </td>
+                            </ng-container>
+                          
+                            <tr mat-header-row *matHeaderRowDef="tsdisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: tsdisplayedColumns;"
+                            class="hover:bg-hover trans-ease-out cursor-pointer"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0">
+                        </mat-paginator>
+                        <div fxLayout="row" class="actions mt-4 mb-4" fxLayoutAlign="end center" fxLayoutGap="8px">
+                            <button *ngxPermissionsOnly="['ACTION_GENERATE_TIMESHEETS']" color="primary" class="mr-4" mat-raised-button type="submit" matTooltip="Generate" (click)="GenerateTimesheets();">Generate Missing Timesheets</button>
+                        </div>
+                        <div *ngIf="tsdataSource.filteredData?.length === 0" @scaleFadeIn fxFlex="auto" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h4 class="headline m-0 text-center">No records found.</h4>
+                      </div>
+                    </div>
+
+                    </mat-card-content>
+                </mat-card>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+    </vex-page-layout-content>
+</vex-page-layout>

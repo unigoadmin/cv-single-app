@@ -1,0 +1,207 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.px-gutter]="'fullwidth'" class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Archived Applicants</h1>
+                <vex-breadcrumbs [crumbs]="['JobCentral','Archived Applicants']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.px-gutter]="'fullwidth'" class="-mt-6 mb-5">
+        <div class="card overflow-auto -mt-16 mb-10">
+            <div>
+                <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                    <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none"
+                        fxHide.xs>
+                        <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
+                            Applicant<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+                    </h2>
+
+                    <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
+                        <span>
+                            <button *ngIf="selection.hasValue()" class="mr-2" [matMenuTriggerFor]="addAssignMenu"
+                                color="primary" mat-raised-button type="button">Actions
+                                <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+                            </button>
+                        </span>
+                        <mat-menu #addAssignMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+
+                            <button mat-menu-item (click)="OnAssignApplicants()">
+                                <mat-icon [icIcon]="icPersonAdd"></mat-icon>
+                                <span>Assign</span>
+                            </button>
+
+                            <button mat-menu-item (click)="OnAssignMySelf()">
+                                <mat-icon [icIcon]="icRestore"></mat-icon>
+                                <span>Assign to MySelf</span>
+                            </button>
+
+                        </mat-menu>
+                    </div>
+
+                    <div class="mr-2">
+                        <mat-icon [fontIcon]="filteredIcons" class="icon" fontSet="fa" height="12px" width="12px"
+                            style="color: #757a7f;font-size: 16px;;margin-top: 5px;"></mat-icon>
+                    </div>
+                    <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs
+                        fxLayout="row" fxLayoutAlign="start center">
+                        <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+                        <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                            placeholder="Search..." type="search">
+                    </div>
+
+
+                    <span fxFlex></span>
+
+                    <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                        <mat-icon [icIcon]="icSearch"></mat-icon>
+                    </button>
+
+                    <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4 mr-4" fxFlex="none" mat-icon-button
+                        matTooltip="Filter Columns" type="button">
+                        <mat-icon [icIcon]="icFilterList"></mat-icon>
+                    </button>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="space-between">
+                    <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort
+                        (matSortChange)="sortData($event)">
+                    
+                        <!-- Text Columns -->
+                        <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+                            <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                                <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header> {{
+                                    column.label }}
+                                </th>
+                                <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                                    <span [matTooltip]="row[column.property]">{{row[column.property]|shorten:20}}</span>
+                                </td>
+                            </ng-container>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ApplicantLocation">
+                            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>
+                                Applicant Location</th>
+                            <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
+                                <span class="rounded-full text-secondary font-medium locationbtn">
+                                    <ic-icon [icon]="iclocationon" class="ltr:-ml-1 rtl:-mr-1 ltr:mr-2 rtl:ml-2"
+                                        inline="true" size="14px">
+                                    </ic-icon>
+                                    <span>{{row['ApplicantLocation']}}</span>
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="AttachedFileName">
+                            <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell></th>
+                            <td *matCellDef="let row" mat-cell>
+                                <div class="flex">
+                                    <span>
+                                        <a *ngIf="row['IsCandidateViewed']==1" class="tpclass"
+                                            (click)="$event.stopPropagation()"
+                                            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                                            mat-icon-button>
+                                            <mat-icon class="tpclass" [icIcon]="icVisibility" size="18px"
+                                                [matTooltip]="row['ViewedUsers']">
+                                            </mat-icon>
+                                        </a>
+                                        <a *ngIf="row['IsCandidateViewed']==0" (click)="$event.stopPropagation();"
+                                            [disabled]="true"
+                                            class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                                            mat-icon-button>
+                                            <mat-icon [icIcon]="icVisibilityOff" size="18px"></mat-icon>
+                                        </a>
+                                    </span>
+
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Resume">
+                            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell>RESUME</th>
+                            <td *matCellDef="let row" mat-cell>
+                                <div class="flex">
+                                    <a (click)="$event.stopPropagation();ViewResume(row)"
+                                        class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-primary bg-primary-light"
+                                        [disabled]="!row['EmailAttachedFileName']" mat-icon-button>
+                                        <mat-icon [icIcon]="icInsert_Drive_File" size="18px"
+                                            [matTooltip]="!row['EmailAttachedFileName'] ? null : 'View Resume'">
+                                        </mat-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="WorkPermit">
+                            <th *matHeaderCellDef class="uppercase th-text-bold" mat-header-cell mat-sort-header>Work
+                                Permit</th>
+                            <td *matCellDef="let row" mat-cell>
+                                <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
+                                    <span *ngIf="row['WorkPermit']"
+                                        class="rounded-full text-secondary font-medium text-xs categorybtn">
+                                        <span>{{row['WorkPermit']}}</span>
+                                    </span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Actions">
+                            <th *matHeaderCellDef class="uppercase th-text-bold text-center" mat-header-cell>Actions
+                            </th>
+                            <td *matCellDef="let row" mat-cell>
+                                <div class="flex" *ngxPermissionsOnly="['ACTION_EDIT_ARCHIEVE_APPLICANTS']">
+                                    <span>
+                                        <button (click)="$event.stopPropagation();" class="mr-2"
+                                            [matMenuTriggerData]="{ applicant: row }" [matMenuTriggerFor]="actionsMenu"
+                                            color="primary" mat-raised-button type="button">Actions
+                                            <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1"
+                                                inline="true"></ic-icon>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+                        <tr (click)="ViewApplicant(row)" *matRowDef="let row; columns: visibleColumns;" @fadeInUp
+                            class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+                    </table>
+
+                    <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage"
+                        [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"
+                        (page)="pageChanged($event)">
+                    </mat-paginator>
+                </div>
+
+            </div>
+        </div>
+    </vex-page-layout-content>
+
+</vex-page-layout>
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+        class="checkbox-item mat-menu-item">
+        <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+            {{ column.label }}
+        </mat-checkbox>
+    </button>
+</mat-menu>
+
+<mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+    <ng-template let-applicant="applicant" matMenuContent>
+
+        <button (click)="AssignApplcant(applicant)" mat-menu-item>
+            <mat-icon [icIcon]="icPersonAdd" size="18px" [matTooltip]="'Assign Recruiter'">
+            </mat-icon><span>Assign Recruiter</span>
+        </button>
+
+        <button (click)="ReviewApplcant(applicant)" mat-menu-item>
+            <mat-icon [icIcon]="icratereview" size="18px" [matTooltip]="'Send for Review'">
+            </mat-icon><span>Send for Review</span>
+        </button>
+
+        <button (click)="ShareApplcant(applicant)" mat-menu-item>
+            <mat-icon [icIcon]="icShare" size="18px" [matTooltip]="'Share Applicant'">
+            </mat-icon><span>Share Applicant</span>
+        </button>
+
+    </ng-template>
+</mat-menu>
