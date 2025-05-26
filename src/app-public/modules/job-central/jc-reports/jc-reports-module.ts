@@ -40,7 +40,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ProcessMenuModule } from 'src/@cv/components/process-menu/process-menu.module';
+//import { ProcessMenuModule } from 'src/@cv/components/process-menu/process-menu.module';
 import { FilterComponentsModules } from 'src/@shared/components/filter-components/filter-component.module';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 //import { TalentCentralModule } from 'src/app-ats/talent-central/talent-central.module';   
@@ -119,7 +119,7 @@ import {JcStandardReportsComponent} from './jc-standard-reports/jc-standard-repo
         ShortenpipeModule,
         //TalentCentralModule,
         FilterComponentsModules,
-        ProcessMenuModule,
+        //ProcessMenuModule,
         PopoverModule,
         MegaMenuModule,
         NgxMaterialTimepickerModule,

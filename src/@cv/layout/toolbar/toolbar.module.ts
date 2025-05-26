@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { NavigationItemModule } from '../../components/navigation-item/navigation-item.module';
 import { MegaMenuModule } from '../../components/mega-menu/mega-menu.module';
 import { ContainerModule } from '../../directives/container/container.module';
-import { ProcessMenuModule } from '../../components/process-menu/process-menu.module';
+//import { ProcessMenuModule } from '../../components/process-menu/process-menu.module';
 
 
 @NgModule({
@@ -36,7 +36,7 @@ import { ProcessMenuModule } from '../../components/process-menu/process-menu.mo
     NavigationItemModule,
     MegaMenuModule,
     ContainerModule,
-    ProcessMenuModule
+    //ProcessMenuModule
   ],
   exports: [ToolbarComponent]
 })
